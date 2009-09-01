@@ -1,0 +1,99 @@
+/**
+
+\mainpage
+
+\htmlinclude manifest.html
+
+@section summary Summary
+The point_cloud_assembler package is used to accumulate a time-series of sensor readings into a single, aggregate point cloud.
+Each sensor reading is converted into a point cloud upon receipt and then pushed onto a ring buffer. When a \b"~build_cloud"
+service request is made, the readings that lie between the start-time and end-time of the request are aggregated into a point
+cloud.
+
+
+@section usage Common Usage
+
+@subsection assemblers Assemblers
+point_cloud_assembler::BaseAssemblerSrv is an abstract class, so it cannot be used directly. Instead, a user should run one
+of the derived nodes (point_cloud_assembler::LaserScanAssemblerSrv or point_cloud_assembler::PointCloudAssemblerSrv),
+depending on what datatype they want to accumulate.
+
+@subsection snapshotter Snapshotter
+The point_cloud_assembler::PointCloudSnapshotter listens to the laser_scanner_signal messages and generates a cloud whenever
+the sensor reaches the top or bottom of it's profile. This is extremely useful when a single, consistent laser scan of the
+environment is needed.
+
+@subsection launch Example Launch File
+This launch file is performing two separate tasks
+ -# Launch a LaserScanAssemblerSrv node
+  - Listen for laser scans on topic "tilt_scan".  Transform each scan (ignoring laser skew) into the torso_lift_link frame, and
+    then push the data onto a queue that is a maximum 400 elements long.
+ -# Launch the Snapshotter
+  - Listen to topic "laser_tilt_controller/laser_scanner_signal". Whenever a message is received, make a service call to 
+    "laser_scan_assembler/build_cloud" to accumulate laser scans between the last two laser_scanner_signal messages. Once the
+    service call is complete, publish the data aggregate point cloud on the topic "snapshot_cloud"
+
+\verbatim
+<launch>
+
+  <node pkg="point_cloud_assembler" type="laser_scan_assembler_srv" output="screen"  name="laser_scan_assembler">
+    <remap from="scan_in" to="tilt_scan"/>
+    <param name="tf_cache_time_secs" type="double" value="10.0" />
+    <param name="tf_tolerance_secs" type="double" value="0.0" />
+    <param name="max_scans" type="int" value="400" />
+    <param name="ignore_laser_skew" type="bool" value="true" />
+    <param name="fixed_frame" type="string" value="torso_lift_link" />
+    <param name="downsample_factor" type="int" value="2" />
+  </node>
+
+  <node pkg="point_cloud_assembler" type="point_cloud_snapshotter" output="screen" name="snapshotter">
+    <remap from="laser_scanner_signal" to="laser_tilt_controller/laser_scanner_signal"/>
+    <remap from="build_cloud" to="laser_scan_assembler/build_cloud" />
+    <remap from="full_cloud" to="snapshot_cloud" />
+  </node>
+
+</launch>
+
+\endverbatim
+
+@subsection merge Merging Pointclouds
+
+@b merge_clouds is a node that can take two other clouds as input,
+merge them and publish again.  The frame in which the combined cloud
+is to be published (the output frame) must always be specified. If a
+maximum frequency is not specified, the node outputs clouds at the
+frequency of the input cloud that is published least often.
+
+
+A sample launch file is:
+
+\verbatim
+<launch>
+
+  <node pkg="point_cloud_assembler" type="merge_clouds" output="screen">
+
+    <!-- first input cloud -->
+    <remap from="cloud_in1" to="laser_scan_cloud"/>
+
+    <!-- second input cloud -->
+    <remap from="cloud_in2" to="stereo_scan_cloud"/>
+
+    <!-- output cloud -->
+    <remap from="cloud_out" to="merged_clouds"/>
+
+    <!-- the frame in which the output cloud should be published; this parameter must ALWAYS be specified  -->
+    <param name="output_frame" type="string" value="base_link"/>
+
+    <!-- The upper bound (in Hz) of how often the merged should be published -->
+    <!-- If the value is 0.0, the cloud is published whenever updates from the input clouds are available -->
+    <param name="max_frequency" type="double" value="100.0"/>
+
+  </node>
+
+</launch>
+
+
+\endverbatim
+
+
+*/
