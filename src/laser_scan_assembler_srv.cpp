@@ -57,13 +57,13 @@ namespace laser_assembler
 class LaserScanAssemblerSrv : public BaseAssemblerSrv<sensor_msgs::LaserScan>
 {
 public:
-  LaserScanAssemblerSrv() : BaseAssemblerSrv<sensor_msgs::LaserScan>("laser_scan_assembler"), filter_chain_("sensor_msgs::LaserScan")
+  LaserScanAssemblerSrv() : filter_chain_("sensor_msgs::LaserScan")
   {
     // ***** Set Laser Projection Method *****
-    ros::Node::instance()->param("~ignore_laser_skew", ignore_laser_skew_, true);
+    private_ns_.param("ignore_laser_skew", ignore_laser_skew_, true);
 
     // configure the filter chain from the parameter server
-    filter_chain_.configure("~filters");
+    filter_chain_.configure("filters", private_ns_);
   }
 
   ~LaserScanAssemblerSrv()
@@ -111,10 +111,10 @@ using namespace laser_assembler ;
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv);
+  ros::init(argc, argv, "laser_scan_assembler");
   LaserScanAssemblerSrv pc_assembler;
   pc_assembler.start();
-  ros::Node::instance()->spin();
+  ros::spin();
 
   return 0;
 }

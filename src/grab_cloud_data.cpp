@@ -34,9 +34,7 @@
 
 #include <cstdio>
 
-#include "ros/node.h"
-
-
+#include <ros/ros.h>
 
 // Services
 #include "laser_assembler/AssembleScans.h"
@@ -52,29 +50,31 @@
 namespace laser_assembler
 {
 
-class GrabCloudData : public ros::Node
+class GrabCloudData
 {
 
 public:
 
-  GrabCloudData() : ros::Node("grab_cloud_data")
+  GrabCloudData()
   {
-    advertise<sensor_msgs::PointCloud> ("full_cloud", 1) ;
+    pub_ = n_.advertise<sensor_msgs::PointCloud> ("full_cloud", 1);
   }
 
   ~GrabCloudData()
   {
-    unadvertise("full_cloud") ;
+
   }
 
   bool spin()
   {
     ros::Duration period(4,0) ;         // Repeat Every 4 seconds
 
+    ros::spinOnce();
     ros::Time next_time = ros::Time::now() ;
 
-    while ( ok() )
+    while ( n_.ok() )
     {
+      ros::spinOnce();
       usleep(100) ;
       if (ros::Time::now() >= next_time)
       {
@@ -90,12 +90,17 @@ public:
         ros::service::call("build_cloud", req, resp) ;
         printf("Done with service call\n") ;
 
-        publish("full_cloud", resp.cloud) ;
+        pub_.publish(resp.cloud);
         printf("Published Cloud size=%u\n", resp.cloud.get_points_size()) ;
       }
     }
     return true ;
   }
+
+private:
+  ros::NodeHandle n_;
+  ros::Publisher pub_;
+
 } ;
 
 }
@@ -104,7 +109,7 @@ using namespace laser_assembler ;
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv);
+  ros::init(argc, argv, "grab_cloud_data");
   GrabCloudData grabber ;
   grabber.spin();
 

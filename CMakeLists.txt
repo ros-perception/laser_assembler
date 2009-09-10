@@ -6,7 +6,6 @@ rosbuild_gensrv()
 rosbuild_add_boost_directories()
 
 rosbuild_add_executable(laser_scan_assembler_srv src/laser_scan_assembler_srv.cpp)
-rosbuild_link_boost(laser_scan_assembler_srv system)
 rosbuild_add_executable(point_cloud_assembler_srv src/point_cloud_assembler_srv.cpp)
 rosbuild_add_executable(grab_cloud_data src/grab_cloud_data.cpp)
 

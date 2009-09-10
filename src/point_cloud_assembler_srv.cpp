@@ -50,7 +50,7 @@ namespace laser_assembler
 class PointCloudAssemblerSrv : public BaseAssemblerSrv<sensor_msgs::PointCloud>
 {
 public:
-  PointCloudAssemblerSrv() : BaseAssemblerSrv<sensor_msgs::PointCloud>("point_cloud_assembler")
+  PointCloudAssemblerSrv()
   {
 
   }
@@ -81,10 +81,10 @@ using namespace laser_assembler ;
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv);
+  ros::init(argc, argv, "point_cloud_assembler");
   PointCloudAssemblerSrv pc_assembler;
   pc_assembler.start() ;
-  ros::Node::instance()->spin();
+  ros::spin();
 
   return 0;
 }
