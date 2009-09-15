@@ -189,6 +189,8 @@ int main(int argc, char **argv)
 {
     ros::init(argc, argv, "merge_clouds", ros::init_options::AnonymousName);
 
+    ROS_WARN("laser_assembler/merge_clouds is deprecated. You should instead be using 3dnav_pr2/merge_clouds");
+
     MergeClouds mc;
     ros::spin();
     
