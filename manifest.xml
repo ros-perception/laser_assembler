@@ -1,11 +1,11 @@
 <package>
-  <description brief="A node for assembling point clouds out of laser scanlines.">
-    This node accumulates laser range finder scan lines into a point cloud.
+  <description brief="Aggregation nodes for a laser rangefinder">
+    Provides nodes to assemble point clouds from either LaserScan or PointCloud messages
   </description>
   <author>Vijay Pradeep</author>
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
-  <url>http://ros.org/wiki/point_cloud_assembler</url>
+  <url>http://ros.org/wiki/laser_assembler</url>
   <depend package="roscpp"/>
   <depend package="std_msgs"/>
   <depend package="geometry_msgs"/>
@@ -13,9 +13,6 @@
   <depend package="laser_filters"/>
   <depend package="sensor_msgs"/>
   <depend package="tf"/>
-  # For Testing
-  <depend package="rostest"/>
-  <depend package="filters"/>
 
  <export>
     <cpp cflags="-I${prefix}/srv/cpp -I${prefix}/include" />

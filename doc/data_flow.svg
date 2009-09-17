@@ -1,0 +1,1039 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="data_flow.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path4172"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path4175"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective10" />
+    <marker
+       viewBox="0 0 10 10"
+       refY="5"
+       refX="10"
+       orient="auto"
+       markerWidth="4"
+       markerUnits="strokeWidth"
+       markerHeight="3"
+       id="ArrowStart">
+      <path
+         id="path3586"
+         d="M 10 0 L 0 5 L 10 10 z" />
+    </marker>
+    <marker
+       viewBox="0 0 10 10"
+       refY="5"
+       refX="0"
+       orient="auto"
+       markerWidth="4"
+       markerUnits="strokeWidth"
+       markerHeight="3"
+       id="ArrowEnd">
+      <path
+         id="path3583"
+         d="M 0 0 L 10 5 L 0 10 z" />
+    </marker>
+    <inkscape:perspective
+       id="perspective7140"
+       inkscape:persp3d-origin="215.661 : 120.203 : 1"
+       inkscape:vp_z="431.32199 : 180.3045 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 180.3045 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     gridtolerance="10000"
+     guidetolerance="10"
+     objecttolerance="10"
+     inkscape:pageopacity="1"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1"
+     inkscape:cx="350.98482"
+     inkscape:cy="311.06"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1309"
+     inkscape:window-height="883"
+     inkscape:window-x="1108"
+     inkscape:window-y="429" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       ry="0.12453033"
+       rx="0.18370552"
+       y="221.38367"
+       x="116.72923"
+       height="211.08893"
+       width="206.92142"
+       id="rect2606"
+       style="opacity:1;fill:#d5e9fa;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <g
+       id="g5089"
+       transform="translate(7,-332)"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0.39817017"
+         rx="0.14138065"
+         y="590.49683"
+         x="122.54767"
+         height="141.2753"
+         width="57.309345"
+         id="rect4947"
+         style="fill:#bababa;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <text
+         id="text4951"
+         y="621.30829"
+         x="151.41035"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="621.30829"
+           x="151.41035"
+           id="tspan4953"
+           sodipodi:role="line">Scan 2</tspan></text>
+      <text
+         id="text4955"
+         y="603.63055"
+         x="151.36348"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="603.63055"
+           x="151.36348"
+           id="tspan4957"
+           sodipodi:role="line">Scan 1</tspan></text>
+      <text
+         id="text4959"
+         y="638.98602"
+         x="151.29024"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="638.98602"
+           x="151.29024"
+           id="tspan4961"
+           sodipodi:role="line">Scan 3</tspan></text>
+      <text
+         id="text4967"
+         y="674.34149"
+         x="151.23164"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="674.34149"
+           x="151.23164"
+           id="tspan4969"
+           sodipodi:role="line">Scan 9</tspan></text>
+      <text
+         id="text4971"
+         y="692.01923"
+         x="151.32246"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="692.01923"
+           x="151.32246"
+           id="tspan4973"
+           sodipodi:role="line">Scan 97</tspan></text>
+      <text
+         id="text4975"
+         y="709.69696"
+         x="151.21992"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="709.69696"
+           x="151.21992"
+           id="tspan4977"
+           sodipodi:role="line">Scan 98</tspan></text>
+      <text
+         id="text4979"
+         y="727.37463"
+         x="151.23164"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="727.37463"
+           x="151.23164"
+           id="tspan4981"
+           sodipodi:role="line">Scan 99</tspan></text>
+      <path
+         id="path4983"
+         d="M 121.95234,608.10126 L 180.45234,608.10126"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.22474492;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         id="path4987"
+         d="M 121.95234,714.16766 L 180.45234,714.16766"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.22474492;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         id="path4989"
+         d="M 121.95234,696.48992 L 180.45234,696.48992"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.22474492;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         id="path4991"
+         d="M 121.95234,678.81219 L 180.45234,678.81219"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.22474492;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         id="path4997"
+         d="M 121.95234,625.77899 L 180.45234,625.77899"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.22474492;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cc"
+         id="path4999"
+         d="M 151,646.50653 L 151,660.50653"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1, 4;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot5112"
+       style="font-size:40px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"><flowRegion
+         id="flowRegion5114"><rect
+           id="rect5116"
+           width="168"
+           height="51"
+           x="147"
+           y="472.36218" /></flowRegion><flowPara
+         id="flowPara5118">LaserSca</flowPara></flowRoot>    <flowRoot
+       xml:space="preserve"
+       id="flowRoot5120"
+       style="fill:black;stroke:none;stroke-opacity:1;stroke-width:1px;stroke-linejoin:miter;stroke-linecap:butt;fill-opacity:1;font-family:Bitstream Vera Sans;font-style:normal;font-weight:normal;font-size:16"><flowRegion
+         id="flowRegion5122"><rect
+           id="rect5124"
+           width="282"
+           height="82"
+           x="76"
+           y="440.36218"
+           style="font-size:16" /></flowRegion><flowPara
+         id="flowPara5126"></flowPara></flowRoot>    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="21"
+       y="241.36218"
+       id="text5128"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan5130"
+         x="21"
+         y="241.36218">LaserScan</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker-start:none;marker-end:url(#Arrow1Lend);stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 98,237.36218 L 153,237.36218 L 153,255.36218"
+       id="path5134"
+       sodipodi:nodetypes="ccc"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="404.84814"
+       y="314.45837"
+       id="text6681"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan6683"
+         x="404.84814"
+         y="314.45837"
+         style="text-align:center;text-anchor:middle">AssembleScans</tspan><tspan
+         sodipodi:role="line"
+         x="404.84814"
+         y="331.95837"
+         id="tspan6693"
+         style="text-align:center;text-anchor:middle">(Service)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="137.84814"
+       y="416.45837"
+       id="text6685"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan6687"
+         x="137.84814"
+         y="416.45837">Cache</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="117.25381"
+       y="211.82947"
+       id="text6689"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan6691"
+         x="117.25381"
+         y="211.82947">LaserScanAssemblerSrv</tspan></text>
+    <rect
+       style="opacity:1;fill:#bababa;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect6695"
+       width="88.197708"
+       height="40.197708"
+       x="217.90115"
+       y="301.26331"
+       rx="0.21446125"
+       ry="0.074287832"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="225.16113"
+       y="326.58139"
+       id="text6697"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan6699"
+         x="225.16113"
+         y="326.58139">Assembler</tspan></text>
+    <g
+       id="g7153"
+       transform="matrix(0.5452357,0,0,0.5452357,25.764407,60.58212)"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <g
+         transform="matrix(7.6562149e-2,0,0,7.6562149e-2,296.339,463.05768)"
+         id="g3588">
+        <path
+           d="M 180.199,360.396 L 0,180.197 L 180.199,0 L 299.048,0 L 161.988,137.066 L 431.322,137.066 L 431.322,224.288 L 162.946,224.288 L 299.263,360.609 L 180.199,360.396 z"
+           id="path3590"
+           style="fill:#000000;stroke:none" />
+      </g>
+      <g
+         transform="matrix(-7.6562149e-2,0,0,7.6562149e-2,353.51147,463.05768)"
+         id="g7149">
+        <path
+           d="M 180.199,360.396 L 0,180.197 L 180.199,0 L 299.048,0 L 161.988,137.066 L 431.322,137.066 L 431.322,224.288 L 162.946,224.288 L 299.263,360.609 L 180.199,360.396 z"
+           id="path7151"
+           style="fill:#000000;stroke:none" />
+      </g>
+    </g>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 388.06702,293.4292 C 340.81043,252.33083 298.23326,256.89258 258.93298,293.4292"
+       id="path7692"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 259.43298,347.79309 C 306.68957,388.89146 349.26674,384.32971 388.56702,347.79309"
+       id="path8221"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="239.84814"
+       y="268.45837"
+       id="text8223"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan8225"
+         x="239.84814"
+         y="268.45837"
+         style="font-size:12px">Interval</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="236.7749"
+       y="386.83582"
+       id="text8227"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/assembler.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan8229"
+         x="236.7749"
+         y="386.83582"
+         style="font-size:12px">PointCloud</tspan></text>
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       ry="0.12453033"
+       rx="0.18370552"
+       y="767.41315"
+       x="79.167465"
+       height="211.08893"
+       width="206.92142"
+       id="rect8251"
+       style="opacity:1;fill:#d5e9fa;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <g
+       id="g8253"
+       transform="translate(-30.56177,214.02951)"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         ry="0.39817017"
+         rx="0.14138065"
+         y="590.49683"
+         x="122.54767"
+         height="141.2753"
+         width="57.309345"
+         id="rect8255"
+         style="fill:#bababa;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <text
+         id="text8257"
+         y="621.30829"
+         x="151.41035"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="621.30829"
+           x="151.41035"
+           id="tspan8259"
+           sodipodi:role="line">Scan 2</tspan></text>
+      <text
+         id="text8261"
+         y="603.63055"
+         x="151.36348"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="603.63055"
+           x="151.36348"
+           id="tspan8263"
+           sodipodi:role="line">Scan 1</tspan></text>
+      <text
+         id="text8265"
+         y="638.98602"
+         x="151.29024"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="638.98602"
+           x="151.29024"
+           id="tspan8267"
+           sodipodi:role="line">Scan 3</tspan></text>
+      <text
+         id="text8269"
+         y="674.34149"
+         x="151.23164"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="674.34149"
+           x="151.23164"
+           id="tspan8271"
+           sodipodi:role="line">Scan 9</tspan></text>
+      <text
+         id="text8273"
+         y="692.01923"
+         x="151.32246"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="692.01923"
+           x="151.32246"
+           id="tspan8275"
+           sodipodi:role="line">Scan 97</tspan></text>
+      <text
+         id="text8277"
+         y="709.69696"
+         x="151.21992"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="709.69696"
+           x="151.21992"
+           id="tspan8279"
+           sodipodi:role="line">Scan 98</tspan></text>
+      <text
+         id="text8281"
+         y="727.37463"
+         x="151.23164"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:12px;text-align:center;text-anchor:middle"
+           y="727.37463"
+           x="151.23164"
+           id="tspan8283"
+           sodipodi:role="line">Scan 99</tspan></text>
+      <path
+         id="path8285"
+         d="M 121.95234,608.10126 L 180.45234,608.10126"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.22474492;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         id="path8287"
+         d="M 121.95234,714.16766 L 180.45234,714.16766"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.22474492;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         id="path8289"
+         d="M 121.95234,696.48992 L 180.45234,696.48992"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.22474492;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         id="path8291"
+         d="M 121.95234,678.81219 L 180.45234,678.81219"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.22474492;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         id="path8293"
+         d="M 121.95234,625.77899 L 180.45234,625.77899"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.22474492;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cc"
+         id="path8295"
+         d="M 151,646.50653 L 151,660.50653"
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1, 4;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="346.28638"
+       y="864.48785"
+       id="text8303"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan8305"
+         x="346.28638"
+         y="864.48785"
+         style="font-size:12px;text-align:center;text-anchor:middle">AssembleScans</tspan><tspan
+         sodipodi:role="line"
+         x="346.28638"
+         y="879.48785"
+         id="tspan8307"
+         style="font-size:12px;text-align:center;text-anchor:middle">(Service)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="100.28638"
+       y="962.48785"
+       id="text8309"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan8311"
+         x="100.28638"
+         y="962.48785">Cache</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="100.69205"
+       y="993.85889"
+       id="text8313"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan8315"
+         x="100.69205"
+         y="993.85889">LaserScanAssemblerSrv</tspan></text>
+    <rect
+       style="opacity:1;fill:#bababa;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect8317"
+       width="88.197708"
+       height="40.197708"
+       x="180.33939"
+       y="847.29279"
+       rx="0.21446125"
+       ry="0.074287832"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="187.59937"
+       y="872.6109"
+       id="text8319"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan8321"
+         x="187.59937"
+         y="872.6109">Assembler</tspan></text>
+    <g
+       id="g8323"
+       transform="matrix(0.5452357,0,0,0.5452357,-11.79736,606.61163)"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <g
+         transform="matrix(7.6562149e-2,0,0,7.6562149e-2,296.339,463.05768)"
+         id="g8325">
+        <path
+           d="M 180.199,360.396 L 0,180.197 L 180.199,0 L 299.048,0 L 161.988,137.066 L 431.322,137.066 L 431.322,224.288 L 162.946,224.288 L 299.263,360.609 L 180.199,360.396 z"
+           id="path8327"
+           style="fill:#000000;stroke:none" />
+      </g>
+      <g
+         transform="matrix(-7.6562149e-2,0,0,7.6562149e-2,353.51147,463.05768)"
+         id="g8329">
+        <path
+           d="M 180.199,360.396 L 0,180.197 L 180.199,0 L 299.048,0 L 161.988,137.066 L 431.322,137.066 L 431.322,224.288 L 162.946,224.288 L 299.263,360.609 L 180.199,360.396 z"
+           id="path8331"
+           style="fill:#000000;stroke:none" />
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="215.28638"
+       y="820.48785"
+       id="text8337"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan8339"
+         x="215.28638"
+         y="820.48785"
+         style="font-size:12px">Interval</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="209.21313"
+       y="926.8653"
+       id="text8341"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan8343"
+         x="209.21313"
+         y="926.8653"
+         style="font-size:12px">PointCloud</tspan></text>
+    <rect
+       style="opacity:1;fill:#e1e1e1;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.06052208;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect8365"
+       width="215.93947"
+       height="99.939468"
+       x="67.030273"
+       y="562.39246"
+       rx="0.063374303"
+       ry="0.03272995"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       ry="0.026854813"
+       rx="0.068674736"
+       y="579.10162"
+       x="82.323242"
+       height="45.521069"
+       width="77.353546"
+       id="rect8345"
+       style="opacity:1;fill:#bbbbbb;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.56785959;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="118.84814"
+       y="597.45837"
+       id="text8347"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         x="118.84814"
+         y="597.45837"
+         id="tspan8351">Hokuyo</tspan><tspan
+         sodipodi:role="line"
+         x="118.84814"
+         y="614.95837"
+         id="tspan8375">Sensor</tspan></text>
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       ry="0.026854813"
+       rx="0.068674736"
+       y="579.60162"
+       x="186.32324"
+       height="45.521069"
+       width="77.353546"
+       id="rect8353"
+       style="opacity:1;fill:#bbbbbb;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.56785959;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="223.34811"
+       y="597.95837"
+       id="text8355"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         x="223.34811"
+         y="597.95837"
+         id="tspan8359">Motor &amp;</tspan><tspan
+         sodipodi:role="line"
+         x="223.34811"
+         y="615.45837"
+         id="tspan8363">Encoder</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="67.193359"
+       y="551.58142"
+       id="text8367"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan8369"
+         x="67.193359"
+         y="551.58142">Tilting Laser System</tspan></text>
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       ry="0.036834393"
+       rx="0.06593693"
+       y="649.14355"
+       x="83.865143"
+       height="62.437267"
+       width="74.269745"
+       id="rect8397"
+       style="opacity:1;fill:#d5e9fa;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="120.6924"
+       y="676.83142"
+       id="text8377"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan8379"
+         x="120.6924"
+         y="676.83142">Hokuyo</tspan><tspan
+         sodipodi:role="line"
+         x="120.6924"
+         y="694.33142"
+         id="tspan8381">Node</tspan></text>
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       ry="0.036834393"
+       rx="0.06593693"
+       y="649.14355"
+       x="187.86514"
+       height="62.437267"
+       width="74.269745"
+       id="rect8383"
+       style="opacity:1;fill:#d5e9fa;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="225.13675"
+       y="668.08142"
+       id="text8385"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         x="225.13675"
+         y="668.08142"
+         id="tspan8389">Control</tspan><tspan
+         sodipodi:role="line"
+         x="225.13675"
+         y="685.58142"
+         id="tspan8393">System</tspan><tspan
+         sodipodi:role="line"
+         x="225.13675"
+         y="703.08142"
+         id="tspan8395">Node</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;marker-start:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 121.00002,648.81772 L 121.00002,624.90662"
+       id="path8399"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect8397"
+       inkscape:connection-end="#rect8345"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 225.00002,648.81772 L 225.00002,625.40662"
+       id="path9996"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect8383"
+       inkscape:connection-end="#rect8353"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-opacity:1"
+       d="M 120.94181,711.90665 L 120.77275,803.52634"
+       id="path10002"
+       inkscape:connector-type="polyline"
+       inkscape:connection-start="#rect8397"
+       inkscape:connection-end="#g8253"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       ry="0.12485484"
+       rx="0.09630134"
+       y="767.13812"
+       x="407.26428"
+       height="211.63899"
+       width="108.47148"
+       id="rect10537"
+       style="opacity:1;fill:#d5e9fa;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:1.44994044;stroke-linecap:butt;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="418.36185"
+       y="994.58142"
+       id="text10539"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan10541"
+         x="418.36185"
+         y="994.58142">Snapshotter</tspan></text>
+    <rect
+       style="opacity:1;fill:#bababa;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect10543"
+       width="88.197708"
+       height="40.197708"
+       x="417.40118"
+       y="802.26331"
+       rx="0.21446125"
+       ry="0.074287832"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="461.2095"
+       y="818.58142"
+       id="text10545"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan10547"
+         x="461.2095"
+         y="818.58142">Snapshot</tspan><tspan
+         sodipodi:role="line"
+         x="461.2095"
+         y="836.08142"
+         id="tspan10549">Logic</tspan></text>
+    <rect
+       style="opacity:1;fill:#bababa;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect10551"
+       width="88.197708"
+       height="40.197708"
+       x="417.40118"
+       y="896.26331"
+       rx="0.21446125"
+       ry="0.074287832"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="460.81985"
+       y="921.58142"
+       id="text10553"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         x="460.81985"
+         y="921.58142"
+         id="tspan10557">Publisher</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 417.01331,818.35555 C 361.85415,805.1639 302.14849,802.06481 221.98669,844.37549"
+       id="path10561"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;marker-start:url(#Arrow1Lstart);marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 416.51331,915.0051 C 361.35415,928.19675 301.64849,931.29584 221.48669,888.98516"
+       id="path12164"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="M 505,915.36218 L 542,915.36218"
+       id="path13232"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="547.90527"
+       y="919.83582"
+       id="text13767"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         id="tspan13769"
+         x="547.90527"
+         y="919.83582"
+         style="font-size:12px">PointCloud</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Lend)"
+       d="M 226,711.36218 C 222.88744,831.67183 444.30419,631.33835 463,802.36218"
+       id="path13773"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect14318"
+       width="78"
+       height="48"
+       x="308"
+       y="714.36218"
+       rx="0.19679974"
+       ry="0.074287832"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="354.24902"
+       y="732.62976"
+       id="text14308"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         x="354.24902"
+         y="732.62976"
+         id="tspan14312"
+         style="font-size:12px;text-align:center;text-anchor:middle">Control</tspan><tspan
+         sodipodi:role="line"
+         x="354.24902"
+         y="747.62976"
+         style="font-size:12px;text-align:center;text-anchor:middle"
+         id="tspan14316">System State</tspan></text>
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect14328"
+       width="64"
+       height="25"
+       x="89.5"
+       y="725.36218"
+       rx="0.16147672"
+       ry="0.038691577"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <text
+       xml:space="preserve"
+       style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
+       x="122.92383"
+       y="742.17273"
+       id="text14320"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/snapshotter.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
+         sodipodi:role="line"
+         x="122.92383"
+         y="742.17273"
+         style="font-size:12px;text-align:center;text-anchor:middle"
+         id="tspan14324">LaserScan</tspan></text>
+  </g>
+</svg>
