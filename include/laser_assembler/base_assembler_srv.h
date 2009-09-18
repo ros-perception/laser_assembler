@@ -34,7 +34,7 @@
 
 //! \author Vijay Pradeep
 
-#include "ros/node.h"
+#include "ros/ros.h"
 #include "tf/transform_listener.h"
 #include "tf/message_filter.h"
 #include "sensor_msgs/PointCloud.h"
