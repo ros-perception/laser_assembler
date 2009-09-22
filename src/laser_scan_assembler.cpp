@@ -35,7 +35,7 @@
 
 #include "laser_geometry/laser_geometry.h"
 #include "sensor_msgs/LaserScan.h"
-#include "laser_assembler/base_assembler_srv.h"
+#include "laser_assembler/base_assembler.h"
 #include "filters/filter_chain.h"
 
 using namespace laser_geometry;
@@ -46,27 +46,29 @@ namespace laser_assembler
 
 /**
  * \brief Maintains a history of laser scans and generates a point cloud upon request
- * \section params ROS Parameters
- * - (Several params are inherited from laser_assembler::BaseAssemblerSrv)
- * - \b "~ignore_laser_skew" (bool) - Specifies the method to project laser data
- *   - true -> Account for laser skew, and compute the transform for each laser point (This is currently really slow!)
- *   - false-> Don't account for laser skew, and use 1 transform per scanline. (This might have a little error when moving fast)
- * \section services ROS Services
- * - "~build_cloud" - Inhertited from laser_assembler::BaseAssemblerSrv
  */
-class LaserScanAssemblerSrv : public BaseAssemblerSrv<sensor_msgs::LaserScan>
+class LaserScanAssembler : public BaseAssembler<sensor_msgs::LaserScan>
 {
 public:
-  LaserScanAssemblerSrv() : filter_chain_("sensor_msgs::LaserScan")
+  LaserScanAssembler() : BaseAssembler<sensor_msgs::LaserScan>("max_scans"), filter_chain_("sensor_msgs::LaserScan")
   {
     // ***** Set Laser Projection Method *****
     private_ns_.param("ignore_laser_skew", ignore_laser_skew_, true);
 
     // configure the filter chain from the parameter server
     filter_chain_.configure("filters", private_ns_);
+
+    // Have different callbacks, depending on whether or not we want to ignore laser skews.
+    if (ignore_laser_skew_)
+      start("scan");
+    else
+    {
+      start();
+      skew_scan_sub_ = n_.subscribe("scan", 10, &LaserScanAssembler::scanCallback, this);
+    }
   }
 
-  ~LaserScanAssemblerSrv()
+  ~LaserScanAssembler()
   {
 
   }
@@ -96,9 +98,28 @@ public:
     return;
   }
 
+  void scanCallback(const sensor_msgs::LaserScanConstPtr& laser_scan)
+  {
+    if (!ignore_laser_skew_)
+    {
+      ros::Duration cur_tolerance = ros::Duration(laser_scan->time_increment * laser_scan->ranges.size());
+      if (cur_tolerance > max_tolerance_)
+      {
+        ROS_DEBUG("Upping tf tolerance from [%.4fs] to [%.4fs]", max_tolerance_.toSec(), cur_tolerance.toSec());
+        assert(tf_filter_);
+        tf_filter_->setTolerance(cur_tolerance);
+        max_tolerance_ = cur_tolerance;
+      }
+      tf_filter_->add(laser_scan);
+    }
+  }
+
 private:
   bool ignore_laser_skew_;
   laser_geometry::LaserProjection projector_;
+
+  ros::Subscriber skew_scan_sub_;
+  ros::Duration max_tolerance_;   // The longest tolerance we've needed on a scan so far
 
   filters::FilterChain<sensor_msgs::LaserScan> filter_chain_;
   mutable sensor_msgs::LaserScan scan_filtered_;
@@ -112,12 +133,7 @@ using namespace laser_assembler ;
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "laser_scan_assembler");
-  ros::NodeHandle n;
-  ROS_WARN("The laser_scan_assembler_srv is deprecated. Please switch to "
-           "using the laser_scan_assembler. Documentation is available at "
-           "http://www.ros.org/wiki/laser_assembler");
-  LaserScanAssemblerSrv pc_assembler;
-  pc_assembler.start();
+  LaserScanAssembler pc_assembler;
   ros::spin();
 
   return 0;

@@ -33,7 +33,7 @@
 *********************************************************************/
 
 
-#include "laser_assembler/base_assembler_srv.h"
+#include "laser_assembler/base_assembler.h"
 
 
 using namespace std ;
@@ -47,15 +47,15 @@ namespace laser_assembler
  * params
  *  * (Several params are inherited from BaseAssemblerSrv)
  */
-class PointCloudAssemblerSrv : public BaseAssemblerSrv<sensor_msgs::PointCloud>
+class PointCloudAssembler : public BaseAssembler<sensor_msgs::PointCloud>
 {
 public:
-  PointCloudAssemblerSrv()
+  PointCloudAssembler() : BaseAssembler<sensor_msgs::PointCloud>("max_clouds")
   {
 
   }
 
-  ~PointCloudAssemblerSrv()
+  ~PointCloudAssembler()
   {
 
   }
@@ -82,12 +82,8 @@ using namespace laser_assembler ;
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "point_cloud_assembler");
-  ros::NodeHandle n;
-  ROS_WARN("The point_cloud_assembler_srv is deprecated. Please switch to "
-           "using the laser_scan_assembler. Documentation is available at "
-           "http://www.ros.org/wiki/laser_assembler");
-  PointCloudAssemblerSrv pc_assembler;
-  pc_assembler.start() ;
+  PointCloudAssembler pc_assembler;
+  pc_assembler.start("cloud");
   ros::spin();
 
   return 0;
