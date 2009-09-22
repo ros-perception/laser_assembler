@@ -4,7 +4,7 @@
   </description>
   <author>Vijay Pradeep</author>
   <license>BSD</license>
-  <review status="unreviewed" notes=""/>
+  <review status="api cleared" notes=""/>
   <url>http://ros.org/wiki/laser_assembler</url>
   <depend package="roscpp"/>
   <depend package="std_msgs"/>
