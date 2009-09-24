@@ -32,76 +32,48 @@
 *  POSSIBILITY OF SUCH DAMAGE.
 *********************************************************************/
 
-#include <cstdio>
 
-#include <ros/ros.h>
-
-// Services
-#include "laser_assembler/AssembleScans.h"
-
-// Messages
-#include "sensor_msgs/PointCloud.h"
+#include "laser_assembler/base_assembler.h"
 
 
-/***
- * This a simple test app that requests a point cloud from the point_cloud_assembler, and then publishes the resulting data
- */
+using namespace std ;
 
 namespace laser_assembler
 {
 
-class GrabCloudData
+/**
+ * \brief Maintains a history of incremental point clouds (usually from laser scans) and generates a point cloud upon request
+ * \todo Clean up the doxygen part of this header
+ * params
+ *  * (Several params are inherited from BaseAssemblerSrv)
+ */
+class PointCloudAssembler : public BaseAssembler<sensor_msgs::PointCloud>
 {
-
 public:
-
-  GrabCloudData()
-  {
-    pub_ = n_.advertise<sensor_msgs::PointCloud> ("full_cloud", 1);
-  }
-
-  ~GrabCloudData()
+  PointCloudAssembler() : BaseAssembler<sensor_msgs::PointCloud>("max_clouds")
   {
 
   }
 
-  bool spin()
+  ~PointCloudAssembler()
   {
-    ros::Duration period(4,0) ;         // Repeat Every 4 seconds
 
-    ros::spinOnce();
-    ros::Time next_time = ros::Time::now() ;
+  }
 
-    while ( n_.ok() )
-    {
-      ros::spinOnce();
-      usleep(100) ;
-      if (ros::Time::now() >= next_time)
-      {
-        next_time = (next_time + period) ;
+  unsigned int GetPointsInScan(const sensor_msgs::PointCloud& scan)
+  {
+    return scan.get_points_size() ;
+  }
 
-        AssembleScans::Request req ;
-        AssembleScans::Response resp ;
-
-        req.begin = (next_time - period ) ;
-        req.end   = next_time ;
-
-        printf("Making Service Call...\n") ;
-        ros::service::call("build_cloud", req, resp) ;
-        printf("Done with service call\n") ;
-
-        pub_.publish(resp.cloud);
-        printf("Published Cloud size=%u\n", resp.cloud.get_points_size()) ;
-      }
-    }
-    return true ;
+  void ConvertToCloud(const string& fixed_frame_id, const sensor_msgs::PointCloud& scan_in, sensor_msgs::PointCloud& cloud_out)
+  {
+    tf_->transformPointCloud(fixed_frame_id, scan_in, cloud_out) ;
+    return ;
   }
 
 private:
-  ros::NodeHandle n_;
-  ros::Publisher pub_;
 
-} ;
+};
 
 }
 
@@ -109,9 +81,10 @@ using namespace laser_assembler ;
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "grab_cloud_data");
-  GrabCloudData grabber ;
-  grabber.spin();
+  ros::init(argc, argv, "point_cloud_assembler");
+  PointCloudAssembler pc_assembler;
+  pc_assembler.start("cloud");
+  ros::spin();
 
   return 0;
 }

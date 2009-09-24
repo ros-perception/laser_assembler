@@ -53,27 +53,13 @@ namespace laser_assembler
 
 /**
  * \brief Maintains a history of point clouds and generates an aggregate point cloud upon request
- * \todo Clean up the doxygen part of this header
- *
- * @section parameters ROS Parameters
- *
- * Reads the following parameters from the parameter server
- *  - \b "~tf_cache_time_secs" (double) - The cache time (in seconds) to holds past transforms
- *  - \b "~tf_tolerance_secs (double) - The time (in seconds) to wait after the transform for scan_in is available.
- *  - \b "~max_scans" (unsigned int) - The number of scans to store in the assembler's history, until they're thrown away
- *  - \b "~fixed_frame" (string) - The frame to which received data should immeadiately be transformed to
- *  - \b "~downsampling_factor" (int) - Specifies how often to sample from a scan. 1 preserves all the data. 3 keeps only 1/3 of the points.
- *
- *  @section services ROS Service Calls
- *  - \b "~build_cloud" (AssembleScans.srv) - Accumulates scans between begin time and
- *              end time and returns the aggregated data as a point cloud
  */
 template<class T>
-class BaseAssemblerSrv
+class BaseAssembler
 {
 public:
-  BaseAssemblerSrv() ;
-  ~BaseAssemblerSrv() ;
+  BaseAssembler(const std::string& max_size_param_name);
+  ~BaseAssembler() ;
 
   /**
    * \brief Tells the assembler to start listening to input data
@@ -82,7 +68,8 @@ public:
    * create subcribes to the input stream, thus allowing the scanCallback and
    * ConvertToCloud to be called. Start should be called only once.
    */
-  void start() ;
+  void start(const std::string& in_topic_name);
+  void start();
 
 
   /** \brief Returns the number of points in the current scan
@@ -94,7 +81,7 @@ public:
   /** \brief Converts the current scan into a cloud in the specified fixed frame
    *
    * Note: Once implemented, ConvertToCloud should NOT catch TF exceptions. These exceptions are caught by
-   * BaseAssemblerSrv, and will be counted for diagnostic information
+   * BaseAssembler, and will be counted for diagnostic information
    * \param fixed_frame_id The name of the frame in which we want cloud_out to be in
    * \param scan_in The scan that we want to convert
    * \param cloud_out The result of transforming scan_in into a cloud in frame fixed_frame_id
@@ -103,6 +90,7 @@ public:
 
 protected:
   tf::TransformListener* tf_ ;
+  tf::MessageFilter<T>* tf_filter_;
 
   ros::NodeHandle private_ns_;
   ros::NodeHandle n_;
@@ -111,12 +99,11 @@ private:
   // ROS Input/Ouptut Handling
   ros::ServiceServer cloud_srv_server_;
   message_filters::Subscriber<T> scan_sub_;
-  tf::MessageFilter<T>* tf_filter_;
   message_filters::Connection tf_filter_connection_;
 
   //! \brief Callback function for every time we receive a new scan
   //void scansCallback(const tf::MessageNotifier<T>::MessagePtr& scan_ptr, const T& testA)
-  void scansCallback(const boost::shared_ptr<const T>& scan_ptr) ;
+  virtual void msgCallback(const boost::shared_ptr<const T>& scan_ptr) ;
 
   //! \brief Service Callback function called whenever we need to build a cloud
   bool buildCloud(AssembleScans::Request& req, AssembleScans::Response& resp) ;
@@ -135,16 +122,13 @@ private:
   //! \brief The frame to transform data into upon receipt
   std::string fixed_frame_ ;
 
-  //! \brief How long we should wait before processing the input data. Very useful for laser scans.
-  double tf_tolerance_secs_ ;
-
   //! \brief Specify how much to downsample the data. A value of 1 preserves all the data. 3 would keep 1/3 of the data.
   unsigned int downsample_factor_ ;
 
 } ;
 
 template <class T>
-BaseAssemblerSrv<T>::BaseAssemblerSrv() : private_ns_("~")
+BaseAssembler<T>::BaseAssembler(const std::string& max_size_param_name) : private_ns_("~")
 {
   // **** Initialize TransformListener ****
   double tf_cache_time_secs ;
@@ -158,7 +142,7 @@ BaseAssemblerSrv<T>::BaseAssemblerSrv() : private_ns_("~")
   // ***** Set max_scans *****
   const int default_max_scans = 400 ;
   int tmp_max_scans ;
-  private_ns_.param("max_scans", tmp_max_scans, default_max_scans);
+  private_ns_.param(max_size_param_name, tmp_max_scans, default_max_scans);
   if (tmp_max_scans < 0)
   {
     ROS_ERROR("Parameter max_scans<0 (%i)", tmp_max_scans) ;
@@ -183,16 +167,11 @@ BaseAssemblerSrv<T>::BaseAssemblerSrv() : private_ns_("~")
     tmp_downsample_factor = 1 ;
   }
   downsample_factor_ = tmp_downsample_factor ;
-  ROS_INFO("Downsample Factor: %u", downsample_factor_) ;
+  if (downsample_factor_ != 1)
+    ROS_WARN("Downsample set to [%u]. Note that this is an unreleased/unstable feature", downsample_factor_);
 
   // ***** Start Services *****
-  cloud_srv_server_ = private_ns_.advertiseService("build_cloud", &BaseAssemblerSrv<T>::buildCloud, this);
-
-  // **** Get the TF Notifier Tolerance ****
-  private_ns_.param("tf_tolerance_secs", tf_tolerance_secs_, 0.0);
-  if (tf_tolerance_secs_ < 0)
-    ROS_ERROR("Parameter tf_tolerance_secs<0 (%f)", tf_tolerance_secs_) ;
-  ROS_INFO("tf Tolerance: %f seconds", tf_tolerance_secs_) ;
+  cloud_srv_server_ = n_.advertiseService("build_cloud", &BaseAssembler<T>::buildCloud, this);
 
   // ***** Start Listening to Data *****
   // (Well, don't start listening just yet. Keep this as null until we actually start listening, when start() is called)
@@ -201,22 +180,35 @@ BaseAssemblerSrv<T>::BaseAssemblerSrv() : private_ns_("~")
 }
 
 template <class T>
-void BaseAssemblerSrv<T>::start()
+void BaseAssembler<T>::start(const std::string& in_topic_name)
 {
-  ROS_INFO("Starting to listen on the input stream") ;
+  ROS_DEBUG("Called start(string). Starting to listen on message_filter::Subscriber the input stream");
   if (tf_filter_)
     ROS_ERROR("assembler::start() was called twice!. This is bad, and could leak memory") ;
   else
   {
-    scan_sub_.subscribe(n_, "scan_in", 10);
+    scan_sub_.subscribe(n_, in_topic_name, 10);
     tf_filter_ = new tf::MessageFilter<T>(scan_sub_, *tf_, fixed_frame_, 10);
-    tf_filter_->setTolerance(ros::Duration(tf_tolerance_secs_));
-    tf_filter_->registerCallback( boost::bind(&BaseAssemblerSrv<T>::scansCallback, this, _1) );
+    tf_filter_->registerCallback( boost::bind(&BaseAssembler<T>::msgCallback, this, _1) );
   }
 }
 
 template <class T>
-BaseAssemblerSrv<T>::~BaseAssemblerSrv()
+void BaseAssembler<T>::start()
+{
+  ROS_DEBUG("Called start(). Starting tf::MessageFilter, but not initializing Subscriber");
+  if (tf_filter_)
+    ROS_ERROR("assembler::start() was called twice!. This is bad, and could leak memory") ;
+  else
+  {
+    scan_sub_.subscribe(n_, "bogus", 10);
+    tf_filter_ = new tf::MessageFilter<T>(scan_sub_, *tf_, fixed_frame_, 10);
+    tf_filter_->registerCallback( boost::bind(&BaseAssembler<T>::msgCallback, this, _1) );
+  }
+}
+
+template <class T>
+BaseAssembler<T>::~BaseAssembler()
 {
   if (tf_filter_)
     delete tf_filter_;
@@ -225,8 +217,9 @@ BaseAssemblerSrv<T>::~BaseAssemblerSrv()
 }
 
 template <class T>
-void BaseAssemblerSrv<T>::scansCallback(const boost::shared_ptr<const T>& scan_ptr)
+void BaseAssembler<T>::msgCallback(const boost::shared_ptr<const T>& scan_ptr)
 {
+  ROS_DEBUG("starting msgCallback");
   const T scan = *scan_ptr ;
 
   sensor_msgs::PointCloud cur_cloud ;
@@ -255,10 +248,11 @@ void BaseAssemblerSrv<T>::scansCallback(const boost::shared_ptr<const T>& scan_p
   //printf("Scans: %4u  Points: %10u\n", scan_hist_.size(), total_pts_) ;
 
   scan_hist_mutex_.unlock() ;
+  ROS_DEBUG("done with msgCallback");
 }
 
 template <class T>
-bool BaseAssemblerSrv<T>::buildCloud(AssembleScans::Request& req, AssembleScans::Response& resp)
+bool BaseAssembler<T>::buildCloud(AssembleScans::Request& req, AssembleScans::Response& resp)
 {
   //printf("Starting Service Request\n") ;
 

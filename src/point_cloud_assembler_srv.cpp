@@ -82,6 +82,10 @@ using namespace laser_assembler ;
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "point_cloud_assembler");
+  ros::NodeHandle n;
+  ROS_WARN("The point_cloud_assembler_srv is deprecated. Please switch to "
+           "using the laser_scan_assembler. Documentation is available at "
+           "http://www.ros.org/wiki/laser_assembler");
   PointCloudAssemblerSrv pc_assembler;
   pc_assembler.start() ;
   ros::spin();
