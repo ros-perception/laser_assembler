@@ -77,15 +77,14 @@ public:
     //   don't have a start and end time yet
     if (first_time_)
     {
-      previous_event_ = e;
       first_time_ = false;
       return;
     }
 
     // Populate our service request based on our timer callback times
     AssembleScans srv;
-    srv.request.begin = previous_event_.last_real;
-    srv.request.end   = e.last_real;
+    srv.request.begin = e.last_real;
+    srv.request.end   = e.current_real;
 
     // Make the service call
     if (client_.call(srv))
@@ -105,7 +104,6 @@ private:
   ros::ServiceClient client_;
   ros::Timer timer_;
   bool first_time_;
-  ros::TimerEvent previous_event_;
 } ;
 
 }
@@ -115,6 +113,7 @@ using namespace laser_assembler ;
 int main(int argc, char **argv)
 {
   ros::init(argc, argv, "periodic_snapshotter");
+  ros::NodeHandle n;
   ROS_INFO("Waiting for [build_cloud] to be advertised");
   ros::service::waitForService("build_cloud");
   ROS_INFO("Found build_cloud! Starting the snapshotter");
