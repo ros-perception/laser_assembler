@@ -97,7 +97,8 @@ protected:
 
 private:
   // ROS Input/Ouptut Handling
-  ros::ServiceServer cloud_srv_server_;
+  ros::ServiceServer build_cloud_server_;
+  ros::ServiceServer assemble_scans_server_;
   message_filters::Subscriber<T> scan_sub_;
   message_filters::Connection tf_filter_connection_;
 
@@ -107,6 +108,7 @@ private:
 
   //! \brief Service Callback function called whenever we need to build a cloud
   bool buildCloud(AssembleScans::Request& req, AssembleScans::Response& resp) ;
+  bool assembleScans(AssembleScans::Request& req, AssembleScans::Response& resp) ;
 
 
   //! \brief Stores history of scans
@@ -171,7 +173,8 @@ BaseAssembler<T>::BaseAssembler(const std::string& max_size_param_name) : privat
     ROS_WARN("Downsample set to [%u]. Note that this is an unreleased/unstable feature", downsample_factor_);
 
   // ***** Start Services *****
-  cloud_srv_server_ = n_.advertiseService("build_cloud", &BaseAssembler<T>::buildCloud, this);
+  build_cloud_server_    = n_.advertiseService("build_cloud",    &BaseAssembler<T>::buildCloud,    this);
+  assemble_scans_server_ = n_.advertiseService("assemble_scans", &BaseAssembler<T>::assembleScans, this);
 
   // ***** Start Listening to Data *****
   // (Well, don't start listening just yet. Keep this as null until we actually start listening, when start() is called)
@@ -253,6 +256,14 @@ void BaseAssembler<T>::msgCallback(const boost::shared_ptr<const T>& scan_ptr)
 
 template <class T>
 bool BaseAssembler<T>::buildCloud(AssembleScans::Request& req, AssembleScans::Response& resp)
+{
+  ROS_WARN("Service 'build_cloud' is deprecated. Call 'assemble_scans' instead");
+  return assembleScans(req, resp);
+}
+
+
+template <class T>
+bool BaseAssembler<T>::assembleScans(AssembleScans::Request& req, AssembleScans::Response& resp)
 {
   //printf("Starting Service Request\n") ;
 
