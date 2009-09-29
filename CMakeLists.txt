@@ -15,3 +15,4 @@ rosbuild_add_executable(merge_clouds src/merge_clouds.cpp)
 rosbuild_link_boost(merge_clouds thread)
 
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+add_subdirectory(examples)
