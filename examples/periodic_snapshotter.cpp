@@ -61,7 +61,7 @@ public:
     pub_ = n_.advertise<sensor_msgs::PointCloud> ("assembled_cloud", 1);
 
     // Create the service client for calling the assembler
-    client_ = n_.serviceClient<AssembleScans>("build_cloud");
+    client_ = n_.serviceClient<AssembleScans>("assemble_scans");
 
     // Start the timer that will trigger the processing loop (timerCallback)
     timer_ = n_.createTimer(ros::Duration(5,0), &PeriodicSnapshotter::timerCallback, this);
