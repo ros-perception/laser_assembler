@@ -193,7 +193,7 @@
        y="29.588135"
        rx="0.30305704"
        ry="0.1241968"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <flowRoot
@@ -220,7 +220,7 @@
          id="flowPara5126" /></flowRoot>    <text
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        id="text5128"
        y="75.283974"
        x="77.975616"
@@ -233,7 +233,7 @@
     <text
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        id="text6681"
        y="107.38016"
        x="563.82373"
@@ -243,7 +243,7 @@
          y="107.38016"
          x="563.82373"
          id="tspan6683"
-         sodipodi:role="line">build_cloud</tspan><tspan
+         sodipodi:role="line">assemble_scans</tspan><tspan
          style="text-align:center;text-anchor:middle"
          id="tspan6693"
          y="124.88016"
@@ -252,7 +252,7 @@
     <text
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        id="text6685"
        y="206.38016"
        x="315.82376"
@@ -271,7 +271,7 @@
     <text
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        id="text6689"
        y="18.829468"
        x="143.25381"
@@ -285,7 +285,7 @@
     <rect
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        ry="0.074287832"
        rx="0.21446125"
        y="94.185089"
@@ -297,7 +297,7 @@
     <text
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        id="text6697"
        y="119.50317"
        x="384.13675"
@@ -310,7 +310,7 @@
     <g
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        transform="matrix(0.5452357,0,0,0.5452357,184.74002,-146.49609)"
        id="g7153">
       <g
@@ -333,7 +333,7 @@
     <path
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        sodipodi:nodetypes="cc"
        id="path7692"
        d="M 547.04263,86.35099 C 499.78604,45.25262 457.20887,49.81437 417.90859,86.35099"
@@ -341,7 +341,7 @@
     <path
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        sodipodi:nodetypes="cc"
        id="path8221"
        d="M 418.40859,140.71488 C 465.66518,181.81325 508.24235,177.2515 547.54263,140.71488"
@@ -349,7 +349,7 @@
     <text
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        id="text8223"
        y="61.380157"
        x="398.82376"
@@ -363,7 +363,7 @@
     <text
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        id="text8227"
        y="179.7576"
        x="395.75052"
@@ -984,7 +984,7 @@
     <g
        transform="translate(-282.02439,-344.07821)"
        id="g2596"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90">
       <rect
@@ -1102,7 +1102,7 @@
     <rect
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        ry="0.07449764"
        rx="0.16805622"
        y="53.128357"
@@ -1114,7 +1114,7 @@
     <text
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        id="text2623"
        y="76.594513"
        x="178.11017"
@@ -1128,7 +1128,7 @@
     <rect
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        ry="0.074385121"
        rx="0.19222414"
        y="129.15897"
@@ -1140,7 +1140,7 @@
     <text
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        id="text2629"
        y="153.75778"
        x="170.36502"
@@ -1157,7 +1157,7 @@
        id="path3427"
        d="M 205.65513,94.439594 L 206.0988,128.15897"
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-start:none;marker-end:url(#Arrow1Lend);stroke-opacity:1"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
@@ -1165,20 +1165,20 @@
        id="path4495"
        d="M 246.97561,152.28397 C 263.45932,152.28397 261.99986,143.61223 261.99986,106.0499 C 261.99986,52.44976 255.14803,56.28397 286.97561,56.28397"
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-end:url(#Arrow1Lend);stroke-opacity:1"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
        id="path5030"
        d="M 114.97561,70.28397 L 168.97561,70.28397"
        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;marker-start:none;marker-end:url(#Arrow1Lend);stroke-opacity:1"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <text
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        id="text7164"
        y="154.1611"
        x="60.215851"
@@ -1192,7 +1192,7 @@
        id="path7168"
        d="M 111.21584,149.16112 L 165.21584,149.16112"
        style="stroke-linejoin:miter;marker-end:url(#Arrow1LendH);stroke-opacity:1;fill-rule:evenodd;marker-start:none;stroke:#8c8c8c;stroke-linecap:butt;stroke-width:1px;fill:none"
-       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_assembler.png"
+       inkscape:export-filename="/u/vpradeep/ros/pkgs/laser_pipeline/laser_assembler/doc/laser_scan_assembler.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
@@ -1233,7 +1233,7 @@
          y="375.94879"
          x="563.66528"
          id="tspan7178"
-         sodipodi:role="line">build_cloud</tspan><tspan
+         sodipodi:role="line">assemble_scans</tspan><tspan
          style="text-align:center;text-anchor:middle"
          id="tspan7180"
          y="393.44879"
