@@ -313,11 +313,20 @@ bool BaseAssembler<T>::assembleScans(AssembleScans::Request& req, AssembleScans:
     unsigned int cloud_count = 0 ;
     for (i=start_index; i<past_end_index; i+=downsample_factor_)
     {
+
+      // Sanity check: Each channel should be the same length as the points vector
+      for (unsigned int chan_ind = 0; chan_ind < scan_hist_[i].channels.size(); chan_ind++)
+      {
+        if (scan_hist_[i].get_points_size() != scan_hist_[i].channels[chan_ind].values.size())
+          ROS_FATAL("Trying to add a malformed point cloud. Cloud has %u points, but channel %u has %u elems", scan_hist_[i].get_points_size(), chan_ind, scan_hist_[i].channels[chan_ind].get_values_size());
+      }
+
       for(unsigned int j=0; j<scan_hist_[i].get_points_size(); j+=downsample_factor_)
       {
         resp.cloud.points[cloud_count].x = scan_hist_[i].points[j].x ;
         resp.cloud.points[cloud_count].y = scan_hist_[i].points[j].y ;
         resp.cloud.points[cloud_count].z = scan_hist_[i].points[j].z ;
+
         for (unsigned int k=0; k<num_channels; k++)
           resp.cloud.channels[k].values[cloud_count] = scan_hist_[i].channels[k].values[j] ;
 
@@ -328,7 +337,7 @@ bool BaseAssembler<T>::assembleScans(AssembleScans::Request& req, AssembleScans:
   }
   scan_hist_mutex_.unlock() ;
 
-  ROS_DEBUG("Point Cloud Results: Aggregated from index %u->%u. BufferSize: %u. Points in cloud: %u", start_index, past_end_index, scan_hist_.size(), resp.cloud.points.size()) ;
+  ROS_DEBUG("Point Cloud Results: Aggregated from index %u->%u. BufferSize: %lu. Points in cloud: %u", start_index, past_end_index, scan_hist_.size(), resp.cloud.get_points_size()) ;
   return true ;
 }
 
