@@ -323,7 +323,7 @@ bool BaseAssemblerSrv<T>::buildCloud(AssembleScans::Request& req, AssembleScans:
   }
   scan_hist_mutex_.unlock() ;
 
-  ROS_DEBUG("Point Cloud Results: Aggregated from index %u->%u. BufferSize: %u. Points in cloud: %u", start_index, past_end_index, scan_hist_.size(), resp.cloud.points.size()) ;
+  ROS_DEBUG("Point Cloud Results: Aggregated from index %u->%u. BufferSize: %lu. Points in cloud: %lu", start_index, past_end_index, scan_hist_.size(), resp.cloud.points.size()) ;
   return true ;
 }
 
