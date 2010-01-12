@@ -92,8 +92,11 @@ public:
     }
     else                     // Do it the slower (more accurate) way
     {
-      int mask = laser_geometry::MASK_INTENSITY + laser_geometry::MASK_DISTANCE + laser_geometry::MASK_INDEX + laser_geometry::MASK_TIMESTAMP;
-      projector_.transformLaserScanToPointCloud (fixed_frame_id, cloud_out, scan_filtered_, *tf_, mask);
+      int mask = laser_geometry::channel_option::Intensity +
+                 laser_geometry::channel_option::Distance +
+                 laser_geometry::channel_option::Index +
+                 laser_geometry::channel_option::Timestamp;
+      projector_.transformLaserScanToPointCloud (fixed_frame_id, scan_filtered_, cloud_out, *tf_, mask);
     }
     return;
   }
