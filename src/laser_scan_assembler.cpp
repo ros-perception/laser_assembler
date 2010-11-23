@@ -75,7 +75,7 @@ public:
 
   unsigned int GetPointsInScan(const sensor_msgs::LaserScan& scan)
   {
-    return scan.get_ranges_size();
+    return (scan.ranges.size ());
   }
 
   void ConvertToCloud(const string& fixed_frame_id, const sensor_msgs::LaserScan& scan_in, sensor_msgs::PointCloud& cloud_out)
