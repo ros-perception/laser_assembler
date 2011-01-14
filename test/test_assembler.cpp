@@ -81,9 +81,9 @@ public:
       assemble_scans.request.begin = start_time_;
       assemble_scans.request.end = scan_msg->header.stamp;
       EXPECT_TRUE(ros::service::call(SERVICE_NAME, assemble_scans));
-      if(assemble_scans.response.cloud.get_points_size() > 0)
+      if(assemble_scans.response.cloud.points.size() > 0)
       {
-        ROS_INFO("Got a cloud with [%u] points. Saving the cloud", assemble_scans.response.cloud.get_points_size());
+        ROS_INFO("Got a cloud with [%u] points. Saving the cloud", (uint32_t)(assemble_scans.response.cloud.points.size()));
         cloud_ = assemble_scans.response.cloud;
         got_cloud_ = true;
         cloud_condition_.notify_all();
@@ -120,7 +120,7 @@ TEST_F(TestAssembler, non_zero_cloud_test)
     cloud_condition_.timed_wait(lock, boost::posix_time::milliseconds(1000.0f));
   }
 
-  EXPECT_LT((unsigned int) 0, cloud_.get_points_size());
+  EXPECT_LT((unsigned int) 0, cloud_.points.size());
 
   SUCCEED();
 }

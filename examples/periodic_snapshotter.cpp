@@ -89,7 +89,7 @@ public:
     // Make the service call
     if (client_.call(srv))
     {
-      ROS_INFO("Published Cloud with %u points", srv.response.cloud.get_points_size()) ;
+      ROS_INFO("Published Cloud with %u points", (uint32_t)(srv.response.cloud.points.size())) ;
       pub_.publish(srv.response.cloud);
     }
     else
