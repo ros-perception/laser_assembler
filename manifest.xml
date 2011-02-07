@@ -15,7 +15,7 @@
   <depend package="tf"/>
 
  <export>
-    <cpp cflags="-I${prefix}/srv/cpp -I${prefix}/include" />
+    <cpp cflags="-I${prefix}/include" />
  </export>
 
   <platform os="ubuntu" version="9.04"/>
