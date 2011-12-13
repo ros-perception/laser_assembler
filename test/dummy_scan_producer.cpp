@@ -52,7 +52,7 @@ void runLoop()
 
   // Configure the Transform broadcaster
   tf::TransformBroadcaster broadcaster;
-  tf::Transform laser_transform(btQuaternion(0,0,0,1));
+  tf::Transform laser_transform(tf::Quaternion(0,0,0,1));
 
   // Populate the dummy laser scan
   sensor_msgs::LaserScan scan;
