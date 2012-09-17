@@ -19,6 +19,7 @@ rosbuild_add_executable(point_cloud_assembler src/point_cloud_assembler.cpp)
 rosbuild_link_boost(point_cloud_assembler signals)
 
 rosbuild_add_executable(../test/dummy_scan_producer test/dummy_scan_producer.cpp)
+rosbuild_link_boost(../test/dummy_scan_producer thread signals)
 
 rosbuild_add_executable(merge_clouds src/merge_clouds.cpp)
 rosbuild_link_boost(merge_clouds thread signals)
