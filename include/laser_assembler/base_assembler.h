@@ -38,12 +38,14 @@
 #include "tf/transform_listener.h"
 #include "tf/message_filter.h"
 #include "sensor_msgs/PointCloud.h"
+#include "sensor_msgs/point_cloud_conversion.h"
 #include "message_filters/subscriber.h"
 
 #include <deque>
 
 // Service
 #include "laser_assembler/AssembleScans.h"
+#include "laser_assembler/AssembleScans2.h"
 
 #include "boost/thread.hpp"
 #include "math.h"
@@ -99,6 +101,8 @@ private:
   // ROS Input/Ouptut Handling
   ros::ServiceServer build_cloud_server_;
   ros::ServiceServer assemble_scans_server_;
+  ros::ServiceServer build_cloud_server2_;
+  ros::ServiceServer assemble_scans_server2_;
   message_filters::Subscriber<T> scan_sub_;
   message_filters::Connection tf_filter_connection_;
 
@@ -109,7 +113,8 @@ private:
   //! \brief Service Callback function called whenever we need to build a cloud
   bool buildCloud(AssembleScans::Request& req, AssembleScans::Response& resp) ;
   bool assembleScans(AssembleScans::Request& req, AssembleScans::Response& resp) ;
-
+  bool buildCloud2(AssembleScans2::Request& req, AssembleScans2::Response& resp) ;
+  bool assembleScans2(AssembleScans2::Request& req, AssembleScans2::Response& resp) ;
 
   //! \brief Stores history of scans
   std::deque<sensor_msgs::PointCloud> scan_hist_ ;
@@ -175,6 +180,8 @@ BaseAssembler<T>::BaseAssembler(const std::string& max_size_param_name) : privat
   // ***** Start Services *****
   build_cloud_server_    = n_.advertiseService("build_cloud",    &BaseAssembler<T>::buildCloud,    this);
   assemble_scans_server_ = n_.advertiseService("assemble_scans", &BaseAssembler<T>::assembleScans, this);
+  build_cloud_server2_    = n_.advertiseService("build_cloud2",    &BaseAssembler<T>::buildCloud2,    this);
+  assemble_scans_server2_ = n_.advertiseService("assemble_scans2", &BaseAssembler<T>::assembleScans2, this);
 
   // ***** Start Listening to Data *****
   // (Well, don't start listening just yet. Keep this as null until we actually start listening, when start() is called)
@@ -341,4 +348,26 @@ bool BaseAssembler<T>::assembleScans(AssembleScans::Request& req, AssembleScans:
   return true ;
 }
 
+template <class T>
+bool BaseAssembler<T>::buildCloud2(AssembleScans2::Request& req, AssembleScans2::Response& resp)
+{
+  ROS_WARN("Service 'build_cloud' is deprecated. Call 'assemble_scans' instead");
+  return assembleScans2(req, resp);
+}
+
+template <class T>
+bool BaseAssembler<T>::assembleScans2(AssembleScans2::Request& req, AssembleScans2::Response& resp)
+{
+  AssembleScans::Request tmp_req;
+  AssembleScans::Response tmp_res;
+  tmp_req.begin = req.begin;
+  tmp_req.end = req.end;
+  bool ret = assembleScans(tmp_req, tmp_res);
+
+  if ( ret )
+  {
+    sensor_msgs::convertPointCloudToPointCloud2(tmp_res.cloud, resp.cloud);
+  }
+  return ret;
+}
 }
