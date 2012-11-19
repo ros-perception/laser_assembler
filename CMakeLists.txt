@@ -32,4 +32,4 @@ rosbuild_add_rostest(${CMAKE_CURRENT_SOURCE_DIR}/test/test_laser_assembler.launc
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 add_subdirectory(examples)
 
-rosbuild_make_distribution(1.5.4)
+rosbuild_make_distribution(1.5.5)
