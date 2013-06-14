@@ -17,6 +17,8 @@ rosbuild_add_executable(laser_scan_assembler src/laser_scan_assembler.cpp)
 rosbuild_link_boost(laser_scan_assembler system signals)
 rosbuild_add_executable(point_cloud_assembler src/point_cloud_assembler.cpp)
 rosbuild_link_boost(point_cloud_assembler signals)
+rosbuild_add_executable(point_cloud2_assembler src/point_cloud2_assembler.cpp)
+rosbuild_link_boost(point_cloud2_assembler signals)
 
 rosbuild_add_executable(../test/dummy_scan_producer test/dummy_scan_producer.cpp)
 rosbuild_link_boost(../test/dummy_scan_producer thread signals)
