@@ -1,37 +1,102 @@
-cmake_minimum_required(VERSION 2.4.6)
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
-rosbuild_init()
-rosbuild_gensrv()
+cmake_minimum_required(VERSION 2.8.3)
+project(laser_assembler)
 
-rosbuild_add_boost_directories()
+##############################################################################
+# Find dependencies
+##############################################################################
 
-find_package(Eigen REQUIRED)
-include_directories(${EIGEN_INCLUDE_DIRS})
+set(THIS_PACKAGE_ROS_DEPS 
+tf sensor_msgs message_filters roscpp laser_geometry filters)
 
-rosbuild_add_executable(laser_scan_assembler_srv src/laser_scan_assembler_srv.cpp)
-rosbuild_link_boost(laser_scan_assembler_srv system signals)
-rosbuild_add_executable(point_cloud_assembler_srv src/point_cloud_assembler_srv.cpp)
-rosbuild_link_boost(point_cloud_assembler_srv signals)
-rosbuild_add_executable(laser_scan_assembler src/laser_scan_assembler.cpp)
-rosbuild_link_boost(laser_scan_assembler system signals)
-rosbuild_add_executable(point_cloud_assembler src/point_cloud_assembler.cpp)
-rosbuild_link_boost(point_cloud_assembler signals)
-rosbuild_add_executable(point_cloud2_assembler src/point_cloud2_assembler.cpp)
-rosbuild_link_boost(point_cloud2_assembler signals)
+find_package(catkin REQUIRED COMPONENTS 
+  ${THIS_PACKAGE_ROS_DEPS} 
+  message_generation
+  rostest)
+find_package(Boost REQUIRED COMPONENTS system signals)
+include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
-rosbuild_add_executable(../test/dummy_scan_producer test/dummy_scan_producer.cpp)
-rosbuild_link_boost(../test/dummy_scan_producer thread signals)
+message("catkin_libs:::::::::::::::::::::::::::::::::::::::::::")
+message(${catkin_LIBRARIES})
 
-rosbuild_add_executable(merge_clouds src/merge_clouds.cpp)
-rosbuild_link_boost(merge_clouds thread signals)
+##############################################################################
+# Build service definitions
+##############################################################################
+add_service_files(FILES
+AssembleScans.srv
+AssembleScans2.srv)
 
-rosbuild_add_executable(../test/test_assembler test/test_assembler.cpp)
-rosbuild_add_gtest_build_flags(../test/test_assembler)
+generate_messages(DEPENDENCIES sensor_msgs std_msgs)
 
-rosbuild_add_rostest(${CMAKE_CURRENT_SOURCE_DIR}/test/test_laser_assembler.launch)
+##############################################################################
+# Define package
+##############################################################################
 
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-add_subdirectory(examples)
+catkin_package(
+  INCLUDE_DIRS include
+  CATKIN_DEPENDS ${THIS_PACKAGE_ROS_DEPS} message_runtime
+  DEPENDS
+  )
 
-rosbuild_make_distribution(1.5.5)
+##############################################################################
+# Build
+##############################################################################
+
+add_executable(laser_scan_assembler_srv src/laser_scan_assembler_srv.cpp)
+target_link_libraries(laser_scan_assembler_srv ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_dependencies(laser_scan_assembler_srv ${PROJECT_NAME}_gencpp)
+
+add_executable(laser_scan_assembler src/laser_scan_assembler.cpp)
+target_link_libraries(laser_scan_assembler ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_dependencies(laser_scan_assembler ${PROJECT_NAME}_gencpp)
+
+add_executable(merge_clouds src/merge_clouds.cpp)
+target_link_libraries(merge_clouds ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_dependencies(merge_clouds ${PROJECT_NAME}_gencpp)
+
+add_executable(point_cloud_assembler_srv src/point_cloud_assembler_srv.cpp)
+target_link_libraries(point_cloud_assembler_srv ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_dependencies(point_cloud_assembler_srv ${PROJECT_NAME}_gencpp)
+
+add_executable(point_cloud_assembler src/point_cloud_assembler.cpp)
+target_link_libraries(point_cloud_assembler ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_dependencies(point_cloud_assembler ${PROJECT_NAME}_gencpp)
+
+add_executable(point_cloud2_assembler src/point_cloud2_assembler.cpp)
+target_link_libraries(point_cloud2_assembler ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_dependencies(point_cloud2_assembler ${PROJECT_NAME}_gencpp)
+
+## unit testing
+
+add_executable(periodic_snapshotter examples/periodic_snapshotter.cpp)
+target_link_libraries(periodic_snapshotter ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_dependencies(periodic_snapshotter ${PROJECT_NAME}_gencpp)
+
+add_executable(dummy_scan_producer test/dummy_scan_producer.cpp)
+target_link_libraries(dummy_scan_producer ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_dependencies(dummy_scan_producer ${PROJECT_NAME}_gencpp)
+
+catkin_add_gtest(test_assembler EXCLUDE_FROM_ALL test/test_assembler.cpp)
+target_link_libraries(test_assembler ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+add_dependencies(test_assembler ${PROJECT_NAME}_gencpp)
+
+add_rostest(test/test_laser_assembler.launch)
+
+##############################################################################
+# Install
+##############################################################################
+
+install(TARGETS 
+    laser_scan_assembler_srv
+    laser_scan_assembler
+    merge_clouds
+    point_cloud_assembler_srv
+    point_cloud_assembler
+    point_cloud2_assembler
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+)
+
+# Install headers
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})

@@ -36,7 +36,7 @@
 #include "laser_assembler/base_assembler_srv.h"
 
 
-using namespace std ;
+using namespace std;
 
 namespace laser_assembler
 {
