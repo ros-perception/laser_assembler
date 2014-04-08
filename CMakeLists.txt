@@ -67,19 +67,21 @@ add_dependencies(point_cloud2_assembler ${PROJECT_NAME}_gencpp)
 
 ## unit testing
 
-add_executable(periodic_snapshotter examples/periodic_snapshotter.cpp)
-target_link_libraries(periodic_snapshotter ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-add_dependencies(periodic_snapshotter ${PROJECT_NAME}_gencpp)
+if(CATKIN_ENABLE_TESTING)
+  add_executable(periodic_snapshotter examples/periodic_snapshotter.cpp)
+  target_link_libraries(periodic_snapshotter ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+  add_dependencies(periodic_snapshotter ${PROJECT_NAME}_gencpp)
 
-add_executable(dummy_scan_producer test/dummy_scan_producer.cpp)
-target_link_libraries(dummy_scan_producer ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-add_dependencies(dummy_scan_producer ${PROJECT_NAME}_gencpp)
+  add_executable(dummy_scan_producer test/dummy_scan_producer.cpp)
+  target_link_libraries(dummy_scan_producer ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+  add_dependencies(dummy_scan_producer ${PROJECT_NAME}_gencpp)
 
-catkin_add_gtest(test_assembler EXCLUDE_FROM_ALL test/test_assembler.cpp)
-target_link_libraries(test_assembler ${catkin_LIBRARIES} ${Boost_LIBRARIES})
-add_dependencies(test_assembler ${PROJECT_NAME}_gencpp)
+  catkin_add_gtest(test_assembler EXCLUDE_FROM_ALL test/test_assembler.cpp)
+  target_link_libraries(test_assembler ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+  add_dependencies(test_assembler ${PROJECT_NAME}_gencpp)
 
-add_rostest(test/test_laser_assembler.launch)
+  add_rostest(test/test_laser_assembler.launch)
+endif()
 
 ##############################################################################
 # Install
