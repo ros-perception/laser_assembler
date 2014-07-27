@@ -10,8 +10,7 @@ tf sensor_msgs message_filters roscpp laser_geometry filters)
 
 find_package(catkin REQUIRED COMPONENTS 
   ${THIS_PACKAGE_ROS_DEPS} 
-  message_generation
-  rostest)
+  message_generation)
 find_package(Boost REQUIRED COMPONENTS system signals)
 include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
@@ -68,6 +67,8 @@ add_dependencies(point_cloud2_assembler ${PROJECT_NAME}_gencpp)
 ## unit testing
 
 if(CATKIN_ENABLE_TESTING)
+  find_package(rostest)
+
   add_executable(periodic_snapshotter examples/periodic_snapshotter.cpp)
   target_link_libraries(periodic_snapshotter ${catkin_LIBRARIES} ${Boost_LIBRARIES})
   add_dependencies(periodic_snapshotter ${PROJECT_NAME}_gencpp)
