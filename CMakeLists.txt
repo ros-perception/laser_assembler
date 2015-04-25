@@ -14,9 +14,6 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(Boost REQUIRED COMPONENTS system signals)
 include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
-message("catkin_libs:::::::::::::::::::::::::::::::::::::::::::")
-message(${catkin_LIBRARIES})
-
 ##############################################################################
 # Build service definitions
 ##############################################################################
@@ -77,7 +74,7 @@ if(CATKIN_ENABLE_TESTING)
   target_link_libraries(dummy_scan_producer ${catkin_LIBRARIES} ${Boost_LIBRARIES})
   add_dependencies(dummy_scan_producer ${PROJECT_NAME}_gencpp)
 
-  catkin_add_gtest(test_assembler EXCLUDE_FROM_ALL test/test_assembler.cpp)
+  add_executable(test_assembler EXCLUDE_FROM_ALL test/test_assembler.cpp)
   target_link_libraries(test_assembler ${catkin_LIBRARIES} ${Boost_LIBRARIES})
   add_dependencies(test_assembler ${PROJECT_NAME}_gencpp)
 
