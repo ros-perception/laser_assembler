@@ -74,8 +74,8 @@ if(CATKIN_ENABLE_TESTING)
   target_link_libraries(dummy_scan_producer ${catkin_LIBRARIES} ${Boost_LIBRARIES})
   add_dependencies(dummy_scan_producer ${PROJECT_NAME}_gencpp)
 
-  add_executable(test_assembler EXCLUDE_FROM_ALL test/test_assembler.cpp)
-  target_link_libraries(test_assembler ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+  add_executable(test_assembler test/test_assembler.cpp)
+  target_link_libraries(test_assembler ${catkin_LIBRARIES} ${Boost_LIBRARIES} gtest)
   add_dependencies(test_assembler ${PROJECT_NAME}_gencpp)
 
   add_rostest(test/test_laser_assembler.launch)
