@@ -2,8 +2,8 @@
 Changelog for package laser_assembler
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.7.3 (2015-04-25)
+------------------
 * get the test as a proper rostest and clean CMake
   that fixes `#7 <https://github.com/ros-perception/laser_assembler/issues/7>`_
 * Merge pull request `#4 <https://github.com/ros-perception/laser_assembler/issues/4>`_ from bulwahn/hydro-devel
