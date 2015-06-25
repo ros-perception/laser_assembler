@@ -33,7 +33,7 @@
 *********************************************************************/
 
 
-#include "laser_assembler/base_assembler.h"
+#include "laser_assembler/point_cloud_base_assembler.h"
 
 
 using namespace std ;
@@ -47,10 +47,10 @@ namespace laser_assembler
  * params
  *  * (Several params are inherited from BaseAssemblerSrv)
  */
-class PointCloudAssembler : public BaseAssembler<sensor_msgs::PointCloud>
+class PointCloudAssembler : public PointCloudBaseAssembler<sensor_msgs::PointCloud>
 {
 public:
-  PointCloudAssembler() : BaseAssembler<sensor_msgs::PointCloud>("max_clouds")
+  PointCloudAssembler() : PointCloudBaseAssembler<sensor_msgs::PointCloud>("max_clouds")
   {
 
   }
@@ -65,7 +65,7 @@ public:
     return (scan.points.size ());
   }
 
-  void ConvertToCloud(const string& fixed_frame_id, const sensor_msgs::PointCloud& scan_in, sensor_msgs::PointCloud& cloud_out)
+  void Convert(const string& fixed_frame_id, const sensor_msgs::PointCloud& scan_in, sensor_msgs::PointCloud& cloud_out)
   {
     tf_->transformPointCloud(fixed_frame_id, scan_in, cloud_out) ;
     return ;

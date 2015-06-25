@@ -35,7 +35,7 @@
 
 #include "laser_geometry/laser_geometry.h"
 #include "sensor_msgs/LaserScan.h"
-#include "laser_assembler/base_assembler.h"
+#include "laser_assembler/point_cloud_base_assembler.h"
 #include "filters/filter_chain.h"
 
 using namespace laser_geometry;
@@ -47,10 +47,10 @@ namespace laser_assembler
 /**
  * \brief Maintains a history of laser scans and generates a point cloud upon request
  */
-class LaserScanAssembler : public BaseAssembler<sensor_msgs::LaserScan>
+class LaserScanAssembler : public PointCloudBaseAssembler<sensor_msgs::LaserScan>
 {
 public:
-  LaserScanAssembler() : BaseAssembler<sensor_msgs::LaserScan>("max_scans"), filter_chain_("sensor_msgs::LaserScan")
+  LaserScanAssembler() : PointCloudBaseAssembler<sensor_msgs::LaserScan>("max_scans"), filter_chain_("sensor_msgs::LaserScan")
   {
     // ***** Set Laser Projection Method *****
     private_ns_.param("ignore_laser_skew", ignore_laser_skew_, true);
@@ -78,7 +78,7 @@ public:
     return (scan.ranges.size ());
   }
 
-  void ConvertToCloud(const string& fixed_frame_id, const sensor_msgs::LaserScan& scan_in, sensor_msgs::PointCloud& cloud_out)
+  void Convert(const string& fixed_frame_id, const sensor_msgs::LaserScan& scan_in, sensor_msgs::PointCloud& cloud_out)
   {
     // apply filters on laser scan
     filter_chain_.update (scan_in, scan_filtered_);
@@ -88,7 +88,7 @@ public:
     {
       projector_.projectLaser(scan_filtered_, cloud_out);
       if (cloud_out.header.frame_id != fixed_frame_id)
-        tf_->transformPointCloud(fixed_frame_id, cloud_out, cloud_out);
+        this->tf_->transformPointCloud(fixed_frame_id, cloud_out, cloud_out);
     }
     else                     // Do it the slower (more accurate) way
     {
