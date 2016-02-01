@@ -120,6 +120,9 @@ private:
 
   //! \brief The max number of scans to store in the scan history
   unsigned int max_scans_ ;
+  
+  //! \brief The number of scans to skip continuously
+  unsigned int skip_scans_, skip_;
 
 } ;
 
@@ -131,6 +134,11 @@ BaseAssembler<T, V>::BaseAssembler(const std::string& max_size_param_name) : pri
   private_ns_.param("tf_cache_time_secs", tf_cache_time_secs, 10.0) ;
   if (tf_cache_time_secs < 0)
     ROS_ERROR("Parameter tf_cache_time_secs<0 (%f)", tf_cache_time_secs) ;
+
+  int tmp_skip_scans;
+  private_ns_.param("skip_scans", tmp_skip_scans, 0);
+  skip_scans_ = tmp_skip_scans;
+  skip_ = skip_scans_;
 
   tf_ = new tf::TransformListener(n_, ros::Duration(tf_cache_time_secs));
   ROS_INFO("TF Cache Time: %f Seconds", tf_cache_time_secs) ;
@@ -210,6 +218,17 @@ BaseAssembler<T, V>::~BaseAssembler()
 template <class T, class V>
 void BaseAssembler<T, V>::msgCallback(const boost::shared_ptr<const T>& scan_ptr)
 {
+  
+  // skip a certain number of scans
+  if(skip_scans_ > 0){
+    if(skip_ > 0){
+      skip_--;
+      return;
+    }else{
+      skip_ = skip_scans_;
+    }
+  }
+
   ROS_DEBUG("starting msgCallback");
   const T scan = *scan_ptr ;
 
