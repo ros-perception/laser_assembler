@@ -2,8 +2,8 @@
 Changelog for package laser_assembler
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.7.4 (2016-04-11)
+------------------
 * properly link to gtest
 * Contributors: Vincent Rabaud
 

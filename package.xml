@@ -5,7 +5,7 @@
     Provides nodes to assemble point clouds from either LaserScan or PointCloud messages
   </description>
   
-  <version>1.7.3</version>
+  <version>1.7.4</version>
   
   <author>Vijay Pradeep</author>
   <maintainer email="dgossoe@willowgarage.com">David Gossow</maintainer>
