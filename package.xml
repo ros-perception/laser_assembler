@@ -8,7 +8,7 @@
   <version>1.7.4</version>
   
   <author>Vijay Pradeep</author>
-  <maintainer email="dgossoe@willowgarage.com">David Gossow</maintainer>
+  <maintainer email="jon.binney@gmail.com">Jonathan Binney</maintainer>
   
   <license>BSD</license>
   <url>http://ros.org/wiki/laser_assembler</url>
