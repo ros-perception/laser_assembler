@@ -2,8 +2,8 @@
 Changelog for package laser_assembler
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.7.5 (2018-04-19)
+------------------
 * Change maintainer to Jon Binney
 * Contributors: Jon Binney
 
