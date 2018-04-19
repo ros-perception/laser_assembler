@@ -2,6 +2,11 @@
 Changelog for package laser_assembler
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Change maintainer to Jon Binney
+* Contributors: Jon Binney
+
 1.7.4 (2016-04-11)
 ------------------
 * properly link to gtest
