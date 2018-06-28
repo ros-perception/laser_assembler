@@ -117,7 +117,7 @@ TEST_F(TestAssembler, non_zero_cloud_test)
 
   while(n_.ok() && !got_cloud_)
   {
-    cloud_condition_.timed_wait(lock, boost::posix_time::milliseconds(1000.0f));
+    cloud_condition_.timed_wait(lock, boost::posix_time::milliseconds(1000));
   }
 
   EXPECT_LT((unsigned int) 0, cloud_.points.size());
