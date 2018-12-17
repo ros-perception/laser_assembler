@@ -1,0 +1,7 @@
+# <!-- YAML file for test_laser_assembler -->
+laser_scan_assembler:
+    ros__parameters:
+        tf_cache_time_secs: 10.0
+        max_scans: 400
+        ignore_laser_skew: false
+        fixed_frame: dummy_base_link
