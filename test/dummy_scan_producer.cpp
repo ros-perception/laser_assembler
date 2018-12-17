@@ -38,25 +38,30 @@
  * Generate dummy scans in order to not be dependent on bag files in order to run tests
  **/
 
-#include <boost/thread.hpp>
-#include <ros/ros.h>
-#include <tf/transform_broadcaster.h>
-#include <sensor_msgs/LaserScan.h>
+#include<iostream>
+#include <thread>
+#include "rclcpp/rclcpp.hpp"
+#include <tf2_ros/transform_broadcaster.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <sensor_msgs/msg/laser_scan.hpp>
+#include "tf2/LinearMath/Transform.h"
 
-void runLoop()
+
+#define ROS_INFO printf
+
+void runLoop(rclcpp::Node::SharedPtr node_)
 {
-  ros::NodeHandle nh;
-
-  ros::Publisher scan_pub   = nh.advertise<sensor_msgs::LaserScan>("dummy_scan", 100);
-  ros::Rate loop_rate(5);
+  rclcpp::Rate loopRate(5);
+  
+  auto scan_pub = node_->create_publisher<sensor_msgs::msg::LaserScan>("dummy_scan", 100);
 
   // Configure the Transform broadcaster
-  tf::TransformBroadcaster broadcaster;
-  tf::Transform laser_transform(tf::Quaternion(0,0,0,1));
+  tf2_ros::TransformBroadcaster broadcaster(node_);
+  tf2::Transform laser_transform(tf2::Quaternion(0,0,0,1));
 
   // Populate the dummy laser scan
-  sensor_msgs::LaserScan scan;
-  scan.header.frame_id = "/dummy_laser_link";
+  sensor_msgs::msg::LaserScan scan;
+  scan.header.frame_id = "dummy_laser_link";
   scan.angle_min = 0.0;
   scan.angle_max = 99.0;
   scan.angle_increment = 1.0;
@@ -76,22 +81,30 @@ void runLoop()
   }
 
   // Keep sending scans until the assembler is done
-  while (nh.ok())
+  while(rclcpp::ok())
   {
-    scan.header.stamp = ros::Time::now();
-    scan_pub.publish(scan);
-    broadcaster.sendTransform(tf::StampedTransform(laser_transform, scan.header.stamp, "dummy_laser_link", "dummy_base_link"));
-    loop_rate.sleep();
+    scan.header.stamp = rclcpp::Clock().now();
+    ROS_INFO("Publishing scan\n");
+    scan_pub->publish(scan);
+      
+    geometry_msgs::msg::TransformStamped tf_transform;
+    tf_transform.header.stamp = rclcpp::Clock().now();
+    tf_transform.header.frame_id = "dummy_laser_link";
+    tf_transform.child_frame_id = "dummy_base_link";
+    tf_transform.transform.rotation.w = 1.0;
+    broadcaster.sendTransform(tf_transform);
+    loopRate.sleep();
     ROS_INFO("Publishing scan");
   }
 }
 
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "scan_producer");
-  ros::NodeHandle nh;
-  boost::thread run_thread(&runLoop);
-  ros::spin();
+  printf("dummy scan producer\n");
+  rclcpp::init(argc, argv);
+  rclcpp::Node::SharedPtr node = rclcpp::Node::make_shared("dummy_scan_producer");
+  std::thread run_thread(&runLoop, node);
+  rclcpp::spin(node);
   run_thread.join();
   return 0;
 }
