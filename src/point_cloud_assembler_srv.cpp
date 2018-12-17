@@ -33,10 +33,14 @@
 *********************************************************************/
 
 
-#include "laser_assembler/base_assembler_srv.h"
-
+#include "laser_assembler/base_assembler_srv.hpp"
 
 using namespace std;
+
+#define ROS_ERROR printf
+#define ROS_INFO printf
+#define ROS_WARN printf
+#define ROS_DEBUG printf
 
 namespace laser_assembler
 {
@@ -47,7 +51,7 @@ namespace laser_assembler
  * params
  *  * (Several params are inherited from BaseAssemblerSrv)
  */
-class PointCloudAssemblerSrv : public BaseAssemblerSrv<sensor_msgs::PointCloud>
+class PointCloudAssemblerSrv : public BaseAssemblerSrv<sensor_msgs::msg::PointCloud>
 {
 public:
   PointCloudAssemblerSrv()
@@ -60,7 +64,7 @@ public:
 
   }
 
-  unsigned int GetPointsInScan(const sensor_msgs::PointCloud& scan)
+  unsigned int GetPointsInScan(const sensor_msgs::msg::PointCloud& scan)
   {
     return scan.points.size() ;
   }

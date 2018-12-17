@@ -33,10 +33,16 @@
 *********************************************************************/
 
 
-#include "laser_assembler/base_assembler.h"
-#include <sensor_msgs/point_cloud_conversion.h>
+#include "laser_assembler/base_assembler.hpp"
+//#include <sensor_msgs/msg/point_cloud_conversion.h> // TODO
+#include "laser_assembler/point_cloud_conversion.h"
 
 using namespace std ;
+
+#define ROS_ERROR printf
+#define ROS_INFO printf
+#define ROS_WARN printf
+#define ROS_DEBUG printf
 
 namespace laser_assembler
 {
@@ -47,10 +53,10 @@ namespace laser_assembler
  * params
  *  * (Several params are inherited from BaseAssemblerSrv)
  */
-class PointCloud2Assembler : public BaseAssembler<sensor_msgs::PointCloud2>
+class PointCloud2Assembler : public BaseAssembler<sensor_msgs::msg::PointCloud2>
 {
 public:
-  PointCloud2Assembler() : BaseAssembler<sensor_msgs::PointCloud2>("max_clouds")
+  PointCloud2Assembler(rclcpp::Node::SharedPtr node) : BaseAssembler<sensor_msgs::msg::PointCloud2>("max_clouds", node)
   {
 
   }
@@ -60,14 +66,14 @@ public:
 
   }
 
-  unsigned int GetPointsInScan(const sensor_msgs::PointCloud2& scan)
+  unsigned int GetPointsInScan(const sensor_msgs::msg::PointCloud2& scan)
   {
     return (scan.width * scan.height);
   }
 
-  void ConvertToCloud(const string& fixed_frame_id, const sensor_msgs::PointCloud2& scan_in, sensor_msgs::PointCloud& cloud_out)
+  void ConvertToCloud(const string& fixed_frame_id, const sensor_msgs::msg::PointCloud2& scan_in, sensor_msgs::msg::PointCloud& cloud_out)
   {
-    sensor_msgs::PointCloud cloud_in;
+    sensor_msgs::msg::PointCloud cloud_in;
     sensor_msgs::convertPointCloud2ToPointCloud(scan_in, cloud_in);
     tf_->transformPointCloud(fixed_frame_id, cloud_in, cloud_out) ;
     return ;
@@ -83,10 +89,11 @@ using namespace laser_assembler ;
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "point_cloud_assembler");
-  PointCloud2Assembler pc_assembler;
+  rclcpp::init(argc, argv);
+  auto node = rclcpp::Node::make_shared("point_cloud_assembler");
+  PointCloud2Assembler pc_assembler(node);
   pc_assembler.start("cloud");
-  ros::spin();
+  rclcpp::spin(node);
 
   return 0;
 }

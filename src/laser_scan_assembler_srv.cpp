@@ -33,10 +33,16 @@
 *********************************************************************/
 
 
-#include "laser_geometry/laser_geometry.h"
-#include "sensor_msgs/LaserScan.h"
-#include "laser_assembler/base_assembler_srv.h"
+#include "laser_geometry/laser_geometry.hpp"
+#include "sensor_msgs/msg/laser_scan.hpp"
+#include "geometry_msgs/msg/transform_stamped.hpp";
+#include "laser_assembler/base_assembler_srv.hpp"
 #include "filters/filter_chain.h"
+
+#define ROS_ERROR printf
+#define ROS_INFO printf
+#define ROS_WARN printf
+#define ROS_DEBUG printf
 
 using namespace laser_geometry;
 using namespace std ;
@@ -54,13 +60,13 @@ namespace laser_assembler
  * \section services ROS Services
  * - "~build_cloud" - Inhertited from laser_assembler::BaseAssemblerSrv
  */
-class LaserScanAssemblerSrv : public BaseAssemblerSrv<sensor_msgs::LaserScan>
+class LaserScanAssemblerSrv : public BaseAssemblerSrv<sensor_msgs::msg::LaserScan>
 {
 public:
-  LaserScanAssemblerSrv() : filter_chain_("sensor_msgs::LaserScan")
+  LaserScanAssemblerSrv() : filter_chain_("sensor_msgs::msg::LaserScan")
   {
     // ***** Set Laser Projection Method *****
-    private_ns_.param("ignore_laser_skew", ignore_laser_skew_, true);
+    private_ns_->get_parameter_or("ignore_laser_skew", ignore_laser_skew_, true);
 
     // configure the filter chain from the parameter server
     filter_chain_.configure("filters", private_ns_);
@@ -71,12 +77,12 @@ public:
 
   }
 
-  unsigned int GetPointsInScan(const sensor_msgs::LaserScan& scan)
+  unsigned int GetPointsInScan(const sensor_msgs::msg::LaserScan& scan)
   {
     return scan.ranges.size();
   }
 
-  void ConvertToCloud(const string& fixed_frame_id, const sensor_msgs::LaserScan& scan_in, sensor_msgs::PointCloud& cloud_out)
+  void ConvertToCloud(const string& fixed_frame_id, const sensor_msgs::msg::LaserScan& scan_in, sensor_msgs::msg::PointCloud& cloud_out)
   {
     // apply filters on laser scan
     filter_chain_.update (scan_in, scan_filtered_);
@@ -100,8 +106,8 @@ private:
   bool ignore_laser_skew_;
   laser_geometry::LaserProjection projector_;
 
-  filters::FilterChain<sensor_msgs::LaserScan> filter_chain_;
-  mutable sensor_msgs::LaserScan scan_filtered_;
+  filters::FilterChain<sensor_msgs::msg::LaserScan> filter_chain_;
+  mutable sensor_msgs::msg::LaserScan scan_filtered_;
 
 };
 

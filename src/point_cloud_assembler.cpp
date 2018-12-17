@@ -33,10 +33,15 @@
 *********************************************************************/
 
 
-#include "laser_assembler/base_assembler.h"
+#include "laser_assembler/base_assembler.hpp"
 
 
-using namespace std ;
+using namespace std;
+
+#define ROS_ERROR printf
+#define ROS_INFO printf
+#define ROS_WARN printf
+#define ROS_DEBUG printf
 
 namespace laser_assembler
 {
@@ -47,10 +52,10 @@ namespace laser_assembler
  * params
  *  * (Several params are inherited from BaseAssemblerSrv)
  */
-class PointCloudAssembler : public BaseAssembler<sensor_msgs::PointCloud>
+class PointCloudAssembler : public BaseAssembler<sensor_msgs::msg::PointCloud>
 {
 public:
-  PointCloudAssembler() : BaseAssembler<sensor_msgs::PointCloud>("max_clouds")
+  PointCloudAssembler(rclcpp::Node::SharedPtr node) : BaseAssembler<sensor_msgs::msg::PointCloud>("max_clouds", node)
   {
 
   }
@@ -60,14 +65,16 @@ public:
 
   }
 
-  unsigned int GetPointsInScan(const sensor_msgs::PointCloud& scan)
+  unsigned int GetPointsInScan(const sensor_msgs::msg::PointCloud& scan)
   {
     return (scan.points.size ());
   }
 
-  void ConvertToCloud(const string& fixed_frame_id, const sensor_msgs::PointCloud& scan_in, sensor_msgs::PointCloud& cloud_out)
+  void ConvertToCloud(const std::string& fixed_frame_id, const sensor_msgs::msg::PointCloud& scan_in, sensor_msgs::msg::PointCloud& cloud_out)
   {
+    // TODO
     tf_->transformPointCloud(fixed_frame_id, scan_in, cloud_out) ;
+    //tf2::doTransform(scan_in, cloud_out, tfBuffer.lookupTransform(fixed_frame_id, tf2::getFrameId(scan_in), tf2::getTimestamp(scan_in)));
     return ;
   }
 
@@ -81,10 +88,11 @@ using namespace laser_assembler ;
 
 int main(int argc, char **argv)
 {
-  ros::init(argc, argv, "point_cloud_assembler");
-  PointCloudAssembler pc_assembler;
+  rclcpp::init(argc, argv);
+  auto node = rclcpp::Node::make_shared("point_cloud_assembler");
+  PointCloudAssembler pc_assembler(node);
   pc_assembler.start("cloud");
-  ros::spin();
+  rclcpp::spin(node);
 
   return 0;
 }
