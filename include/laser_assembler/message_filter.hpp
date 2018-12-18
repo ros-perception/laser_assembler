@@ -265,7 +265,6 @@ public:
 
     namespace mt = message_filters::message_traits;
     const MConstPtr & message = evt.getMessage();
-    //rclcpp::Time stamp = mt::TimeStamp<M>::value(*message);
     std::string frame_id = stripSlash(mt::FrameId<M>::value(*message));
     rclcpp::Time stamp = mt::TimeStamp<M>::value(*message);
 
@@ -291,7 +290,7 @@ public:
         const std::string & target_frame = *it;
         tf2::TransformableRequestHandle handle = bc_.addTransformableRequest(callback_handle_,
             target_frame, frame_id, tf2::timeFromSec(
-              stamp.nanoseconds()/1e+9)); // TODO
+              stamp.seconds()));
         if (handle == 0xffffffffffffffffULL) {
           // never transformable
           messageDropped(evt, filter_failure_reasons::OutTheBack);
@@ -304,7 +303,7 @@ public:
 
         if (time_tolerance_.nanoseconds()) {
           handle = bc_.addTransformableRequest(callback_handle_, target_frame, frame_id, tf2::timeFromSec(
-                (stamp + time_tolerance_).nanoseconds()/1e+9)); // TODO
+                (stamp + time_tolerance_).seconds()));
           if (handle == 0xffffffffffffffffULL) {
             // never transformable
             messageDropped(evt, filter_failure_reasons::OutTheBack);
@@ -335,7 +334,7 @@ public:
           "Removed oldest message because buffer is full, count now %d (frame_id=%s, stamp=%f)",
           message_count_,
           (mt::FrameId<M>::value(*front.event.getMessage())).c_str(),
-          (mt::TimeStamp<M>::value(*front.event.getMessage()).nanoseconds()/1e+9)); // TODO
+          mt::TimeStamp<M>::value(*front.event.getMessage()).seconds());
 
         V_TransformableRequestHandle::const_iterator it = front.handles.begin();
         V_TransformableRequestHandle::const_iterator end = front.handles.end();
@@ -356,7 +355,7 @@ public:
     }
 
     TF2_ROS_MESSAGEFILTER_DEBUG("Added message in frame %s at time %.3f, count now %d",
-      frame_id.c_str(), (stamp.nanoseconds()/1e+9), message_count_);
+      frame_id.c_str(), stamp.seconds(), message_count_);
     ++incoming_message_count_;
   }
 
@@ -375,7 +374,8 @@ public:
     //Time t = rclcpp::Clock::now();
     rclcpp::Clock system_clock(RCL_SYSTEM_TIME);
     rclcpp::Time t = system_clock.now();
-    add(MEvent(message, header, t));
+    //add(MEvent(message, header, t));
+    add(MEvent(message, t));
   }
 
   /**
@@ -464,14 +464,14 @@ private:
       typename V_string::iterator end = target_frames_.end();
       for (; it != end; ++it) {
         const std::string & target = *it;
-        if (!bc_.canTransform(target, frame_id, tf2::timeFromSec(stamp.nanoseconds()/1e+9))) { // TODO
+        if (!bc_.canTransform(target, frame_id, tf2::timeFromSec(stamp.seconds()))) {
           can_transform = false;
           break;
         }
 
         if (time_tolerance_.nanoseconds()) {
           if (!bc_.canTransform(target, frame_id,
-            tf2::timeFromSec((stamp + time_tolerance_).nanoseconds()/1e+9)))
+            tf2::timeFromSec((stamp + time_tolerance_).seconds())))
           {
             can_transform = false;
             break;
@@ -486,7 +486,7 @@ private:
     std::unique_lock<std::mutex> lock(messages_mutex_);
     if (can_transform) {
       TF2_ROS_MESSAGEFILTER_DEBUG("Message ready in frame %s at time %.3f, count now %d",
-        frame_id.c_str(), (stamp.nanoseconds()/1e+9), message_count_ - 1);
+        frame_id.c_str(), stamp.seconds(), message_count_ - 1);
 
       ++successful_transform_count_;
       messageReady(info.event);
@@ -494,7 +494,7 @@ private:
       ++dropped_message_count_;
 
       TF2_ROS_MESSAGEFILTER_DEBUG("Discarding message in frame %s at time %.3f, count now %d",
-        frame_id.c_str(), (stamp.nanoseconds()/1e+9), message_count_ - 1);
+        frame_id.c_str(), stamp.seconds(), message_count_ - 1);
       messageDropped(info.event, filter_failure_reasons::Unknown);
     }
 
@@ -532,7 +532,7 @@ private:
         if (static_cast<double>(failed_out_the_back_count_) / static_cast<double>(dropped_message_count_) > 0.5) {
           TF2_ROS_MESSAGEFILTER_WARN(
             "  The majority of dropped messages were due to messages growing older than the TF cache time.  The last message's timestamp was: %f, and the last frame_id was: %s",
-            (last_out_the_back_stamp_.nanoseconds()/1e+9), last_out_the_back_frame_.c_str());
+            last_out_the_back_stamp_.seconds(), last_out_the_back_frame_.c_str());
         }
       }
     }
@@ -608,8 +608,8 @@ private:
     const MConstPtr & message = evt.getMessage();
     std::string frame_id = stripSlash(mt::FrameId<M>::value(*message));
     rclcpp::Time stamp = mt::TimeStamp<M>::value(*message);
-    //RCLCPP_INFO(node_->get_logger(), "[%s] Drop message: frame '%s' at time %.3f for reason(%d)",
-      //__func__, frame_id.c_str(), (stamp.nanoseconds()/1e+9), reason); // TODO
+    RCLCPP_INFO(node_->get_logger(), "[%s] Drop message: frame '%s' at time %.3f for reason(%d)",
+      __func__, frame_id.c_str(), stamp.seconds(), reason);
   }
 
   static std::string stripSlash(const std::string & in)
