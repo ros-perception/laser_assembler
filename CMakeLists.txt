@@ -20,7 +20,7 @@ find_package(tf2 REQUIRED)
 find_package(laser_assembler_srv_gen REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(filters REQUIRED)
-  
+
 set(INCLUDE_DIRS include ${ament_cmake_INCLUDE_DIRS}
     ${rosidl_default_generators_INCLUDE_DIRS} ${signals_INCLUDE_DIRS}
     ${builtin_interfaces_INCLUDE_DIRS} ${rclcpp_INCLUDE_DIRS}
@@ -36,12 +36,12 @@ set(INCLUDE_DIRS include ${ament_cmake_INCLUDE_DIRS}
 include_directories(${INCLUDE_DIRS})
 
 set(LIBS ${rclcpp_LIBRARIES} ${ament_cmake_LIBRARIES}
-    ${rosidl_default_generators_LIBRARIES} ${signals_LIBRARIES} 
+    ${rosidl_default_generators_LIBRARIES} ${signals_LIBRARIES}
     ${laser_assembler_srv_gen_LIBRARIES} ${std_msgs_LIBRARIES}
-    ${system_LIBRARIES} ${tf2_ros_LIBRARIES} ${tf2_LIBRARIES} 
+    ${system_LIBRARIES} ${tf2_ros_LIBRARIES} ${tf2_LIBRARIES}
     ${laser_geometry_LIBRARIES}
     ${geometry_msgs_LIBRARIES}
-    ${message_filters_LIBRARIES} ${sensor_msgs_LIBRARIES} 
+    ${message_filters_LIBRARIES} ${sensor_msgs_LIBRARIES}
     ${filters_LIBRARIES})
 
 # add_executable(laser_scan_assembler_srv src/laser_scan_assembler_srv.cpp)
@@ -116,7 +116,7 @@ if(BUILD_TESTING)
   install(
   TARGETS test_assembler
   DESTINATION lib/${PROJECT_NAME})
-  
+
   add_executable(periodic_snapshotter examples/periodic_snapshotter.cpp)
   target_link_libraries(periodic_snapshotter ${LIBS})
   install(

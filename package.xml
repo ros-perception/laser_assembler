@@ -38,6 +38,8 @@
   <exec_depend>builtin_interfaces</exec_depend>
   <exec_depend>laser_assembler_srv_gen</exec_depend>
 
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
   <export>
     <build_type>ament_cmake</build_type>
   </export>
