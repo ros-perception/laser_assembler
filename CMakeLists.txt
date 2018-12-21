@@ -44,32 +44,11 @@ set(LIBS ${rclcpp_LIBRARIES} ${ament_cmake_LIBRARIES}
     ${message_filters_LIBRARIES} ${sensor_msgs_LIBRARIES}
     ${filters_LIBRARIES})
 
-# add_executable(laser_scan_assembler_srv src/laser_scan_assembler_srv.cpp)
-# target_link_libraries(laser_scan_assembler_srv ${LIBS} ${Boost_LIBRARIES})
-
 add_executable(laser_scan_assembler src/laser_scan_assembler.cpp)
 target_link_libraries(laser_scan_assembler ${LIBS})
 install(
   TARGETS laser_scan_assembler
   DESTINATION lib/${PROJECT_NAME})
-
-#add_executable(merge_clouds src/merge_clouds.cpp)
-#target_link_libraries(merge_clouds ${LIBS})
-
-# add_executable(point_cloud_assembler_srv src/point_cloud_assembler_srv.cpp)
-# target_link_libraries(point_cloud_assembler_srv ${LIBS})
-
-#add_executable(point_cloud_assembler src/point_cloud_assembler.cpp)
-#target_link_libraries(point_cloud_assembler ${LIBS})
-#install(
-#  TARGETS point_cloud_assembler
-#  DESTINATION lib/${PROJECT_NAME})
-
-# add_executable(point_cloud2_assembler src/point_cloud2_assembler.cpp)
-# target_link_libraries(point_cloud2_assembler ${LIBS})
-# install(
-  #TARGETS point_cloud2_assembler
-  #DESTINATION lib/${PROJECT_NAME})
 
 include_directories(include)
 
@@ -77,8 +56,6 @@ install(DIRECTORY "include/"
   DESTINATION include)
 
 install(TARGETS laser_scan_assembler
-  #point_cloud_assembler
-  #point_cloud2_assembler
   DESTINATION lib/${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
@@ -89,7 +66,6 @@ ament_export_include_directories(include)
 ament_export_dependencies(rclcpp)
 ament_export_dependencies(signals)
 ament_export_dependencies(sensor_msgs)
-#ament_export_dependencies(laser_geometry)
 ament_export_dependencies(tf2_ros)
 ament_export_dependencies(tf2)
 ament_export_dependencies(message_filters)
