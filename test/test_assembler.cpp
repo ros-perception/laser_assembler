@@ -32,7 +32,7 @@ static const char SERVICE_NAME[] = "assemble_scans";
 class TestAssembler : public testing::Test
 {
 public:
-  rclcpp::Node::SharedPtr node;
+  rclcpp::Node::SharedPtr node_;
   // ROS_INFO("Service [%s] detected", SERVICE_NAME.c_str());
   rclcpp::Client<laser_assembler_srv_gen::srv::AssembleScans>::SharedPtr
     client_;
@@ -43,19 +43,18 @@ public:
 
   void SetUp()
   {
-    // ROS_INFO("Waiting for service [%s]", SERVICE_NAME.c_str());
-    node = rclcpp::Node::make_shared("test_assembler");
-    std::thread spin_thread(spinThread, node);
+    node_ = rclcpp::Node::make_shared("test_assembler");
+    std::thread spin_thread(spinThread, node_);
     spin_thread.detach();
-    client_ = node->create_client<laser_assembler_srv_gen::srv::AssembleScans>(
+    client_ = node_->create_client<laser_assembler_srv_gen::srv::AssembleScans>(
       "assemble_scans");
     using namespace std::chrono_literals;
+    RCLCPP_INFO(node_->get_logger(), "Waiting for service [%s]", SERVICE_NAME);
     if (!client_->wait_for_service(20s)) {
-      printf("Service not available after waiting");
+      RCLCPP_ERROR(node_->get_logger(), "Service not available after waiting");
       return;
     }
-    printf(" Service assemble_scans started successfully");
-    // ROS_INFO("Service [%s] detected", SERVICE_NAME.c_str());
+    RCLCPP_INFO(node_->get_logger(), "Service assemble_scans started successfully");
     received_something_ = false;
     got_cloud_ = false;
 
@@ -63,7 +62,7 @@ public:
       [this](sensor_msgs::msg::LaserScan::ConstSharedPtr msg) -> void {
         this->ScanCallback(msg);
       };
-    scan_sub_ = node->create_subscription<sensor_msgs::msg::LaserScan>(
+    scan_sub_ = node_->create_subscription<sensor_msgs::msg::LaserScan>(
       "dummy_scan", scan_callback);
   }
 
@@ -101,16 +100,13 @@ public:
 
       auto response_received_callback = [this](ServiceResponseFuture future) {
           auto result = future.get();
-          printf("\nCloud points size = %ld\n",
-            result.get()->cloud.points.size());
-          // RCLCPP_INFO(this->get_logger(), "Got result: [%" PRId64 "]",
-          // future.get()->sum)
+          RCLCPP_INFO(node_->get_logger(), "Got result: [ %ld ]", result.get()->cloud.points.size());
           if (result.get()->cloud.points.size() > 0) {
             cloud_ = result.get()->cloud;
             got_cloud_ = true;
             cloud_condition_.notify_all();
           } else {
-            ROS_INFO("Got an empty cloud. Going to try again on the next scan");
+            RCLCPP_INFO(node_->get_logger(), "Got an empty cloud. Going to try again on the next scan");
           }
         };
 
@@ -151,7 +147,6 @@ TEST_F(TestAssembler, non_zero_cloud_test) {
 int main(int argc, char ** argv)
 {
   printf("******* Starting application *********\n");
-
   testing::InitGoogleTest(&argc, argv);
   rclcpp::init(0, nullptr);
   int result = RUN_ALL_TESTS();

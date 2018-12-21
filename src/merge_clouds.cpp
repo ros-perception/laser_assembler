@@ -33,11 +33,6 @@ potentially from different sensors
 #include "tf2_ros/transform_listener.h"
 #include "message_filters/subscriber.h"
 
-#define ROS_ERROR printf
-#define ROS_INFO printf
-#define ROS_WARN printf
-#define ROS_DEBUG printf
-
 class MergeClouds
 {
 public:

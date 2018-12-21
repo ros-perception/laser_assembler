@@ -27,11 +27,6 @@
 #include "sensor_msgs/msg/point_cloud2.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 
-#define ROS_ERROR printf
-#define ROS_INFO printf
-#define ROS_WARN printf
-#define ROS_DEBUG printf
-
 #define TIME rclcpp::Time
 
 namespace laser_assembler
@@ -49,11 +44,11 @@ public:
     filter_chain_("sensor_msgs::msg::LaserScan")
   {
     // ***** Set Laser Projection Method *****
-    private_ns_->get_parameter_or("ignore_laser_skew", ignore_laser_skew_,
+    n_->get_parameter_or("ignore_laser_skew", ignore_laser_skew_,
       true);
 
     // configure the filter chain from the parameter server
-    filter_chain_.configure("filters", private_ns_);
+    filter_chain_.configure("filters", n_);
 
     // Have different callbacks, depending on whether or not we want to ignore
     // laser skews.
@@ -123,7 +118,7 @@ public:
       rclcpp::Duration cur_tolerance = rclcpp::Duration(
         laser_scan->time_increment * laser_scan->ranges.size());
       if (cur_tolerance > max_tolerance_) {
-        ROS_DEBUG("Upping tf tolerance from [%.4fs] to [%.4fs]",
+        RCLCPP_DEBUG(n_->get_logger(), "Upping tf tolerance from [%.4fs] to [%.4fs]",
           max_tolerance_.nanoseconds() / 1e+9,
           cur_tolerance.nanoseconds() / 1e+9);
         assert(tf_filter_);

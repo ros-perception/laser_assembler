@@ -32,11 +32,6 @@
 // Service
 #include "laser_assembler_srv_gen/srv/assemble_scans.hpp"
 
-#define ROS_ERROR printf
-#define ROS_INFO printf
-#define ROS_WARN printf
-#define ROS_DEBUG printf
-
 namespace laser_assembler
 {
 
@@ -149,40 +144,40 @@ BaseAssemblerSrv<T>::BaseAssemblerSrv()
   double tf_cache_time_secs;
   private_ns_.param("tf_cache_time_secs", tf_cache_time_secs, 10.0);
   if (tf_cache_time_secs < 0) {
-    ROS_ERROR("Parameter tf_cache_time_secs<0 (%f)", tf_cache_time_secs);
+    RCLCPP_ERROR(n_->get_logger(), "Parameter tf_cache_time_secs<0 (%f)", tf_cache_time_secs);
   }
 
   tf_ = new tf::TransformListener(n_, ros::Duration(tf_cache_time_secs));
-  ROS_INFO("TF Cache Time: %f Seconds", tf_cache_time_secs);
+  RCLCPP_INFO(n_->get_logger(), "TF Cache Time: %f Seconds", tf_cache_time_secs);
 
   // ***** Set max_scans *****
   const int default_max_scans = 400;
   int tmp_max_scans;
   private_ns_.param("max_scans", tmp_max_scans, default_max_scans);
   if (tmp_max_scans < 0) {
-    ROS_ERROR("Parameter max_scans<0 (%i)", tmp_max_scans);
+    RCLCPP_ERROR(n_->get_logger(), "Parameter max_scans<0 (%i)", tmp_max_scans);
     tmp_max_scans = default_max_scans;
   }
   max_scans_ = tmp_max_scans;
-  ROS_INFO("Max Scans in History: %u", max_scans_);
+  RCLCPP_INFO(n_->get_logger(), "Max Scans in History: %u", max_scans_);
   total_pts_ = 0;  // We're always going to start with no points in our history
 
   // ***** Set fixed_frame *****
   private_ns_.param("fixed_frame", fixed_frame_, std::string("ERROR_NO_NAME"));
-  ROS_INFO("Fixed Frame: %s", fixed_frame_.c_str());
+  RCLCPP_INFO(n_->get_logger(), "Fixed Frame: %s", fixed_frame_.c_str());
   if (fixed_frame_ == "ERROR_NO_NAME") {
-    ROS_ERROR("Need to set parameter fixed_frame");
+    RCLCPP_ERROR(n_->get_logger(), "Need to set parameter fixed_frame");
   }
 
   // ***** Set downsample_factor *****
   int tmp_downsample_factor;
   private_ns_.param("downsample_factor", tmp_downsample_factor, 1);
   if (tmp_downsample_factor < 1) {
-    ROS_ERROR("Parameter downsample_factor<1: %i", tmp_downsample_factor);
+    RCLCPP_ERROR(n_->get_logger(), "Parameter downsample_factor<1: %i", tmp_downsample_factor);
     tmp_downsample_factor = 1;
   }
   downsample_factor_ = tmp_downsample_factor;
-  ROS_INFO("Downsample Factor: %u", downsample_factor_);
+  RCLCPP_INFO(n_->get_logger(), "Downsample Factor: %u", downsample_factor_);
 
   // ***** Start Services *****
   cloud_srv_server_ = private_ns_.advertiseService(
@@ -191,9 +186,9 @@ BaseAssemblerSrv<T>::BaseAssemblerSrv()
   // **** Get the TF Notifier Tolerance ****
   private_ns_.param("tf_tolerance_secs", tf_tolerance_secs_, 0.0);
   if (tf_tolerance_secs_ < 0) {
-    ROS_ERROR("Parameter tf_tolerance_secs<0 (%f)", tf_tolerance_secs_);
+    RCLCPP_ERROR(n_->get_logger(), "Parameter tf_tolerance_secs<0 (%f)", tf_tolerance_secs_);
   }
-  ROS_INFO("tf Tolerance: %f seconds", tf_tolerance_secs_);
+  RCLCPP_INFO(n_->get_logger(), "tf Tolerance: %f seconds", tf_tolerance_secs_);
 
   // ***** Start Listening to Data *****
   // (Well, don't start listening just yet. Keep this as null until we actually
@@ -204,9 +199,9 @@ BaseAssemblerSrv<T>::BaseAssemblerSrv()
 template<class T>
 void BaseAssemblerSrv<T>::start()
 {
-  ROS_INFO("Starting to listen on the input stream");
+  RCLCPP_INFO(n_->get_logger(), "Starting to listen on the input stream");
   if (tf_filter_) {
-    ROS_ERROR("assembler::start() was called twice!. This is bad, and could "
+    RCLCPP_ERROR(n_->get_logger(), "assembler::start() was called twice!. This is bad, and could "
       "leak memory");
   } else {
     scan_sub_.subscribe(n_, "scan_in", 10);
@@ -240,7 +235,7 @@ void BaseAssemblerSrv<T>::scansCallback(
     ConvertToCloud(fixed_frame_, scan,
       cur_cloud);              // Convert scan into a point cloud
   } catch (tf::TransformException & ex) {
-    ROS_WARN("Transform Exception %s", ex.what());
+    RCLCPP_WARN(n_->get_logger(), "Transform Exception %s", ex.what());
     return;
   }
 
@@ -333,7 +328,7 @@ bool BaseAssemblerSrv<T>::buildCloud(
   }
   scan_hist_mutex_.unlock();
 
-  ROS_DEBUG("Point Cloud Results: Aggregated from index %u->%u. BufferSize: "
+  RCLCPP_DEBUG(n_->get_logger(), "Point Cloud Results: Aggregated from index %u->%u. BufferSize: "
     "%lu. Points in cloud: %lu",
     start_index, past_end_index, scan_hist_.size(),
     resp.cloud.points.size());

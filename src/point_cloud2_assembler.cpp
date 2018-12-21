@@ -17,11 +17,6 @@
 // #include <sensor_msgs/msg/point_cloud_conversion.h> // TODO
 #include "laser_assembler/point_cloud_conversion.hpp"
 
-#define ROS_ERROR printf
-#define ROS_INFO printf
-#define ROS_WARN printf
-#define ROS_DEBUG printf
-
 namespace laser_assembler
 {
 

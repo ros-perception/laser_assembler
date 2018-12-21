@@ -46,12 +46,6 @@
 #include "laser_assembler_srv_gen/srv/assemble_scans.hpp"
 #include "laser_assembler_srv_gen/srv/assemble_scans2.hpp"
 
-#define ROS_ERROR printf
-#define ROS_INFO printf
-#define ROS_WARN printf
-#define ROS_DEBUG printf
-#define ROS_FATAL printf
-
 namespace laser_assembler
 {
 
@@ -102,8 +96,8 @@ protected:
   tf2::BufferCore tfBuffer;
   tf2_ros::TransformListener * tf_;
   tf2_ros::MessageFilter<T> * tf_filter_;
-  rclcpp::Node::SharedPtr private_ns_;
-  rclcpp::Node * n_;
+  //rclcpp::Node::SharedPtr private_ns_;
+  rclcpp::Node::SharedPtr n_;
 
 private:
   // ROS Input/Ouptut Handling
@@ -171,55 +165,55 @@ BaseAssembler<T>::BaseAssembler(
 {
   // **** Initialize TransformListener ****
   double tf_cache_time_secs;
-  private_ns_ = node_;
-  n_ = node_.get();
+  //private_ns_ = node_;
+  n_ = node_;
 
-  printf("BaseAssembler<T>::BaseAssembler constructor ");
+  RCLCPP_INFO(n_->get_logger(), "BaseAssembler<T>::BaseAssembler constructor ");
 
-  private_ns_->get_parameter_or("tf_cache_time_secs", tf_cache_time_secs, 10.0);
+  n_->get_parameter_or("tf_cache_time_secs", tf_cache_time_secs, 10.0);
 
   if (tf_cache_time_secs < 0) {
-    ROS_ERROR("Parameter tf_cache_time_secs<0 (%f)", tf_cache_time_secs);
+    RCLCPP_ERROR(n_->get_logger(), "Parameter tf_cache_time_secs<0 (%f)", tf_cache_time_secs);
   }
 
   tf_ = new tf2_ros::TransformListener(tfBuffer);
-  ROS_INFO("TF Cache Time: %f Seconds ", tf_cache_time_secs);
+  RCLCPP_INFO(n_->get_logger(), "TF Cache Time: %f Seconds ", tf_cache_time_secs);
 
   // ***** Set max_scans *****
   const int default_max_scans = 400;
   int tmp_max_scans;
 
-  private_ns_->get_parameter_or(max_size_param_name, tmp_max_scans,
+  n_->get_parameter_or(max_size_param_name, tmp_max_scans,
     default_max_scans);
 
   if (tmp_max_scans < 0) {
-    ROS_ERROR("Parameter max_scans<0 (%i)", tmp_max_scans);
+    RCLCPP_ERROR(n_->get_logger(), "Parameter max_scans<0 (%i)", tmp_max_scans);
     tmp_max_scans = default_max_scans;
   }
   max_scans_ = tmp_max_scans;
-  ROS_INFO("Max Scans in History: %u ", max_scans_);
+  RCLCPP_INFO(n_->get_logger(), "Max Scans in History: %u ", max_scans_);
   total_pts_ = 0;  // We're always going to start with no points in our history
 
   // ***** Set fixed_frame *****
-  private_ns_->get_parameter_or("fixed_frame", fixed_frame_,
+  n_->get_parameter_or("fixed_frame", fixed_frame_,
     std::string("ERROR_NO_NAME"));
 
-  ROS_INFO("Fixed Frame: %s ", fixed_frame_.c_str());
+  RCLCPP_INFO(n_->get_logger(),"Fixed Frame: %s ", fixed_frame_.c_str());
 
   if (fixed_frame_ == "ERROR_NO_NAME") {
-    ROS_ERROR("Need to set parameter fixed_frame");
+    RCLCPP_ERROR(n_->get_logger(), "Need to set parameter fixed_frame");
   }
 
   // ***** Set downsample_factor *****
   int tmp_downsample_factor;
-  private_ns_->get_parameter_or("downsample_factor", tmp_downsample_factor, 1);
+  n_->get_parameter_or("downsample_factor", tmp_downsample_factor, 1);
   if (tmp_downsample_factor < 1) {
-    ROS_ERROR("Parameter downsample_factor<1: %i", tmp_downsample_factor);
+    RCLCPP_ERROR(n_->get_logger(), "Parameter downsample_factor<1: %i", tmp_downsample_factor);
     tmp_downsample_factor = 1;
   }
   downsample_factor_ = tmp_downsample_factor;
   if (downsample_factor_ != 1) {
-    ROS_WARN("Downsample set to [%u]. Note that this is an unreleased/unstable "
+    RCLCPP_WARN(n_->get_logger(), "Downsample set to [%u]. Note that this is an unreleased/unstable "
       "feature",
       downsample_factor_);
   }
@@ -277,10 +271,10 @@ BaseAssembler<T>::BaseAssembler(
 template<class T>
 void BaseAssembler<T>::start(const std::string & in_topic_name)
 {
-  ROS_DEBUG("Called start(string). Starting to listen on "
+  RCLCPP_DEBUG(n_->get_logger(), "Called start(string). Starting to listen on "
     "message_filter::Subscriber the input stream");
   if (tf_filter_) {
-    ROS_ERROR("assembler::start() was called twice!. This is bad, and could "
+    RCLCPP_ERROR(n_->get_logger(), "assembler::start() was called twice!. This is bad, and could "
       "leak memory");
   } else {
     scan_sub_.subscribe(n_, in_topic_name);
@@ -294,10 +288,10 @@ void BaseAssembler<T>::start(const std::string & in_topic_name)
 template<class T>
 void BaseAssembler<T>::start()
 {
-  ROS_DEBUG("Called start(). Starting tf::MessageFilter, but not initializing "
+  RCLCPP_DEBUG(n_->get_logger(), "Called start(). Starting tf::MessageFilter, but not initializing "
     "Subscriber");
   if (tf_filter_) {
-    ROS_ERROR("assembler::start() was called twice!. This is bad, and could "
+    RCLCPP_ERROR(n_->get_logger(), "assembler::start() was called twice!. This is bad, and could "
       "leak memory");
   } else {
     scan_sub_.subscribe(n_, "bogus");
@@ -321,7 +315,7 @@ BaseAssembler<T>::~BaseAssembler()
 template<class T>
 void BaseAssembler<T>::msgCallback(const std::shared_ptr<const T> & scan_ptr)
 {
-  ROS_DEBUG("starting msgCallback");
+  RCLCPP_DEBUG(n_->get_logger(), "starting msgCallback");
   const T scan = *scan_ptr;
 
   sensor_msgs::msg::PointCloud cur_cloud;
@@ -331,7 +325,7 @@ void BaseAssembler<T>::msgCallback(const std::shared_ptr<const T> & scan_ptr)
     ConvertToCloud(fixed_frame_, scan,
       cur_cloud);              // Convert scan into a point cloud
   } catch (tf2::TransformException & ex) {
-    ROS_WARN("Transform Exception %s", ex.what());
+    RCLCPP_WARN(n_->get_logger(), "Transform Exception %s", ex.what());
     return;
   }
 
@@ -352,7 +346,7 @@ void BaseAssembler<T>::msgCallback(const std::shared_ptr<const T> & scan_ptr)
   printf("Scans: %4lu  Points: %10u\n", scan_hist_.size(), total_pts_);
 
   scan_hist_mutex_.unlock();
-  ROS_DEBUG("done with msgCallback");
+  RCLCPP_DEBUG(n_->get_logger(), "done with msgCallback");
 }
 
 template<class T>
@@ -418,7 +412,7 @@ bool BaseAssembler<T>::assembleScans(
         if (scan_hist_[i].points.size() !=
           scan_hist_[i].channels[chan_ind].values.size())
         {
-          ROS_FATAL("Trying to add a malformed point cloud. Cloud has %u "
+          RCLCPP_FATAL(n_->get_logger(), "Trying to add a malformed point cloud. Cloud has %u "
             "points, but channel %u has %u elems",
             (int)scan_hist_[i].points.size(), chan_ind,
             (int)scan_hist_[i].channels[chan_ind].values.size());
@@ -444,7 +438,7 @@ bool BaseAssembler<T>::assembleScans(
   }
   scan_hist_mutex_.unlock();
 
-  ROS_DEBUG("\nPoint Cloud Results: Aggregated from index %u->%u. BufferSize: "
+  RCLCPP_DEBUG(n_->get_logger(), "\nPoint Cloud Results: Aggregated from index %u->%u. BufferSize: "
     "%lu. Points in cloud: %u",
     start_index, past_end_index, scan_hist_.size(),
     (int)resp->cloud.points.size());
@@ -457,7 +451,7 @@ bool BaseAssembler<T>::buildCloud(
   std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Response>
   resp)
 {
-  ROS_WARN(
+  RCLCPP_WARN(n_->get_logger(),
     "Service 'build_cloud' is deprecated. Call 'assemble_scans' instead");
   return assembleScans(req, resp);
 }

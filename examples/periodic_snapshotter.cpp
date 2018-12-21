@@ -27,12 +27,7 @@
 #include "sensor_msgs/msg/point_cloud.hpp"
 #include "std_msgs/msg/string.hpp"
 
-#define ROS_ERROR printf
-#define ROS_INFO printf
-#define ROS_WARN printf
-#define ROS_DEBUG printf
-
-/***
+/**
  * This a simple test app that requests a point cloud from the
  * point_cloud_assembler every 4 seconds, and then publishes the
  * resulting data
@@ -46,30 +41,19 @@ public:
   explicit PeriodicSnapshotter(const std::string & service_name)
   : Node(service_name)
   {
-    std::cerr << " Inside PeriodicSnapshotter constructor " <<
-      "\n";
-
+    static const char SERVICE_NAME[] = "assemble_scans";
     client_ = this->create_client<laser_assembler_srv_gen::srv::AssembleScans>(
-      "build_cloud");
+      SERVICE_NAME);
 
     using namespace std::chrono_literals;
     if (!client_->wait_for_service(20s)) {
-      printf("Service not available after waiting");
+      RCLCPP_INFO(this->get_logger(), "Service not available after waiting");
       return;
     }
-    printf(" Service assemble_scans started successfully");
-    // ROS_INFO("Service [%s] detected", SERVICE_NAME.c_str());
+    RCLCPP_INFO(this->get_logger(), "Service [%s] detected", SERVICE_NAME);
 
     // Create a function for when messages are to be sent.
     auto timer_callback = [this]() -> void {
-        // msg_->name = "Hello World: " + std::to_string(count_++);
-        // RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", msg_->status)
-        // RCLCPP_INFO(this->get_logger(), "Publishing: namespce %s and name is %s
-        // ",
-        // this->get_namespace(), this->get_name());
-
-        // Put the message into a queue to be processed by the middleware.
-        // This call is non-blocking.
         this->timerCallback();
       };
 
@@ -111,16 +95,11 @@ public:
 
     auto response_received_callback = [this](ServiceResponseFuture future) {
         auto result = future.get();
-        printf(
-          "\n                                      Cloud points size = %ld\n",
-          result.get()->cloud.points.size());
-        // RCLCPP_INFO(this->get_logger(), "Got result: [%" PRId64 "]",
-        // future.get()->sum)
         if (result.get()->cloud.points.size() > 0) {
-          result.get()->cloud;
+          RCLCPP_INFO(this->get_logger(), "Got result: [ %ld ]", result.get()->cloud.points.size());
           pub_->publish(result.get()->cloud);
         } else {
-          ROS_INFO("Got an empty cloud. Going to try again on the next scan");
+          RCLCPP_INFO(this->get_logger(), "Got an empty cloud. Going to try again on the next scan");
         }
       };
 

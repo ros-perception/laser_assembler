@@ -20,11 +20,6 @@
 #include "laser_geometry/laser_geometry.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
 
-#define ROS_ERROR printf
-#define ROS_INFO printf
-#define ROS_WARN printf
-#define ROS_DEBUG printf
-
 namespace laser_assembler
 {
 /**
@@ -99,7 +94,7 @@ int main(int argc, char ** argv)
 {
   ros::init(argc, argv, "laser_scan_assembler");
   ros::NodeHandle n;
-  ROS_WARN("The laser_scan_assembler_srv is deprecated. Please switch to "
+  RCLCPP_WARN(n_->get_logger(), "The laser_scan_assembler_srv is deprecated. Please switch to "
     "using the laser_scan_assembler. Documentation is available at "
     "http://www.ros.org/wiki/laser_assembler");
   laser_assembler::LaserScanAssemblerSrv pc_assembler;

@@ -27,9 +27,6 @@
 #include "tf2/LinearMath/Quaternion.h"
 #include "tf2_ros/transform_broadcaster.h"
 
-
-#define ROS_INFO printf
-
 void runLoop(rclcpp::Node::SharedPtr node_)
 {
   rclcpp::Rate loopRate(5);
@@ -64,7 +61,7 @@ void runLoop(rclcpp::Node::SharedPtr node_)
   // Keep sending scans until the assembler is done
   while (rclcpp::ok()) {
     scan.header.stamp = rclcpp::Clock().now();
-    ROS_INFO("Publishing scan\n");
+    RCLCPP_INFO(node_->get_logger(), "Publishing scan\n");
     scan_pub->publish(scan);
 
     geometry_msgs::msg::TransformStamped tf_transform;
@@ -74,13 +71,11 @@ void runLoop(rclcpp::Node::SharedPtr node_)
     tf_transform.transform.rotation.w = 1.0;
     broadcaster.sendTransform(tf_transform);
     loopRate.sleep();
-    ROS_INFO("Publishing scan");
   }
 }
 
 int main(int argc, char ** argv)
 {
-  printf("dummy scan producer\n");
   rclcpp::init(argc, argv);
   rclcpp::Node::SharedPtr node =
     rclcpp::Node::make_shared("dummy_scan_producer");
