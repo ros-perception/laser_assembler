@@ -96,49 +96,25 @@ protected:
   tf2::BufferCore tfBuffer;
   tf2_ros::TransformListener * tf_;
   tf2_ros::MessageFilter<T> * tf_filter_;
-  //rclcpp::Node::SharedPtr private_ns_;
   rclcpp::Node::SharedPtr n_;
 
 private:
   // ROS Input/Ouptut Handling
   rclcpp::Service<laser_assembler_srv_gen::srv::AssembleScans>::SharedPtr
     assemble_scans_server_;
-  rclcpp::Service<laser_assembler_srv_gen::srv::AssembleScans2>::SharedPtr
-    assemble_scans_server2_;
-  rclcpp::Service<laser_assembler_srv_gen::srv::AssembleScans>::SharedPtr
-    build_cloud_server_;
-  // rclcpp::Service<laser_assembler_srv_gen::srv::AssembleScans2>::SharedPtr
-  // build_cloud_server2_;
 
   message_filters::Subscriber<T> scan_sub_;
   message_filters::Connection tf_filter_connection_;
 
   //! \brief Callback function for every time we receive a new scan
-  // void scansCallback(const tf::MessageNotifier<T>::MessagePtr& scan_ptr,
-  // const T& testA)
   virtual void msgCallback(const std::shared_ptr<const T> & scan_ptr);
 
   //! \brief Service Callback function called whenever we need to build a cloud
-
-  bool buildCloud(
-    std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Request>
-    request,
-    std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Response>
-    response);
-  // bool assembleScans(laser_assembler_srv_gen::srv::AssembleScans::Request&
-  // req, laser_assembler_srv_gen::srv::AssembleScans::Response& resp);
   bool assembleScans(
     std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Request>
     request,
     std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Response>
     response);
-  bool assembleScans2(
-    std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans2::Request>
-    request,
-    std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans2::Response>
-    response);
-  // bool buildCloud2(laser_assembler_srv_gen::srv::AssembleScans2::Request&
-  // req, laser_assembler_srv_gen::srv::AssembleScans2::Response& resp);
 
   //! \brief Stores history of scans
   std::deque<sensor_msgs::msg::PointCloud> scan_hist_;
@@ -165,7 +141,6 @@ BaseAssembler<T>::BaseAssembler(
 {
   // **** Initialize TransformListener ****
   double tf_cache_time_secs;
-  //private_ns_ = node_;
   n_ = node_;
 
   RCLCPP_INFO(n_->get_logger(), "BaseAssembler<T>::BaseAssembler constructor ");
@@ -232,35 +207,6 @@ BaseAssembler<T>::BaseAssembler(
   assemble_scans_server_ =
     n_->create_service<laser_assembler_srv_gen::srv::AssembleScans>(
     "assemble_scans", assembleScansCallback);
-
-  auto buildCloudCallback =
-    [this](
-    std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Request>
-    request,
-    std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Response>
-    response) -> bool {
-      this->buildCloud(request, response);
-      return true;
-    };
-
-  build_cloud_server_ =
-    n_->create_service<laser_assembler_srv_gen::srv::AssembleScans>(
-    "build_cloud", buildCloudCallback);
-
-  auto assembleScans2Callback =
-    [this](
-    std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans2::Request>
-    request,
-    std::shared_ptr<
-      laser_assembler_srv_gen::srv::AssembleScans2::Response>
-    response) -> bool {
-      this->assembleScans2(request, response);
-      return true;
-    };
-
-  assemble_scans_server2_ =
-    n_->create_service<laser_assembler_srv_gen::srv::AssembleScans2>(
-    "assemble_scans2", assembleScans2Callback);
 
   // ***** Start Listening to Data *****
   // (Well, don't start listening just yet. Keep this as null until we actually
@@ -343,7 +289,7 @@ void BaseAssembler<T>::msgCallback(const std::shared_ptr<const T> & scan_ptr)
   total_pts_ += cur_cloud.points
     .size();                 // Add the new scan to the running total of points
 
-  printf("Scans: %4lu  Points: %10u\n", scan_hist_.size(), total_pts_);
+  //printf("Scans: %4lu  Points: %10u\n", scan_hist_.size(), total_pts_);
 
   scan_hist_mutex_.unlock();
   RCLCPP_DEBUG(n_->get_logger(), "done with msgCallback");
@@ -444,63 +390,5 @@ bool BaseAssembler<T>::assembleScans(
     (int)resp->cloud.points.size());
   return true;
 }
-
-template<class T>
-bool BaseAssembler<T>::buildCloud(
-  std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Request> req,
-  std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Response>
-  resp)
-{
-  RCLCPP_WARN(n_->get_logger(),
-    "Service 'build_cloud' is deprecated. Call 'assemble_scans' instead");
-  return assembleScans(req, resp);
-}
-
-template<class T>
-bool BaseAssembler<T>::assembleScans2(
-  std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans2::Request> req,
-  std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans2::Response>
-  resp)
-{
-  std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Request> tmp_req;
-  std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Response>
-  tmp_res;
-  tmp_req->begin = req->begin;
-  tmp_req->end = req->end;
-  bool ret = assembleScans(tmp_req, tmp_res);
-
-  if (ret) {
-    sensor_msgs::convertPointCloudToPointCloud2(tmp_res->cloud, resp->cloud);
-  }
-  return ret;
-}
-
-/*
-template <class T>
-bool
-BaseAssembler<T>::buildCloud2(laser_assembler_srv_gen::srv::AssembleScans2::Request&
-req, laser_assembler_srv_gen::srv::AssembleScans2::Response& resp)
-{
-  ROS_WARN("Service 'build_cloud' is deprecated. Call 'assemble_scans'
-instead"); return assembleScans2(req, resp);
-}
-
-template <class T>
-bool
-BaseAssembler<T>::assembleScans2(laser_assembler_srv_gen::srv::AssembleScans2::Request&
-req, laser_assembler_srv_gen::srv::AssembleScans2::Response& resp)
-{
-  laser_assembler_srv_gen::srv::AssembleScans::Request tmp_req;
-  laser_assembler_srv_gen::srv::AssembleScans::Response tmp_res;
-  tmp_req.begin = req.begin;
-  tmp_req.end = req.end;
-  bool ret = assembleScans(tmp_req, tmp_res);
-
-  if ( ret )
-  {
-    sensor_msgs::convertPointCloudToPointCloud2(tmp_res.cloud, resp.cloud);
-  }
-  return ret;
-}*/
 }  // namespace laser_assembler
 #endif  // LASER_ASSEMBLER__BASE_ASSEMBLER_HPP_

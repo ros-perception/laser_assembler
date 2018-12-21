@@ -23,8 +23,8 @@
 #include "point_field_conversion.hpp"
 
 /**
- * \brief Convert between the old (sensor_msgs::PointCloud) and the new
- * (sensor_msgs::PointCloud2) format. \author Radu Bogdan Rusu
+ * \brief Convert between the old (sensor_msgs::msg::PointCloud) and the new
+ * (sensor_msgs::msg::PointCloud2) format. \author Radu Bogdan Rusu
  */
 namespace sensor_msgs
 {
@@ -49,7 +49,7 @@ getPointCloud2FieldIndex(
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /** \brief Convert a sensor_msgs::msg::PointCloud message to a
- * sensor_msgs::PointCloud2 message. \param input the message in the
+ * sensor_msgs::msg::PointCloud2 message. \param input the message in the
  * sensor_msgs::msg::PointCloud format \param output the resultant message in
  * the sensor_msgs::msg::PointCloud2 format
  */

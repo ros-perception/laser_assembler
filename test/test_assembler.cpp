@@ -24,16 +24,12 @@
 #include "sensor_msgs/msg/point_cloud2.h"
 #include "gtest/gtest.h"
 
-#define ROS_INFO printf
-
-// static const string SERVICE_NAME = "assemble_scans";
 static const char SERVICE_NAME[] = "assemble_scans";
 
 class TestAssembler : public testing::Test
 {
 public:
   rclcpp::Node::SharedPtr node_;
-  // ROS_INFO("Service [%s] detected", SERVICE_NAME.c_str());
   rclcpp::Client<laser_assembler_srv_gen::srv::AssembleScans>::SharedPtr
     client_;
 
@@ -76,9 +72,6 @@ public:
       received_something_ = true;
     } else {
       // Make the call to get a point cloud
-
-      using namespace std::chrono_literals;
-      std::this_thread::sleep_for(0.2s);
       auto request = std::make_shared<
         laser_assembler_srv_gen::srv::AssembleScans::Request>();
       request->begin = start_time_.sec;

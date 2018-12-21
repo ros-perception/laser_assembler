@@ -28,7 +28,6 @@ potentially from different sensors
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/point_cloud.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
-// #include <tf2_ros/message_filter.h>
 #include "laser_assembler/message_filter.hpp"
 #include "tf2_ros/transform_listener.h"
 #include "message_filters/subscriber.h"
@@ -108,9 +107,8 @@ private:
     for (unsigned int i = 0; i < cloud1_.channels.size(); ++i) {
       for (unsigned int j = 0; j < cloud2_.channels.size(); ++j) {
         if (cloud1_.channels[i].name == cloud2_.channels[j].name) {
-          // ROS_ASSERT(cloud1_.channels[i].values.size() ==
-          // cloud1_.points.size()); ROS_ASSERT(cloud2_.channels[j].values.size()
-          // == cloud2_.points.size());
+          ASSERT_TRUE(cloud1_.channels[i].values.size() == cloud1_.points.size());
+          ASSERT_TRUE(cloud2_.channels[j].values.size() == cloud2_.points.size());
           unsigned int oc = out.channels.size();
           out.channels.resize(oc + 1);
           out.channels[oc].name = cloud1_.channels[i].name;

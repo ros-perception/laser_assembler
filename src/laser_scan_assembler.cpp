@@ -18,8 +18,6 @@
 #include <string>
 #include <chrono>
 #include "laser_geometry/laser_geometry.hpp"
-
-// #include "laser_assembler/laser_geometry.hpp"
 #include "filters/filter_chain.h"
 #include "laser_assembler/base_assembler.hpp"
 #include "rclcpp/time.hpp"
@@ -89,17 +87,9 @@ public:
     if (ignore_laser_skew_) {  // Do it the fast (approximate) way
       projector_.projectLaser(scan_filtered_, cloud_out);
       if (cloud_out.header.frame_id != fixed_frame_id) {
+        ;
         // TODO(vandana) transform PointCloud
-        /*
-        tf_->transformPointCloud(fixed_frame_id, cloud_out, cloud_out);
-        TIME start_time = cloud_out.header.stamp;
-        std::chrono::nanoseconds start(start_time.nanoseconds());
-        std::chrono::time_point<std::chrono::system_clock,
-        std::chrono::nanoseconds> st(start);
-        geometry_msgs::msg::TransformStamped transform =
-        tfBuffer.lookupTransform(fixed_frame_id, cloud_out.header.frame_id, st);
-        sensor_msgs::msg::PointCloud2 cloudout;
-        tf2::doTransform(cloud_out, cloud_out, transform);*/
+        // tf_->transformPointCloud(fixed_frame_id, cloud_out, cloud_out);
       }
     } else {  // Do it the slower (more accurate) way
       int mask = laser_geometry::channel_option::Intensity +

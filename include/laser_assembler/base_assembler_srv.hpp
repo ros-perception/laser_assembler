@@ -24,7 +24,6 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "tf2_ros/transform_listener.h"
-// #include "tf2_ros/message_filter.h"
 #include "laser_assembler/message_filter.hpp"
 #include "message_filters/subscriber.h"
 #include "sensor_msgs/msg/point_cloud.hpp"
@@ -107,8 +106,6 @@ private:
   message_filters::Connection tf_filter_connection_;
 
   //! \brief Callback function for every time we receive a new scan
-  // void scansCallback(const tf::MessageNotifier<T>::MessagePtr& scan_ptr,
-  // const T& testA)
   void scansCallback(const boost::shared_ptr<const T> & scan_ptr);
 
   //! \brief Service Callback function called whenever we need to build a cloud

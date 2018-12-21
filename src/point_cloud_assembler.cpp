@@ -43,9 +43,6 @@ public:
     sensor_msgs::msg::PointCloud & cloud_out)
   {
     tf_->transformPointCloud(fixed_frame_id, scan_in, cloud_out);
-    // tf2::doTransform(scan_in, cloud_out,
-    // tfBuffer.lookupTransform(fixed_frame_id, tf2::getFrameId(scan_in),
-    // tf2::getTimestamp(scan_in)));
   }
 
 private:
