@@ -13,12 +13,12 @@
 // limitations under the License.
 
 
-#ifndef SENSOR_MSGS_POINT_CLOUD_CONVERSION_HPP_
-#define SENSOR_MSGS_POINT_CLOUD_CONVERSION_HPP_
+#ifndef SENSOR_MSGS_POINT_CLOUD_CONVERSION_HPP_  // NOLINT
+#define SENSOR_MSGS_POINT_CLOUD_CONVERSION_HPP_  // NOLINT
 
 #include <string>
-#include <sensor_msgs/msg/point_cloud.hpp>
-#include <sensor_msgs/msg/point_cloud2.hpp>
+#include "sensor_msgs/msg/point_cloud.hpp"
+#include "sensor_msgs/msg/point_cloud2.hpp"
 // #include <sensor_msgs/point_field_conversion.h>
 #include "point_field_conversion.hpp"
 
@@ -133,9 +133,9 @@ convertPointCloud2ToPointCloud(
   // Convert the fields to channels
   int cur_c = 0;
   for (size_t d = 0; d < input.fields.size(); ++d) {
-    if ((int)input.fields[d].offset == x_offset ||
-      (int)input.fields[d].offset == y_offset ||
-      (int)input.fields[d].offset == z_offset)
+    if (reinterpret_cast<unsigned int>(input.fields[d].offset) == x_offset ||
+      reinterpret_cast<unsigned int>(input.fields[d].offset) == y_offset ||
+      reinterpret_cast<unsigned int>(input.fields[d].offset) == z_offset)
     {
       continue;
     }
@@ -156,9 +156,9 @@ convertPointCloud2ToPointCloud(
     // Copy the rest of the data
     int cur_c = 0;
     for (size_t d = 0; d < input.fields.size(); ++d) {
-      if ((int)input.fields[d].offset == x_offset ||
-        (int)input.fields[d].offset == y_offset ||
-        (int)input.fields[d].offset == z_offset)
+      if (reinterpret_cast<unsigned int>(input.fields[d].offset) == x_offset ||
+        reinterpret_cast<unsigned int>(input.fields[d].offset) == y_offset ||
+        reinterpret_cast<unsigned int>(input.fields[d].offset) == z_offset)
       {
         continue;
       }
@@ -171,4 +171,4 @@ convertPointCloud2ToPointCloud(
   return true;
 }
 }  // namespace sensor_msgs
-#endif  // SENSOR_MSGS_POINT_CLOUD_CONVERSION_HPP_
+#endif  // SENSOR_MSGS_POINT_CLOUD_CONVERSION_HPP_  // NOLINT

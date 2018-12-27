@@ -17,8 +17,8 @@
 // Created on: 16.07.2015
 // Authors: Sebastian Pütz <spuetz@uni-osnabrueck.de>
 
-#ifndef SENSOR_MSGS_POINT_FIELD_CONVERSION_HPP_
-#define SENSOR_MSGS_POINT_FIELD_CONVERSION_HPP_
+#ifndef SENSOR_MSGS_POINT_FIELD_CONVERSION_HPP_  // NOLINT
+#define SENSOR_MSGS_POINT_FIELD_CONVERSION_HPP_  // NOLINT
 
 #include <stdio.h>
 /**
@@ -241,4 +241,4 @@ inline void writePointCloud2BufferValue(
 }
 }  // namespace sensor_msgs
 
-#endif  // SENSOR_MSGS_POINT_FIELD_CONVERSION_HPP_
+#endif  // SENSOR_MSGS_POINT_FIELD_CONVERSION_HPP_  // NOLINT

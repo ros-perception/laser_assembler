@@ -99,7 +99,8 @@ public:
           RCLCPP_INFO(this->get_logger(), "Got result: [ %ld ]", result.get()->cloud.points.size());
           pub_->publish(result.get()->cloud);
         } else {
-          RCLCPP_INFO(this->get_logger(), "Got an empty cloud. Going to try again on the next scan");
+          RCLCPP_INFO(this->get_logger(),
+            "Got an empty cloud. Going to try again on the next scan");
         }
       };
 

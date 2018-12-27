@@ -93,13 +93,15 @@ public:
 
       auto response_received_callback = [this](ServiceResponseFuture future) {
           auto result = future.get();
-          RCLCPP_INFO(node_->get_logger(), "Got result: [ %ld ]", result.get()->cloud.points.size());
+          RCLCPP_INFO(node_->get_logger(), "Got result: [ %ld ]",
+            result.get()->cloud.points.size());
           if (result.get()->cloud.points.size() > 0) {
             cloud_ = result.get()->cloud;
             got_cloud_ = true;
             cloud_condition_.notify_all();
           } else {
-            RCLCPP_INFO(node_->get_logger(), "Got an empty cloud. Going to try again on the next scan");
+            RCLCPP_INFO(
+              node_->get_logger(), "Got an empty cloud. Going to try again on the next scan");
           }
         };
 

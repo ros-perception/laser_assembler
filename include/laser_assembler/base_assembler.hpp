@@ -46,6 +46,8 @@
 #include "laser_assembler_srv_gen/srv/assemble_scans.hpp"
 #include "laser_assembler_srv_gen/srv/assemble_scans2.hpp"
 
+rclcpp::Logger g_logger = rclcpp::get_logger("laser_scan_assembler");
+
 namespace laser_assembler
 {
 
@@ -59,7 +61,7 @@ class BaseAssembler
 public:
   BaseAssembler(
     const std::string & max_size_param_name,
-    rclcpp::Node::SharedPtr node_);
+    const rclcpp::Node::SharedPtr & node_);
   ~BaseAssembler();
 
   /**
@@ -93,10 +95,10 @@ public:
     sensor_msgs::msg::PointCloud & cloud_out) = 0;
 
 protected:
+  rclcpp::Node * n_;
   tf2::BufferCore tfBuffer;
   tf2_ros::TransformListener * tf_;
   tf2_ros::MessageFilter<T> * tf_filter_;
-  rclcpp::Node::SharedPtr n_;
 
 private:
   // ROS Input/Ouptut Handling
@@ -137,22 +139,20 @@ private:
 template<class T>
 BaseAssembler<T>::BaseAssembler(
   const std::string & max_size_param_name,
-  rclcpp::Node::SharedPtr node_)
+  const rclcpp::Node::SharedPtr & node_)
 {
   // **** Initialize TransformListener ****
   double tf_cache_time_secs;
-  n_ = node_;
-
-  RCLCPP_INFO(n_->get_logger(), "BaseAssembler<T>::BaseAssembler constructor ");
+  n_ = node_.get();
 
   n_->get_parameter_or("tf_cache_time_secs", tf_cache_time_secs, 10.0);
 
   if (tf_cache_time_secs < 0) {
-    RCLCPP_ERROR(n_->get_logger(), "Parameter tf_cache_time_secs<0 (%f)", tf_cache_time_secs);
+    RCLCPP_ERROR(g_logger, "Parameter tf_cache_time_secs<0 (%f)", tf_cache_time_secs);
   }
 
   tf_ = new tf2_ros::TransformListener(tfBuffer);
-  RCLCPP_INFO(n_->get_logger(), "TF Cache Time: %f Seconds ", tf_cache_time_secs);
+  RCLCPP_INFO(g_logger, "TF Cache Time: %f Seconds ", tf_cache_time_secs);
 
   // ***** Set max_scans *****
   const int default_max_scans = 400;
@@ -162,33 +162,33 @@ BaseAssembler<T>::BaseAssembler(
     default_max_scans);
 
   if (tmp_max_scans < 0) {
-    RCLCPP_ERROR(n_->get_logger(), "Parameter max_scans<0 (%i)", tmp_max_scans);
+    RCLCPP_ERROR(g_logger, "Parameter max_scans<0 (%i)", tmp_max_scans);
     tmp_max_scans = default_max_scans;
   }
   max_scans_ = tmp_max_scans;
-  RCLCPP_INFO(n_->get_logger(), "Max Scans in History: %u ", max_scans_);
+  RCLCPP_INFO(g_logger, "Max Scans in History: %u ", max_scans_);
   total_pts_ = 0;  // We're always going to start with no points in our history
 
   // ***** Set fixed_frame *****
   n_->get_parameter_or("fixed_frame", fixed_frame_,
     std::string("ERROR_NO_NAME"));
 
-  RCLCPP_INFO(n_->get_logger(),"Fixed Frame: %s ", fixed_frame_.c_str());
+  RCLCPP_INFO(g_logger, "Fixed Frame: %s ", fixed_frame_.c_str());
 
   if (fixed_frame_ == "ERROR_NO_NAME") {
-    RCLCPP_ERROR(n_->get_logger(), "Need to set parameter fixed_frame");
+    RCLCPP_ERROR(g_logger, "Need to set parameter fixed_frame");
   }
 
   // ***** Set downsample_factor *****
   int tmp_downsample_factor;
   n_->get_parameter_or("downsample_factor", tmp_downsample_factor, 1);
   if (tmp_downsample_factor < 1) {
-    RCLCPP_ERROR(n_->get_logger(), "Parameter downsample_factor<1: %i", tmp_downsample_factor);
+    RCLCPP_ERROR(g_logger, "Parameter downsample_factor<1: %i", tmp_downsample_factor);
     tmp_downsample_factor = 1;
   }
   downsample_factor_ = tmp_downsample_factor;
   if (downsample_factor_ != 1) {
-    RCLCPP_WARN(n_->get_logger(), "Downsample set to [%u]. Note that this is an unreleased/unstable "
+    RCLCPP_WARN(g_logger, "Downsample set to [%u]. Note that this is an unreleased/unstable "
       "feature",
       downsample_factor_);
   }
@@ -217,10 +217,10 @@ BaseAssembler<T>::BaseAssembler(
 template<class T>
 void BaseAssembler<T>::start(const std::string & in_topic_name)
 {
-  RCLCPP_DEBUG(n_->get_logger(), "Called start(string). Starting to listen on "
+  RCLCPP_DEBUG(g_logger, "Called start(string). Starting to listen on "
     "message_filter::Subscriber the input stream");
   if (tf_filter_) {
-    RCLCPP_ERROR(n_->get_logger(), "assembler::start() was called twice!. This is bad, and could "
+    RCLCPP_ERROR(g_logger, "assembler::start() was called twice!. This is bad, and could "
       "leak memory");
   } else {
     scan_sub_.subscribe(n_, in_topic_name);
@@ -234,10 +234,10 @@ void BaseAssembler<T>::start(const std::string & in_topic_name)
 template<class T>
 void BaseAssembler<T>::start()
 {
-  RCLCPP_DEBUG(n_->get_logger(), "Called start(). Starting tf::MessageFilter, but not initializing "
+  RCLCPP_DEBUG(g_logger, "Called start(). Starting tf::MessageFilter, but not initializing "
     "Subscriber");
   if (tf_filter_) {
-    RCLCPP_ERROR(n_->get_logger(), "assembler::start() was called twice!. This is bad, and could "
+    RCLCPP_ERROR(g_logger, "assembler::start() was called twice!. This is bad, and could "
       "leak memory");
   } else {
     scan_sub_.subscribe(n_, "bogus");
@@ -261,7 +261,7 @@ BaseAssembler<T>::~BaseAssembler()
 template<class T>
 void BaseAssembler<T>::msgCallback(const std::shared_ptr<const T> & scan_ptr)
 {
-  RCLCPP_DEBUG(n_->get_logger(), "starting msgCallback");
+  RCLCPP_DEBUG(g_logger, "starting msgCallback");
   const T scan = *scan_ptr;
 
   sensor_msgs::msg::PointCloud cur_cloud;
@@ -271,7 +271,7 @@ void BaseAssembler<T>::msgCallback(const std::shared_ptr<const T> & scan_ptr)
     ConvertToCloud(fixed_frame_, scan,
       cur_cloud);              // Convert scan into a point cloud
   } catch (tf2::TransformException & ex) {
-    RCLCPP_WARN(n_->get_logger(), "Transform Exception %s", ex.what());
+    RCLCPP_WARN(g_logger, "Transform Exception %s", ex.what());
     return;
   }
 
@@ -289,10 +289,10 @@ void BaseAssembler<T>::msgCallback(const std::shared_ptr<const T> & scan_ptr)
   total_pts_ += cur_cloud.points
     .size();                 // Add the new scan to the running total of points
 
-  //printf("Scans: %4lu  Points: %10u\n", scan_hist_.size(), total_pts_);
+  // printf("Scans: %4lu  Points: %10u\n", scan_hist_.size(), total_pts_);
 
   scan_hist_mutex_.unlock();
-  RCLCPP_DEBUG(n_->get_logger(), "done with msgCallback");
+  RCLCPP_DEBUG(g_logger, "done with msgCallback");
 }
 
 template<class T>
@@ -358,7 +358,7 @@ bool BaseAssembler<T>::assembleScans(
         if (scan_hist_[i].points.size() !=
           scan_hist_[i].channels[chan_ind].values.size())
         {
-          RCLCPP_FATAL(n_->get_logger(), "Trying to add a malformed point cloud. Cloud has %u "
+          RCLCPP_FATAL(g_logger, "Trying to add a malformed point cloud. Cloud has %u "
             "points, but channel %u has %u elems",
             (int)scan_hist_[i].points.size(), chan_ind,
             (int)scan_hist_[i].channels[chan_ind].values.size());
@@ -384,7 +384,7 @@ bool BaseAssembler<T>::assembleScans(
   }
   scan_hist_mutex_.unlock();
 
-  RCLCPP_DEBUG(n_->get_logger(), "\nPoint Cloud Results: Aggregated from index %u->%u. BufferSize: "
+  RCLCPP_DEBUG(g_logger, "\nPoint Cloud Results: Aggregated from index %u->%u. BufferSize: "
     "%lu. Points in cloud: %u",
     start_index, past_end_index, scan_hist_.size(),
     (int)resp->cloud.points.size());

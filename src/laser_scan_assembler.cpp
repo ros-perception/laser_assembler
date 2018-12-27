@@ -37,7 +37,7 @@ namespace laser_assembler
 class LaserScanAssembler : public BaseAssembler<sensor_msgs::msg::LaserScan>
 {
 public:
-  explicit LaserScanAssembler(rclcpp::Node::SharedPtr node_)
+  explicit LaserScanAssembler(const rclcpp::Node::SharedPtr & node_)
   : BaseAssembler<sensor_msgs::msg::LaserScan>("max_scans", node_),
     filter_chain_("sensor_msgs::msg::LaserScan")
   {
@@ -46,7 +46,7 @@ public:
       true);
 
     // configure the filter chain from the parameter server
-    filter_chain_.configure("filters", n_);
+    filter_chain_.configure("filters", node_);
 
     // Have different callbacks, depending on whether or not we want to ignore
     // laser skews.
@@ -87,7 +87,6 @@ public:
     if (ignore_laser_skew_) {  // Do it the fast (approximate) way
       projector_.projectLaser(scan_filtered_, cloud_out);
       if (cloud_out.header.frame_id != fixed_frame_id) {
-        ;
         // TODO(vandana) transform PointCloud
         // tf_->transformPointCloud(fixed_frame_id, cloud_out, cloud_out);
       }
@@ -108,7 +107,7 @@ public:
       rclcpp::Duration cur_tolerance = rclcpp::Duration(
         laser_scan->time_increment * laser_scan->ranges.size());
       if (cur_tolerance > max_tolerance_) {
-        RCLCPP_DEBUG(n_->get_logger(), "Upping tf tolerance from [%.4fs] to [%.4fs]",
+        RCLCPP_DEBUG(g_logger, "Upping tf tolerance from [%.4fs] to [%.4fs]",
           max_tolerance_.nanoseconds() / 1e+9,
           cur_tolerance.nanoseconds() / 1e+9);
         assert(tf_filter_);
@@ -136,7 +135,8 @@ private:
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
-  auto node = rclcpp::Node::make_shared("laser_scan_assembler");
+  rclcpp::Node::SharedPtr node = rclcpp::Node::make_shared("laser_scan_assembler");
+  g_logger = node->get_logger();
   laser_assembler::LaserScanAssembler pc_assembler(node);
   rclcpp::spin(node);
 
