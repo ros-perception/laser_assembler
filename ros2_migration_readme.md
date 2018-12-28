@@ -4,6 +4,7 @@ This file describes the work done and steps to perform test on the laser_assembl
 
 
 ROS2 Migration changes
+
 	The basic concept and design are same as ROS1.
 	Work Done by referring ROS1 hydro-devel branch of laser_assembler package.
 	All changes for migration have been done as per Migration guide.
@@ -13,6 +14,7 @@ ROS2 Migration changes
 		Migrated CMakeLists.txt and package.xml in ROS2 style
 
 Dependencies
+
 	filters
 	laser_geometry
 	message_filters
