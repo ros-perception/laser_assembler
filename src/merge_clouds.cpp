@@ -20,7 +20,6 @@
 potentially from different sensors
 
  **/
-// #include <ros/ros.h>
 #include <string>
 #include <algorithm>
 #include <memory>

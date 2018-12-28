@@ -291,6 +291,8 @@ public:
       V_string::iterator end = target_frames_copy.end();
       for (; it != end; ++it) {
         const std::string & target_frame = *it;
+        // class rclcpp::Time’ has no member named ‘seconds'.
+        // So used nanoseconds() and converted it to seconds, dividing it by 1e+9.
         tf2::TransformableRequestHandle handle = bc_.addTransformableRequest(callback_handle_,
             target_frame, frame_id, tf2::timeFromSec(
               stamp.nanoseconds() / 1e+9));

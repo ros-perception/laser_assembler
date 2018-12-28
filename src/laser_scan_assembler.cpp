@@ -22,7 +22,6 @@
 #include "laser_assembler/base_assembler.hpp"
 #include "rclcpp/time.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
-#include "sensor_msgs/msg/point_cloud2.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 
 #define TIME rclcpp::Time
@@ -83,7 +82,7 @@ public:
     unsigned int n_pts = scan_in.ranges.size();
 
     // TODO(vandana) ignore_laser_skew_ this case is not handled right now, as there is
-    // no transformPointCloud support for PointCloud in ROS2.
+    // no transformPointCloud support for PointCloud in bouncy.
     if (ignore_laser_skew_) {  // Do it the fast (approximate) way
       projector_.projectLaser(scan_filtered_, cloud_out);
       if (cloud_out.header.frame_id != fixed_frame_id) {

@@ -28,7 +28,7 @@
 #include "tf2_ros/transform_listener.h"
 #include "tf2/buffer_core.h"
 #include "tf2/time.h"
-// #include "tf2_ros/message_filter.h" // TODO message_filter.h file in ros2's
+// #include "tf2_ros/message_filter.h" // TODO message_filter.h file in bouncy's
 // tf2_ros package is not ported to ros2 yet. Found ported message_filter.h file
 // on link
 // https://github.com/ros2/geometry2/blob/ros2/tf2_ros/include/tf2_ros/message_filter.h
@@ -95,6 +95,7 @@ public:
     sensor_msgs::msg::PointCloud & cloud_out) = 0;
 
 protected:
+  // message_filters's subscribe method requires raw node pointer.
   rclcpp::Node * n_;
   tf2::BufferCore tfBuffer;
   tf2_ros::TransformListener * tf_;
@@ -106,7 +107,6 @@ private:
     assemble_scans_server_;
 
   message_filters::Subscriber<T> scan_sub_;
-  message_filters::Connection tf_filter_connection_;
 
   //! \brief Callback function for every time we receive a new scan
   virtual void msgCallback(const std::shared_ptr<const T> & scan_ptr);
@@ -223,6 +223,7 @@ void BaseAssembler<T>::start(const std::string & in_topic_name)
     RCLCPP_ERROR(g_logger, "assembler::start() was called twice!. This is bad, and could "
       "leak memory");
   } else {
+    // subscribe method requires raw node pointer.
     scan_sub_.subscribe(n_, in_topic_name);
     tf_filter_ =
       new tf2_ros::MessageFilter<T>(scan_sub_, tfBuffer, fixed_frame_, 10, 0);
