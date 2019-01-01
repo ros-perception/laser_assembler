@@ -58,7 +58,6 @@ Build packages
 		mkdir launch_ws/src
 		cd launch_ws/src
 		git clone https://github.com/ros2/launch.git -b master
-		git clone https://github.com/ros2/launch/tree/master
 		Go to launch_ws directory.
 		colcon build
 

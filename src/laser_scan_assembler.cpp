@@ -18,7 +18,7 @@
 #include <string>
 #include <chrono>
 #include "laser_geometry/laser_geometry.hpp"
-#include "filters/filter_chain.h"
+#include "filters/filter_chain.hpp"
 #include "laser_assembler/base_assembler.hpp"
 #include "rclcpp/time.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
@@ -67,7 +67,7 @@ public:
   }
 
   void ConvertToCloud(
-    const string & fixed_frame_id,
+    const std::string & fixed_frame_id,
     const sensor_msgs::msg::LaserScan & scan_in,
     sensor_msgs::msg::PointCloud & cloud_out)
   {
