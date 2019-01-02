@@ -1,4 +1,4 @@
-This file describes the work done and steps to perform test on the laser_assembler package.
+This file describes the work done and steps to perform test on the laser_assembler package with bouncy release.
 
 "https://github.com/vandanamandlik/laser_assembler/tree/ros2-devel"
 
