@@ -1,6 +1,6 @@
-This file describes the work done and steps to perform test on the laser_assembler package with bouncy release.
+This file describes the work done and steps to perform test on the laser_assembler package with crystal release.
 
-"https://github.com/vandanamandlik/laser_assembler/tree/ros2-devel"
+"https://github.com/vandanamandlik/laser_assembler/tree/ros2-crystal"
 
 
 ROS2 Migration changes
@@ -31,45 +31,26 @@ Build packages
 		cd filters_ws/src
 		git clone https://github.com/swatifulzele/filters.git -b ros2_devel
 		Go to filters_ws directory.
-		source /opt/ros/bouncy/setup.bash
+		source /opt/ros/crystal/setup.bash
 		colcon build
 
-	Build laser_geometry package
+	Build laser_geometry package (laser_geometry package was not having PointCloud1 support so I have added it here.)
 		Go to test_laser_assembler directory
 		mkdir laser_geometry_ws
 		mkdir laser_geometry_ws/src
 		cd laser_geometry_ws/src
-		git clone https://github.com/vandanamandlik/laser_geometry.git -b ros2-devel(laser_geometry package was not having PointCloud1 support so I have added it here.)
+		git clone https://github.com/vandanamandlik/laser_geometry.git -b ros2-devel
 		Go to laser_geometry_ws directory.
-		colcon build
-
-	Build message_filters package
-		Go to test_laser_assembler directory
-		mkdir message_filters_ws
-		mkdir message_filters_ws/src
-		cd message_filters_ws/src
-		git clone https://github.com/vandanamandlik/ros2_message_filters.git -b ros2-devel(Fixed error: FrameId is not a member of message_filters::message_traits)
-		Go to message_filters_ws directory.
-		colcon build
-
-	Build launch package
-		Go to test_laser_assembler directory
-		mkdir launch_ws
-		mkdir launch_ws/src
-		cd launch_ws/src
-		git clone https://github.com/ros2/launch.git -b master
-		Go to launch_ws directory.
 		colcon build
 
 	Build laser_assembler
 		Go to test_laser_assembler directory
 		mkdir laser_assembler_ws
 		mkdir laser_assembler_ws/src
-		git clone https://github.com/vandanamandlik/laser_assembler.git -b ros2-devel
+		git clone https://github.com/vandanamandlik/laser_assembler.git -b ros2-crystal
 		remove laser_assembler_srv_gen folder from laser_assembler and paste it in src folder (so your src folder should contain laser_assembler and laser_assembler_srv_gen directories.)
 		Go to laser_assembler_ws
 		source <filters's setup.bash file path> (eg. source filters_ws/install/setup.sh)
-		source <message_filters's setup.bash file path>
 		source <laser_geometry's setup.bash file path>
 		colcon build
 
@@ -80,9 +61,8 @@ Do the test
 
 	1.  Set the path
 		Go to laser_assembler_ws
-		source /opt/ros/bouncy/setup.bash
-		source ./install/setup.bash 
-		source <launch packge setup.bash file path> (source ../launch_ws/install/setup.bash)
+		source /opt/ros/crystal/setup.bash
+		source ./install/setup.bash
  
 	2. To run non_zero_point_cloud_test
 		ros2 launch laser_assembler test_laser_assembler.launch.py

@@ -381,7 +381,8 @@ public:
     // Time t = rclcpp::Clock::now();
     rclcpp::Clock system_clock(RCL_SYSTEM_TIME);
     rclcpp::Time t = system_clock.now();
-    add(MEvent(message, header, t));
+    // add(MEvent(message, header, t));
+    add(MEvent(message, t));
   }
 
   /**

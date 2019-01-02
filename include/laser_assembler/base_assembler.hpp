@@ -96,7 +96,7 @@ public:
 
 protected:
   // message_filters's subscribe method requires raw node pointer.
-  rclcpp::Node * n_;
+  rclcpp::Node::SharedPtr n_;
   tf2::BufferCore tfBuffer;
   tf2_ros::TransformListener * tf_;
   tf2_ros::MessageFilter<T> * tf_filter_;
@@ -143,7 +143,7 @@ BaseAssembler<T>::BaseAssembler(
 {
   // **** Initialize TransformListener ****
   double tf_cache_time_secs;
-  n_ = node_.get();
+  n_ = node_;
 
   n_->get_parameter_or("tf_cache_time_secs", tf_cache_time_secs, 10.0);
 
