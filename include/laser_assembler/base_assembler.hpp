@@ -96,7 +96,7 @@ public:
 
 protected:
   // message_filters's subscribe method requires raw node pointer.
-  rclcpp::Node * n_;
+  rclcpp::Node::SharedPtr n_;
   tf2::BufferCore tfBuffer;
   tf2_ros::TransformListener * tf_;
   tf2_ros::MessageFilter<T> * tf_filter_;
@@ -143,7 +143,7 @@ BaseAssembler<T>::BaseAssembler(
 {
   // **** Initialize TransformListener ****
   double tf_cache_time_secs;
-  n_ = node_.get();
+  n_ = node_;
 
   n_->get_parameter_or("tf_cache_time_secs", tf_cache_time_secs, 10.0);
 
@@ -224,7 +224,7 @@ void BaseAssembler<T>::start(const std::string & in_topic_name)
       "leak memory");
   } else {
     // subscribe method requires raw node pointer.
-    scan_sub_.subscribe(n_, in_topic_name);
+    scan_sub_.subscribe(n_.get(), in_topic_name);
     tf_filter_ =
       new tf2_ros::MessageFilter<T>(scan_sub_, tfBuffer, fixed_frame_, 10, 0);
     tf_filter_->registerCallback(
@@ -241,7 +241,7 @@ void BaseAssembler<T>::start()
     RCLCPP_ERROR(g_logger, "assembler::start() was called twice!. This is bad, and could "
       "leak memory");
   } else {
-    scan_sub_.subscribe(n_, "bogus");
+    scan_sub_.subscribe(n_.get(), "bogus");
     tf_filter_ =
       new tf2_ros::MessageFilter<T>(scan_sub_, tfBuffer, fixed_frame_, 10, 0);
     tf_filter_->registerCallback(
