@@ -18,7 +18,7 @@
 #include <string>
 #include <memory>
 // Services
-#include "laser_assembler_srv_gen/srv/assemble_scans.hpp"
+#include "laser_assembler/srv/assemble_scans.hpp"
 
 #include "rclcpp/rclcpp.hpp"
 // Messages
@@ -42,7 +42,7 @@ public:
   : Node(service_name)
   {
     static const char SERVICE_NAME[] = "assemble_scans";
-    client_ = this->create_client<laser_assembler_srv_gen::srv::AssembleScans>(
+    client_ = this->create_client<laser_assembler::srv::AssembleScans>(
       SERVICE_NAME);
 
     using namespace std::chrono_literals;
@@ -84,14 +84,14 @@ public:
 
     // Populate our service request based on our timer callback times
     auto request = std::make_shared<
-      laser_assembler_srv_gen::srv::AssembleScans::Request>();
+      laser_assembler::srv::AssembleScans::Request>();
 
     request->begin = last_time.sec;
     last_time = rclcpp::Clock().now();
     request->end = last_time.sec;
 
     using ServiceResponseFuture = rclcpp::Client<
-      laser_assembler_srv_gen::srv::AssembleScans>::SharedFuture;
+      laser_assembler::srv::AssembleScans>::SharedFuture;
 
     auto response_received_callback = [this](ServiceResponseFuture future) {
         auto result = future.get();
@@ -109,7 +109,7 @@ public:
 
 private:
   rclcpp::Publisher<sensor_msgs::msg::PointCloud>::SharedPtr pub_;
-  rclcpp::Client<laser_assembler_srv_gen::srv::AssembleScans>::SharedPtr
+  rclcpp::Client<laser_assembler::srv::AssembleScans>::SharedPtr
     client_;
   builtin_interfaces::msg::Time last_time;
   rclcpp::TimerBase::SharedPtr timer_;

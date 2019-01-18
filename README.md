@@ -66,7 +66,6 @@ Build packages
 		mkdir laser_assembler_ws
 		mkdir laser_assembler_ws/src
 		git clone https://github.com/vandanamandlik/laser_assembler.git -b ros2-devel
-		remove laser_assembler_srv_gen folder from laser_assembler and paste it in src folder (so your src folder should contain laser_assembler and laser_assembler_srv_gen directories.)
 		Go to laser_assembler_ws
 		source <filters's setup.bash file path> (eg. source filters_ws/install/setup.sh)
 		source <message_filters's setup.bash file path>

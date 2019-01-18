@@ -1,9 +1,9 @@
 # The time interval on which we want to aggregate scans
-uint64 begin
+int64 begin
 # The end of the interval on which we want to assemble scans or clouds
-uint64 end
+int64 end
 ---
 # The point cloud holding the assembled clouds or scans. 
 # This cloud is in the frame specified by the ~fixed_frame node parameter. 
 # cloud is empty if no scans are received in the requested interval.
-sensor_msgs/msg/PointCloud cloud
+sensor_msgs/PointCloud cloud

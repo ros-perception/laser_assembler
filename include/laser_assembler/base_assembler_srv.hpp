@@ -29,7 +29,7 @@
 #include "sensor_msgs/msg/point_cloud.hpp"
 
 // Service
-#include "laser_assembler_srv_gen/srv/assemble_scans.hpp"
+#include "laser_assembler/srv/assemble_scans.hpp"
 
 namespace laser_assembler
 {
