@@ -18,7 +18,7 @@
 #include <thread>
 #include <chrono>
 #include <memory>
-#include "laser_assembler_srv_gen/srv/assemble_scans.hpp"
+#include "laser_assembler/srv/assemble_scans.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
 #include "sensor_msgs/msg/point_cloud2.h"
@@ -30,7 +30,7 @@ class TestAssembler : public testing::Test
 {
 public:
   rclcpp::Node::SharedPtr node_;
-  rclcpp::Client<laser_assembler_srv_gen::srv::AssembleScans>::SharedPtr
+  rclcpp::Client<laser_assembler::srv::AssembleScans>::SharedPtr
     client_;
 
   TestAssembler() {}
@@ -42,7 +42,7 @@ public:
     node_ = rclcpp::Node::make_shared("test_assembler");
     std::thread spin_thread(spinThread, node_);
     spin_thread.detach();
-    client_ = node_->create_client<laser_assembler_srv_gen::srv::AssembleScans>(
+    client_ = node_->create_client<laser_assembler::srv::AssembleScans>(
       "assemble_scans");
     using namespace std::chrono_literals;
     RCLCPP_INFO(node_->get_logger(), "Waiting for service [%s]", SERVICE_NAME);
@@ -73,7 +73,7 @@ public:
     } else {
       // Make the call to get a point cloud
       auto request = std::make_shared<
-        laser_assembler_srv_gen::srv::AssembleScans::Request>();
+        laser_assembler::srv::AssembleScans::Request>();
       request->begin = start_time_.sec;
       request->end = scan_msg->header.stamp.sec;
 
@@ -89,7 +89,7 @@ public:
       // function can continue and our callback will get called once the
       // response is received.
       using ServiceResponseFuture = rclcpp::Client<
-        laser_assembler_srv_gen::srv::AssembleScans>::SharedFuture;
+        laser_assembler::srv::AssembleScans>::SharedFuture;
 
       auto response_received_callback = [this](ServiceResponseFuture future) {
           auto result = future.get();

@@ -43,8 +43,8 @@
 #include "laser_assembler/point_cloud_conversion.hpp"
 
 // Service
-#include "laser_assembler_srv_gen/srv/assemble_scans.hpp"
-#include "laser_assembler_srv_gen/srv/assemble_scans2.hpp"
+#include "laser_assembler/srv/assemble_scans.hpp"
+#include "laser_assembler/srv/assemble_scans2.hpp"
 
 rclcpp::Logger g_logger = rclcpp::get_logger("laser_scan_assembler");
 
@@ -103,7 +103,7 @@ protected:
 
 private:
   // ROS Input/Ouptut Handling
-  rclcpp::Service<laser_assembler_srv_gen::srv::AssembleScans>::SharedPtr
+  rclcpp::Service<laser_assembler::srv::AssembleScans>::SharedPtr
     assemble_scans_server_;
 
   message_filters::Subscriber<T> scan_sub_;
@@ -113,9 +113,9 @@ private:
 
   //! \brief Service Callback function called whenever we need to build a cloud
   bool assembleScans(
-    std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Request>
+    std::shared_ptr<laser_assembler::srv::AssembleScans::Request>
     request,
-    std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Response>
+    std::shared_ptr<laser_assembler::srv::AssembleScans::Response>
     response);
 
   //! \brief Stores history of scans
@@ -196,16 +196,16 @@ BaseAssembler<T>::BaseAssembler(
   // ***** Start Services *****
   auto assembleScansCallback =
     [this](
-    std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Request>
+    std::shared_ptr<laser_assembler::srv::AssembleScans::Request>
     request,
-    std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Response>
+    std::shared_ptr<laser_assembler::srv::AssembleScans::Response>
     response) -> bool {
       this->assembleScans(request, response);
       return true;
     };
 
   assemble_scans_server_ =
-    n_->create_service<laser_assembler_srv_gen::srv::AssembleScans>(
+    n_->create_service<laser_assembler::srv::AssembleScans>(
     "assemble_scans", assembleScansCallback);
 
   // ***** Start Listening to Data *****
@@ -298,8 +298,8 @@ void BaseAssembler<T>::msgCallback(const std::shared_ptr<const T> & scan_ptr)
 
 template<class T>
 bool BaseAssembler<T>::assembleScans(
-  std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Request> req,
-  std::shared_ptr<laser_assembler_srv_gen::srv::AssembleScans::Response>
+  std::shared_ptr<laser_assembler::srv::AssembleScans::Request> req,
+  std::shared_ptr<laser_assembler::srv::AssembleScans::Response>
   resp)
 {
   scan_hist_mutex_.lock();
