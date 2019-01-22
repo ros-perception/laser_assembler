@@ -1,92 +1,72 @@
-/*********************************************************************
-* Software License Agreement (BSD License)
-*
-*  Copyright (c) 2008, Willow Garage, Inc.
-*  All rights reserved.
-*
-*  Redistribution and use in source and binary forms, with or without
-*  modification, are permitted provided that the following conditions
-*  are met:
-*
-*   * Redistributions of source code must retain the above copyright
-*     notice, this list of conditions and the following disclaimer.
-*   * Redistributions in binary form must reproduce the above
-*     copyright notice, this list of conditions and the following
-*     disclaimer in the documentation and/or other materials provided
-*     with the distribution.
-*   * Neither the name of the Willow Garage nor the names of its
-*     contributors may be used to endorse or promote products derived
-*     from this software without specific prior written permission.
-*
-*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-*  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-*  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-*  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-*  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-*  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-*  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-*  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-*  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-*  POSSIBILITY OF SUCH DAMAGE.
-*********************************************************************/
+// Copyright 2018 Open Source Robotics Foundation, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
+#include <string>
+#include "laser_assembler/base_assembler.hpp"
+#include "rclcpp/time.hpp"
+// point_cloud_conversion.h is not available in sensor_msgs package of ros2
+// #include <sensor_msgs/msg/point_cloud_conversion.h> // TODO
+#include "laser_assembler/point_cloud_conversion.hpp"
 
-#include "laser_assembler/base_assembler.h"
-#include <sensor_msgs/point_cloud_conversion.h>
-
-using namespace std ;
+#define TIME rclcpp::Time
 
 namespace laser_assembler
 {
 
 /**
- * \brief Maintains a history of incremental point clouds (usually from laser scans) and generates a point cloud upon request
- * \todo Clean up the doxygen part of this header
- * params
+ * \brief Maintains a history of incremental point clouds (usually from laser
+ * scans) and generates a point cloud upon request \todo Clean up the doxygen
+ * part of this header params
  *  * (Several params are inherited from BaseAssemblerSrv)
  */
-class PointCloud2Assembler : public BaseAssembler<sensor_msgs::PointCloud2>
+class PointCloud2Assembler
+  : public BaseAssembler<sensor_msgs::msg::PointCloud2>
 {
 public:
-  PointCloud2Assembler() : BaseAssembler<sensor_msgs::PointCloud2>("max_clouds")
-  {
+  explicit PointCloud2Assembler(rclcpp::Node::SharedPtr node)
+  : BaseAssembler<sensor_msgs::msg::PointCloud2>("max_clouds", node) {}
 
+  ~PointCloud2Assembler() {}
+
+  unsigned int GetPointsInScan(const sensor_msgs::msg::PointCloud2 & scan)
+  {
+    return scan.width * scan.height;
   }
 
-  ~PointCloud2Assembler()
+  void ConvertToCloud(
+    const std::string & fixed_frame_id,
+    const sensor_msgs::msg::PointCloud2 & scan_in,
+    sensor_msgs::msg::PointCloud & cloud_out)
   {
-
-  }
-
-  unsigned int GetPointsInScan(const sensor_msgs::PointCloud2& scan)
-  {
-    return (scan.width * scan.height);
-  }
-
-  void ConvertToCloud(const string& fixed_frame_id, const sensor_msgs::PointCloud2& scan_in, sensor_msgs::PointCloud& cloud_out)
-  {
-    sensor_msgs::PointCloud cloud_in;
+    sensor_msgs::msg::PointCloud cloud_in;
     sensor_msgs::convertPointCloud2ToPointCloud(scan_in, cloud_in);
-    tf_->transformPointCloud(fixed_frame_id, cloud_in, cloud_out) ;
-    return ;
+    // transformPointCloud() is not available in TF2 package
+    // tf_->transformPointCloud(fixed_frame_id, cloud_in, cloud_out) ; // TODO
   }
 
 private:
-
 };
 
-}
+}  // namespace laser_assembler
 
-using namespace laser_assembler ;
-
-int main(int argc, char **argv)
+int main(int argc, char ** argv)
 {
-  ros::init(argc, argv, "point_cloud_assembler");
-  PointCloud2Assembler pc_assembler;
+  rclcpp::init(argc, argv);
+  auto node = rclcpp::Node::make_shared("point_cloud_assembler");
+  laser_assembler::PointCloud2Assembler pc_assembler(node);
   pc_assembler.start("cloud");
-  ros::spin();
+  rclcpp::spin(node);
 
   return 0;
 }
