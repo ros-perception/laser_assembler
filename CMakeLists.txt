@@ -53,6 +53,30 @@ install(
   TARGETS laser_scan_assembler
   DESTINATION lib/${PROJECT_NAME})
 
+add_executable(point_cloud_assembler src/point_cloud_assembler.cpp)
+target_link_libraries(point_cloud_assembler ${LIBS})
+rosidl_target_interfaces(point_cloud_assembler
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+install(
+  TARGETS point_cloud_assembler
+  DESTINATION lib/${PROJECT_NAME})
+
+add_executable(merge_clouds src/merge_clouds.cpp)
+target_link_libraries(merge_clouds ${LIBS})
+rosidl_target_interfaces(merge_clouds
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+install(
+  TARGETS merge_clouds
+  DESTINATION lib/${PROJECT_NAME})
+
+add_executable(point_cloud2_assembler src/point_cloud2_assembler.cpp)
+target_link_libraries(point_cloud2_assembler ${LIBS})
+rosidl_target_interfaces(point_cloud2_assembler
+  ${PROJECT_NAME} "rosidl_typesupport_cpp")
+install(
+  TARGETS point_cloud2_assembler
+  DESTINATION lib/${PROJECT_NAME})
+
 include_directories(include)
 
 install(DIRECTORY "include/"

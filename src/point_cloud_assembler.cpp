@@ -42,7 +42,8 @@ public:
     const sensor_msgs::msg::PointCloud & scan_in,
     sensor_msgs::msg::PointCloud & cloud_out)
   {
-    tf_->transformPointCloud(fixed_frame_id, scan_in, cloud_out);
+    // transformPointCloud() is not available in TF2 package.
+    // tf_->transformPointCloud(fixed_frame_id, scan_in, cloud_out); // TODO
   }
 
 private:

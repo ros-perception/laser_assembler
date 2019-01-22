@@ -14,8 +14,12 @@
 
 #include <string>
 #include "laser_assembler/base_assembler.hpp"
+#include "rclcpp/time.hpp"
+// point_cloud_conversion.h is not available in sensor_msgs package of ros2
 // #include <sensor_msgs/msg/point_cloud_conversion.h> // TODO
 #include "laser_assembler/point_cloud_conversion.hpp"
+
+#define TIME rclcpp::Time
 
 namespace laser_assembler
 {
@@ -41,13 +45,14 @@ public:
   }
 
   void ConvertToCloud(
-    const string & fixed_frame_id,
+    const std::string & fixed_frame_id,
     const sensor_msgs::msg::PointCloud2 & scan_in,
     sensor_msgs::msg::PointCloud & cloud_out)
   {
     sensor_msgs::msg::PointCloud cloud_in;
     sensor_msgs::convertPointCloud2ToPointCloud(scan_in, cloud_in);
-    tf_->transformPointCloud(fixed_frame_id, cloud_in, cloud_out);
+    // transformPointCloud() is not available in TF2 package
+    // tf_->transformPointCloud(fixed_frame_id, cloud_in, cloud_out) ; // TODO
   }
 
 private:

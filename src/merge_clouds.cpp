@@ -23,6 +23,7 @@ potentially from different sensors
 #include <string>
 #include <algorithm>
 #include <memory>
+#include <chrono>
 #include <mutex>
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/point_cloud.hpp"
@@ -34,16 +35,17 @@ potentially from different sensors
 class MergeClouds
 {
 public:
-  MergeClouds(void)
-  : sub1_(nh_, "cloud_in1", 1), sub2_(nh_, "cloud_in1", 1)
+  explicit MergeClouds(rclcpp::Node::SharedPtr node)
+  : sub1_(node, "cloud_in1"), sub2_(node, "cloud_in1")
   {
-    cloudOut_ = nh_.advertise<sensor_msgs::msg::PointCloud>("cloud_out", 1);
-    nh_.param<std::string>("~output_frame", output_frame_, std::string());
-    nh_.param<double>("~max_frequency", max_freq_, 0.0);
+    tf_ = new tf2_ros::TransformListener(tfBuffer);
+    cloudOut_ = node->create_publisher<sensor_msgs::msg::PointCloud>("cloud_out", 1);
+    node->get_parameter_or<std::string>("~output_frame", output_frame_, std::string());
+    node->get_parameter_or<double>("~max_frequency", max_freq_, 0.0);
     newCloud1_ = newCloud2_ = false;
 
     if (output_frame_.empty()) {
-      ROS_ERROR("No output frame specified for merging pointclouds");
+      RCLCPP_ERROR(node->get_logger(), "No output frame specified for merging pointclouds");
     }
 
     // make sure we don't publish too fast
@@ -51,29 +53,38 @@ public:
       max_freq_ = 0.0;
     }
 
+    auto onTimer = [this]() -> void
+      {
+        if (newCloud1_ && newCloud2_) {
+          publishClouds();
+        }
+      };
+
     if (max_freq_ > 0.0) {
-      timer_ = nh_.createTimer(rclcpp::Duration(1.0 / max_freq_),
-          std::bind(&MergeClouds::onTimer, this, _1));
+      const std::chrono::nanoseconds period(rclcpp::Duration(1.0 / max_freq_).nanoseconds());
+      timer_ = node->create_wall_timer(period, onTimer);
       haveTimer_ = true;
     } else {
       haveTimer_ = false;
     }
 
-    tf_filter1_.reset(new tf2_ros::MessageFilter<sensor_msgs::msg::PointCloud>(
-        sub1_, tf_, output_frame_, 1));
-    tf_filter2_.reset(new tf2_ros::MessageFilter<sensor_msgs::msg::PointCloud>(
-        sub2_, tf_, output_frame_, 1));
+    tf_filter1_ =
+      new tf2_ros::MessageFilter<sensor_msgs::msg::PointCloud>(sub1_, tfBuffer, output_frame_, 1,
+        0);
 
-    tf_filter1_->registerCallback(
-      std::bind(&MergeClouds::receiveCloud1, this, _1));
-    tf_filter2_->registerCallback(
-      std::bind(&MergeClouds::receiveCloud2, this, _1));
+    tf_filter2_ =
+      new tf2_ros::MessageFilter<sensor_msgs::msg::PointCloud>(sub2_, tfBuffer, output_frame_, 1,
+        0);
+
+    tf_filter1_->registerCallback(&MergeClouds::receiveCloud1, this);
+
+    tf_filter2_->registerCallback(&MergeClouds::receiveCloud2, this);
   }
 
   ~MergeClouds(void) {}
 
 private:
-  void onTimer(const ros::TimerEvent & e)
+  void onTimer()
   {
     if (newCloud1_ && newCloud2_) {
       publishClouds();
@@ -89,37 +100,37 @@ private:
     newCloud2_ = false;
 
     sensor_msgs::msg::PointCloud out;
-    if (cloud1_.header.stamp > cloud2_.header.stamp) {
-      out.header = cloud1_.header;
+    if (cloud1_->header.stamp.nanosec > cloud2_->header.stamp.nanosec) {
+      out.header = cloud1_->header;
     } else {
-      out.header = cloud2_.header;
+      out.header = cloud2_->header;
     }
 
-    out.points.resize(cloud1_.points.size() + cloud2_.points.size());
+    out.points.resize(cloud1_->points.size() + cloud2_->points.size());
 
     // copy points
-    std::copy(cloud1_.points.begin(), cloud1_.points.end(), out.points.begin());
-    std::copy(cloud2_.points.begin(), cloud2_.points.end(),
-      out.points.begin() + cloud1_.points.size());
+    std::copy(cloud1_->points.begin(), cloud1_->points.end(), out.points.begin());
+    std::copy(cloud2_->points.begin(), cloud2_->points.end(),
+      out.points.begin() + cloud1_->points.size());
 
     // copy common channels
-    for (unsigned int i = 0; i < cloud1_.channels.size(); ++i) {
-      for (unsigned int j = 0; j < cloud2_.channels.size(); ++j) {
-        if (cloud1_.channels[i].name == cloud2_.channels[j].name) {
-          ASSERT_TRUE(cloud1_.channels[i].values.size() == cloud1_.points.size());
-          ASSERT_TRUE(cloud2_.channels[j].values.size() == cloud2_.points.size());
+    for (unsigned int i = 0; i < cloud1_->channels.size(); ++i) {
+      for (unsigned int j = 0; j < cloud2_->channels.size(); ++j) {
+        if (cloud1_->channels[i].name == cloud2_->channels[j].name) {
+          assert(cloud1_->channels[i].values.size() == cloud1_->points.size());
+          assert(cloud2_->channels[j].values.size() == cloud2_->points.size());
           unsigned int oc = out.channels.size();
           out.channels.resize(oc + 1);
-          out.channels[oc].name = cloud1_.channels[i].name;
-          out.channels[oc].values.resize(cloud1_.channels[i].values.size() +
-            cloud2_.channels[j].values.size());
-          std::copy(cloud1_.channels[i].values.begin(),
-            cloud1_.channels[i].values.end(),
+          out.channels[oc].name = cloud1_->channels[i].name;
+          out.channels[oc].values.resize(cloud1_->channels[i].values.size() +
+            cloud2_->channels[j].values.size());
+          std::copy(cloud1_->channels[i].values.begin(),
+            cloud1_->channels[i].values.end(),
             out.channels[oc].values.begin());
-          std::copy(cloud2_.channels[j].values.begin(),
-            cloud2_.channels[j].values.end(),
+          std::copy(cloud2_->channels[j].values.begin(),
+            cloud2_->channels[j].values.end(),
             out.channels[oc].values.begin() +
-            cloud1_.channels[i].values.size());
+            cloud1_->channels[i].values.size());
           break;
         }
       }
@@ -128,10 +139,10 @@ private:
     lock1_.unlock();
     lock2_.unlock();
 
-    cloudOut_.publish(out);
+    cloudOut_->publish(out);
   }
 
-  void receiveCloud1(const sensor_msgs::msg::PointCloudConstPtr & cloud)
+  void receiveCloud1(const std::shared_ptr<sensor_msgs::msg::PointCloud> & cloud)
   {
     lock1_.lock();
     processCloud(cloud, cloud1_);
@@ -142,7 +153,7 @@ private:
     }
   }
 
-  void receiveCloud2(const sensor_msgs::msg::PointCloudConstPtr & cloud)
+  void receiveCloud2(const std::shared_ptr<sensor_msgs::msg::PointCloud> & cloud)
   {
     lock2_.lock();
     processCloud(cloud, cloud2_);
@@ -154,35 +165,36 @@ private:
   }
 
   void processCloud(
-    const sensor_msgs::msg::PointCloudConstPtr & cloud,
-    sensor_msgs::msg::PointCloud & cloudOut)
+    const std::shared_ptr<sensor_msgs::msg::PointCloud> & cloud,
+    std::shared_ptr<sensor_msgs::msg::PointCloud> & cloudOut)
   {
     if (output_frame_ != cloud->header.frame_id) {
-      tf_.transformPointCloud(output_frame_, *cloud, cloudOut);
+      // tf_.transformPointCloud(output_frame_, *cloud, cloudOut);
     } else {
-      cloudOut = *cloud;
+      cloudOut = cloud;
     }
   }
 
-  ros::NodeHandle nh_;
-  tf::TransformListener tf_;
+  tf2_ros::TransformListener * tf_;
 
-  ros::Timer timer_;
+  tf2::BufferCore tfBuffer;
+  rclcpp::TimerBase::SharedPtr timer_;
   bool haveTimer_;
 
-  ros::Publisher cloudOut_;
+  rclcpp::Publisher<sensor_msgs::msg::PointCloud>::SharedPtr cloudOut_;
   double max_freq_;
   std::string output_frame_;
 
   message_filters::Subscriber<sensor_msgs::msg::PointCloud> sub1_;
   message_filters::Subscriber<sensor_msgs::msg::PointCloud> sub2_;
-  std::shared_ptr<tf::MessageFilter<sensor_msgs::msg::PointCloud>> tf_filter1_;
-  std::shared_ptr<tf::MessageFilter<sensor_msgs::msg::PointCloud>> tf_filter2_;
+
+  tf2_ros::MessageFilter<sensor_msgs::msg::PointCloud> * tf_filter1_;
+  tf2_ros::MessageFilter<sensor_msgs::msg::PointCloud> * tf_filter2_;
 
   bool newCloud1_;
   bool newCloud2_;
-  sensor_msgs::msg::PointCloud cloud1_;
-  sensor_msgs::msg::PointCloud cloud2_;
+  std::shared_ptr<sensor_msgs::msg::PointCloud> cloud1_;
+  std::shared_ptr<sensor_msgs::msg::PointCloud> cloud2_;
   std::mutex lock1_;
   std::mutex lock2_;
 };
@@ -190,9 +202,8 @@ private:
 int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
-  auto node = rclcpp::Node::make_shared("merge_clouds");
-  MergeClouds mc;
-  mc.start("cloud");
+  rclcpp::Node::SharedPtr node = rclcpp::Node::make_shared("merge_clouds");
+  MergeClouds mc(node);
   rclcpp::spin(node);
 
   return 0;
