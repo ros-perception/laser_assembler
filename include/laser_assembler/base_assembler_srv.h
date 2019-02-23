@@ -279,6 +279,7 @@ bool BaseAssemblerSrv<T>::buildCloud(AssembleScans::Request& req, AssembleScans:
   while ( i < scan_hist_.size() &&                                                    // Don't go past end of deque
           scan_hist_[i].header.stamp < req.end )                                      // Don't go past the end-time of the request
   {
+    resp.cloud.header.stamp = scan_hist_[i].header.stamp;
     req_pts += (scan_hist_[i].points.size()+downsample_factor_-1)/downsample_factor_ ;
     i += downsample_factor_ ;
   }
@@ -298,27 +299,39 @@ bool BaseAssemblerSrv<T>::buildCloud(AssembleScans::Request& req, AssembleScans:
     resp.cloud.points.resize( req_pts ) ;
     const unsigned int num_channels = scan_hist_[start_index].channels.size() ;
     resp.cloud.channels.resize(num_channels) ;
+    int stamps_channel = -1;
     for (i = 0; i<num_channels; i++)
     {
       resp.cloud.channels[i].name = scan_hist_[start_index].channels[i].name ;
       resp.cloud.channels[i].values.resize(req_pts) ;
+      if (resp.cloud.channels[i].name == "stamps")
+      {
+        stamps_channel = i;
+      }
     }
     //resp.cloud.header.stamp = req.end ;
     resp.cloud.header.frame_id = fixed_frame_ ;
     unsigned int cloud_count = 0 ;
     for (i=start_index; i<past_end_index; i+=downsample_factor_)
     {
+      double stamps_offset = (scan_hist_[i].header.stamp - resp.cloud.header.stamp).toSec();
       for(unsigned int j=0; j<scan_hist_[i].points.size(); j+=downsample_factor_)
       {
         resp.cloud.points[cloud_count].x = scan_hist_[i].points[j].x ;
         resp.cloud.points[cloud_count].y = scan_hist_[i].points[j].y ;
         resp.cloud.points[cloud_count].z = scan_hist_[i].points[j].z ;
         for (unsigned int k=0; k<num_channels; k++)
+        {
           resp.cloud.channels[k].values[cloud_count] = scan_hist_[i].channels[k].values[j] ;
+          if (stamps_channel >= 0 && k ==stamps_channel)
+          {
+            // adjust stamps to be an offset from the published header stamp
+            resp.cloud.channels[k].values[cloud_count] += stamps_offset;
+          }
+        }
 
         cloud_count++ ;
       }
-      resp.cloud.header.stamp = scan_hist_[i].header.stamp;
     }
   }
   scan_hist_mutex_.unlock() ;
