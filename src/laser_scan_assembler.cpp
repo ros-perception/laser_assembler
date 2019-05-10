@@ -55,6 +55,8 @@ public:
     // ***** Set Laser Projection Method *****
     private_ns_.param("ignore_laser_skew", ignore_laser_skew_, true);
 
+    private_ns_.param("range_cutoff", range_cutoff_, -1.0);
+
     // configure the filter chain from the parameter server
     filter_chain_.configure("filters", private_ns_);
 
@@ -86,7 +88,7 @@ public:
     // convert laser scan to point cloud
     if (ignore_laser_skew_)  // Do it the fast (approximate) way
     {
-      projector_.projectLaser(scan_filtered_, cloud_out);
+      projector_.projectLaser(scan_filtered_, cloud_out, range_cutoff_);
       if (cloud_out.header.frame_id != fixed_frame_id)
         tf_->transformPointCloud(fixed_frame_id, cloud_out, cloud_out);
     }
@@ -96,7 +98,7 @@ public:
                  laser_geometry::channel_option::Distance +
                  laser_geometry::channel_option::Index +
                  laser_geometry::channel_option::Timestamp;
-      projector_.transformLaserScanToPointCloud (fixed_frame_id, scan_filtered_, cloud_out, *tf_, mask);
+      projector_.transformLaserScanToPointCloud (fixed_frame_id, scan_filtered_, cloud_out, *tf_, range_cutoff_, mask);
     }
     return;
   }
@@ -120,6 +122,7 @@ public:
 private:
   bool ignore_laser_skew_;
   laser_geometry::LaserProjection projector_;
+  double range_cutoff_ ;
 
   ros::Subscriber skew_scan_sub_;
   ros::Duration max_tolerance_;   // The longest tolerance we've needed on a scan so far
