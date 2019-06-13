@@ -5,13 +5,13 @@ project(laser_assembler)
 # Find dependencies
 ##############################################################################
 
-set(THIS_PACKAGE_ROS_DEPS 
+set(THIS_PACKAGE_ROS_DEPS
 tf sensor_msgs message_filters roscpp laser_geometry filters)
 
-find_package(catkin REQUIRED COMPONENTS 
-  ${THIS_PACKAGE_ROS_DEPS} 
+find_package(catkin REQUIRED COMPONENTS
+  ${THIS_PACKAGE_ROS_DEPS}
   message_generation)
-find_package(Boost REQUIRED COMPONENTS system signals)
+find_package(Boost REQUIRED COMPONENTS system)
 include_directories(include ${catkin_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 
 ##############################################################################
@@ -85,7 +85,7 @@ endif()
 # Install
 ##############################################################################
 
-install(TARGETS 
+install(TARGETS
     laser_scan_assembler_srv
     laser_scan_assembler
     merge_clouds
