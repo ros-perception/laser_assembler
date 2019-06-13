@@ -84,7 +84,8 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "point_cloud_assembler");
   PointCloudAssembler pc_assembler;
   pc_assembler.start("cloud");
-  ros::spin();
+  ros::MultiThreadedSpinner spinner(4);
+  spinner.spin();
 
   return 0;
 }

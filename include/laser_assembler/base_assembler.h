@@ -46,6 +46,7 @@
 // Service
 #include "laser_assembler/AssembleScans.h"
 #include "laser_assembler/AssembleScans2.h"
+#include "laser_assembler/AssembleScans2Blocking.h"
 
 #include "boost/thread.hpp"
 #include "math.h"
@@ -103,6 +104,7 @@ private:
   ros::ServiceServer assemble_scans_server_;
   ros::ServiceServer build_cloud_server2_;
   ros::ServiceServer assemble_scans_server2_;
+  ros::ServiceServer assemble_scans2_blocking_server_;
   message_filters::Subscriber<T> scan_sub_;
   message_filters::Connection tf_filter_connection_;
 
@@ -110,15 +112,19 @@ private:
   //void scansCallback(const tf::MessageNotifier<T>::MessagePtr& scan_ptr, const T& testA)
   virtual void msgCallback(const boost::shared_ptr<const T>& scan_ptr) ;
 
+  bool assembleScansInternal(AssembleScans::Request& req, AssembleScans::Response& resp, ros::Duration blocking_period = ros::Duration(0.0)) ;
+
   //! \brief Service Callback function called whenever we need to build a cloud
   bool buildCloud(AssembleScans::Request& req, AssembleScans::Response& resp) ;
   bool assembleScans(AssembleScans::Request& req, AssembleScans::Response& resp) ;
   bool buildCloud2(AssembleScans2::Request& req, AssembleScans2::Response& resp) ;
   bool assembleScans2(AssembleScans2::Request& req, AssembleScans2::Response& resp) ;
+  bool assembleScans2Blocking(AssembleScans2Blocking::Request& req, AssembleScans2Blocking::Response& resp) ;
 
   //! \brief Stores history of scans
   std::deque<sensor_msgs::PointCloud> scan_hist_ ;
   boost::mutex scan_hist_mutex_ ;
+  boost::condition_variable scan_added_cv_ ;
 
   //! \brief The number points currently in the scan history
   unsigned int total_pts_ ;
@@ -182,6 +188,7 @@ BaseAssembler<T>::BaseAssembler(const std::string& max_size_param_name) : privat
   assemble_scans_server_ = n_.advertiseService("assemble_scans", &BaseAssembler<T>::assembleScans, this);
   build_cloud_server2_    = n_.advertiseService("build_cloud2",    &BaseAssembler<T>::buildCloud2,    this);
   assemble_scans_server2_ = n_.advertiseService("assemble_scans2", &BaseAssembler<T>::assembleScans2, this);
+  assemble_scans2_blocking_server_ = n_.advertiseService("assemble_scans2_blocking", &BaseAssembler<T>::assembleScans2Blocking, this);
 
   // ***** Start Listening to Data *****
   // (Well, don't start listening just yet. Keep this as null until we actually start listening, when start() is called)
@@ -258,6 +265,8 @@ void BaseAssembler<T>::msgCallback(const boost::shared_ptr<const T>& scan_ptr)
   //printf("Scans: %4u  Points: %10u\n", scan_hist_.size(), total_pts_) ;
 
   scan_hist_mutex_.unlock() ;
+  scan_added_cv_.notify_all() ;
+
   ROS_DEBUG("done with msgCallback");
 }
 
@@ -268,13 +277,30 @@ bool BaseAssembler<T>::buildCloud(AssembleScans::Request& req, AssembleScans::Re
   return assembleScans(req, resp);
 }
 
-
 template <class T>
 bool BaseAssembler<T>::assembleScans(AssembleScans::Request& req, AssembleScans::Response& resp)
 {
+  return assembleScansInternal(req, resp);
+}
+
+template <class T>
+bool BaseAssembler<T>::assembleScansInternal(AssembleScans::Request& req, AssembleScans::Response& resp, ros::Duration blocking_period)
+{
   //printf("Starting Service Request\n") ;
 
-  scan_hist_mutex_.lock() ;
+  boost::unique_lock<boost::mutex> scan_hist_lock(scan_hist_mutex_) ;
+
+  if (blocking_period > ros::Duration(0.0))
+  {
+    // Blocking period is always in wall-clock time, as it is meant to handle
+    // scheduling delays and topic racing, sim time is not appropriate.
+    boost::chrono::steady_clock::time_point end_tp = boost::chrono::steady_clock::now() + boost::chrono::nanoseconds(blocking_period.toNSec());
+    while (boost::chrono::steady_clock::now() < end_tp && (scan_hist_.size() == 0 || scan_hist_.rbegin()->header.stamp < req.end))
+    {
+      scan_added_cv_.wait_until(scan_hist_lock, end_tp);
+    }
+  }
+
   // Determine where in our history we actually are
   unsigned int i = 0 ;
 
@@ -356,7 +382,6 @@ bool BaseAssembler<T>::assembleScans(AssembleScans::Request& req, AssembleScans:
       }
     }
   }
-  scan_hist_mutex_.unlock() ;
 
   ROS_DEBUG("Point Cloud Results: Aggregated from index %u->%u. BufferSize: %lu. Points in cloud: %u", start_index, past_end_index, scan_hist_.size(), (int)resp.cloud.points.size ()) ;
   return true ;
@@ -384,4 +409,21 @@ bool BaseAssembler<T>::assembleScans2(AssembleScans2::Request& req, AssembleScan
   }
   return ret;
 }
+
+template <class T>
+bool BaseAssembler<T>::assembleScans2Blocking(AssembleScans2Blocking::Request& req, AssembleScans2Blocking::Response& resp)
+{
+  AssembleScans::Request tmp_req;
+  AssembleScans::Response tmp_res;
+  tmp_req.begin = req.begin;
+  tmp_req.end = req.end;
+  bool ret = assembleScansInternal(tmp_req, tmp_res, req.blocking_period);
+
+  if ( ret )
+  {
+    sensor_msgs::convertPointCloudToPointCloud2(tmp_res.cloud, resp.cloud);
+  }
+  return ret;
+}
+
 }

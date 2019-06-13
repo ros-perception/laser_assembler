@@ -1,0 +1,14 @@
+# The time interval on which we want to aggregate scans
+time begin
+# The end of the interval on which we want to assemble scans or clouds
+time end
+# How long to wait, in wall clock time, from when the request is received to
+# receive at least one scan that has a stamp >= end. This can be used to wait
+# some amount of time (up to the blocking_period) to fill the full request.
+duration blocking_period
+---
+# The point cloud holding the assembled clouds or scans.
+# This cloud is in the frame specified by the ~fixed_frame node parameter.
+# cloud is empty if no scans are received in the requested interval within the
+# blocking_period.
+sensor_msgs/PointCloud2 cloud
