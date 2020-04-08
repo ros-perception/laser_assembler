@@ -2,6 +2,12 @@
 Changelog for package laser_assembler
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Bump CMake version to avoid CMP0048 warning
+* Fix windows build
+* Contributors: Jonathan Binney, Sean Yen, ahcorde
+
 1.7.7 (2019-06-13)
 ------------------
 
