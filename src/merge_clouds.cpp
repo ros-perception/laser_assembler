@@ -46,9 +46,9 @@ potentially from different sensors
 #include <tf/message_filter.h>
 #include <tf/transform_listener.h>
 
+#include <boost/bind/bind.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/bind.hpp>
 
 #include <message_filters/subscriber.h>
 
@@ -74,7 +74,7 @@ public:
 
     if (max_freq_ > 0.0)
     {
-      timer_ = nh_.createTimer(ros::Duration(1.0/max_freq_), boost::bind(&MergeClouds::onTimer, this, _1));
+      timer_ = nh_.createTimer(ros::Duration(1.0/max_freq_), boost::bind(&MergeClouds::onTimer, this, boost::placeholders::_1));
       haveTimer_ = true;
     }
     else
@@ -83,8 +83,8 @@ public:
     tf_filter1_.reset(new tf::MessageFilter<sensor_msgs::PointCloud>(sub1_, tf_, output_frame_, 1));
     tf_filter2_.reset(new tf::MessageFilter<sensor_msgs::PointCloud>(sub2_, tf_, output_frame_, 1));
 
-    tf_filter1_->registerCallback(boost::bind(&MergeClouds::receiveCloud1, this, _1));
-    tf_filter2_->registerCallback(boost::bind(&MergeClouds::receiveCloud2, this, _1));
+    tf_filter1_->registerCallback(boost::bind(&MergeClouds::receiveCloud1, this, boost::placeholders::_1));
+    tf_filter2_->registerCallback(boost::bind(&MergeClouds::receiveCloud2, this, boost::placeholders::_1));
   }
 
   ~MergeClouds(void)
