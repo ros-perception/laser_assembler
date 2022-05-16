@@ -211,7 +211,7 @@ void BaseAssemblerSrv<T>::start()
     scan_sub_.subscribe(n_, "scan_in", 10);
     tf_filter_ = new tf::MessageFilter<T>(scan_sub_, *tf_, fixed_frame_, 10);
     tf_filter_->setTolerance(ros::Duration(tf_tolerance_secs_));
-    tf_filter_->registerCallback( boost::bind(&BaseAssemblerSrv<T>::scansCallback, this, _1) );
+    tf_filter_->registerCallback( boost::bind(&BaseAssemblerSrv<T>::scansCallback, this, boost::placeholders::_1) );
   }
 }
 

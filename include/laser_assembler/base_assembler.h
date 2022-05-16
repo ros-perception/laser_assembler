@@ -199,7 +199,7 @@ void BaseAssembler<T>::start(const std::string& in_topic_name)
   {
     scan_sub_.subscribe(n_, in_topic_name, 10);
     tf_filter_ = new tf::MessageFilter<T>(scan_sub_, *tf_, fixed_frame_, 10);
-    tf_filter_->registerCallback( boost::bind(&BaseAssembler<T>::msgCallback, this, _1) );
+    tf_filter_->registerCallback( boost::bind(&BaseAssembler<T>::msgCallback, this, boost::placeholders::_1) );
   }
 }
 
@@ -213,7 +213,7 @@ void BaseAssembler<T>::start()
   {
     scan_sub_.subscribe(n_, "bogus", 10);
     tf_filter_ = new tf::MessageFilter<T>(scan_sub_, *tf_, fixed_frame_, 10);
-    tf_filter_->registerCallback( boost::bind(&BaseAssembler<T>::msgCallback, this, _1) );
+    tf_filter_->registerCallback( boost::bind(&BaseAssembler<T>::msgCallback, this, boost::placeholders::_1) );
   }
 }
 
