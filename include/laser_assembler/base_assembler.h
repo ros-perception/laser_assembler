@@ -47,6 +47,7 @@
 #include "laser_assembler/AssembleScans.h"
 #include "laser_assembler/AssembleScans2.h"
 #include "laser_assembler/AssembleScans2Blocking.h"
+#include "laser_assembler/AssembleScans2Publish.h"
 
 #include "boost/thread.hpp"
 #include "math.h"
@@ -120,6 +121,7 @@ private:
   bool buildCloud2(AssembleScans2::Request& req, AssembleScans2::Response& resp) ;
   bool assembleScans2(AssembleScans2::Request& req, AssembleScans2::Response& resp) ;
   bool assembleScans2Blocking(AssembleScans2Blocking::Request& req, AssembleScans2Blocking::Response& resp) ;
+  void assembleScans2Publish(const AssembleScans2PublishConstPtr& msg);
 
   //! \brief Stores history of scans
   std::deque<sensor_msgs::PointCloud> scan_hist_ ;
@@ -138,6 +140,11 @@ private:
   //! \brief Specify how much to downsample the data. A value of 1 preserves all the data. 3 would keep 1/3 of the data.
   unsigned int downsample_factor_ ;
 
+  //! \brief Subscirber for AssembleScans2Publish requests
+  ros::Subscriber assemble_scans2_publish_sub_;
+
+  //! \brief Publisher for AssembleScans2Publish requests
+  ros::Publisher assemble_scans2_publish_pub_;
 } ;
 
 template <class T>
@@ -182,6 +189,14 @@ BaseAssembler<T>::BaseAssembler(const std::string& max_size_param_name) : privat
   downsample_factor_ = tmp_downsample_factor ;
   if (downsample_factor_ != 1)
     ROS_WARN("Downsample set to [%u]. Note that this is an unreleased/unstable feature", downsample_factor_);
+
+  // ***** Setup Publisher and Subscriber for assemble_scans2_publish *****
+  assemble_scans2_publish_pub_ = n_.advertise<sensor_msgs::PointCloud2>("cloud", 1);
+  assemble_scans2_publish_sub_ = n_.subscribe(
+      "assemble_scans2_publish",
+      10,
+      &BaseAssembler<T>::assembleScans2Publish,
+      this);
 
   // ***** Start Services *****
   build_cloud_server_    = n_.advertiseService("build_cloud",    &BaseAssembler<T>::buildCloud,    this);
@@ -424,6 +439,23 @@ bool BaseAssembler<T>::assembleScans2Blocking(AssembleScans2Blocking::Request& r
     sensor_msgs::convertPointCloudToPointCloud2(tmp_res.cloud, resp.cloud);
   }
   return ret;
+}
+
+template <class T>
+void BaseAssembler<T>::assembleScans2Publish(const AssembleScans2PublishConstPtr& msg)
+{
+  AssembleScans::Request tmp_req;
+  AssembleScans::Response tmp_res;
+  tmp_req.begin = msg->begin;
+  tmp_req.end = msg->end;
+  bool ret = assembleScansInternal(tmp_req, tmp_res, msg->blocking_period);
+
+  if ( ret )
+  {
+    sensor_msgs::PointCloud2 pub_cloud;
+    sensor_msgs::convertPointCloudToPointCloud2(tmp_res.cloud, pub_cloud);
+    assemble_scans2_publish_pub_.publish(pub_cloud);
+  }
 }
 
 }

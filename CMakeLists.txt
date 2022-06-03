@@ -22,6 +22,11 @@ AssembleScans.srv
 AssembleScans2.srv
 AssembleScans2Blocking.srv)
 
+add_message_files(
+  FILES
+  AssembleScans2Publish.msg
+)
+
 generate_messages(DEPENDENCIES sensor_msgs std_msgs)
 
 ##############################################################################
