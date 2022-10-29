@@ -36,7 +36,7 @@
 #include "laser_geometry/laser_geometry.h"
 #include "sensor_msgs/LaserScan.h"
 #include "laser_assembler/base_assembler.h"
-#include "filters/filter_chain.h"
+#include "filters/filter_chain.hpp"
 
 using namespace laser_geometry;
 using namespace std ;
