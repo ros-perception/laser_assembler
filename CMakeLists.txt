@@ -11,7 +11,7 @@ tf sensor_msgs message_filters roscpp laser_geometry filters)
 find_package(catkin REQUIRED COMPONENTS
   ${THIS_PACKAGE_ROS_DEPS}
   message_generation)
-find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS thread)
 find_package(Eigen3 REQUIRED)
 if (NOT DEFINED Eigen3_INCLUDE_DIRS)
   get_target_property(Eigen3_INCLUDE_DIRS Eigen3::Eigen INTERFACE_INCLUDE_DIRECTORIES)
